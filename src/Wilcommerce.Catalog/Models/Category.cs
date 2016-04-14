@@ -10,7 +10,7 @@ namespace Wilcommerce.Catalog.Models
     public class Category : IAggregateRoot
     {
         /// <summary>
-        /// The category id
+        /// Get or set the category id
         /// </summary>
         public Guid Id { get; set; }
 
@@ -23,57 +23,57 @@ namespace Wilcommerce.Catalog.Models
 
         #region Properties
         /// <summary>
-        /// The category unique code
+        /// Get or set the category unique code
         /// </summary>
         public string Code { get; set; }
 
         /// <summary>
-        /// The category name
+        /// Get or set the category name
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// The category url (unique slug)
+        /// Get or set the category url (unique slug)
         /// </summary>
         public string Url { get; set; }
 
         /// <summary>
-        /// A description for the category
+        /// Get or set a description for the category
         /// </summary>
         public string Description { get; set; }
 
         /// <summary>
-        /// Whether the category is visible
+        /// Get or set whether the category is visible
         /// </summary>
         public bool IsVisible { get; set; }
 
         /// <summary>
-        /// The date and time from which the category is visible
+        /// Get or set the date and time from which the category is visible
         /// </summary>
         public DateTime? VisibleFrom { get; set; }
 
         /// <summary>
-        /// The date and time till which the category is visible
+        /// Get or set the date and time till which the category is visible
         /// </summary>
         public DateTime? VisibleTo { get; set; }
 
         /// <summary>
-        /// Whether the category is deleted
+        /// Get or set whether the category is deleted
         /// </summary>
         public bool Deleted { get; set; }
 
         /// <summary>
-        /// The parent category
+        /// Get or set the parent category
         /// </summary>
         public virtual Category Parent { get; set; }
 
         /// <summary>
-        /// The list of children categories
+        /// Get or set the list of children categories
         /// </summary>
         protected virtual ICollection<Category> _Children { get; set; }
 
         /// <summary>
-        /// The list of childrend categories (Read only)
+        /// Get the list of childrend categories
         /// </summary>
         public IEnumerable<Category> Children => _Children;
 
@@ -84,7 +84,7 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Set the category as visible, starting from the current date and time
         /// </summary>
-        public void SetAsVisible()
+        public virtual void SetAsVisible()
         {
             this.SetAsVisible(DateTime.Now);
         }
@@ -93,7 +93,7 @@ namespace Wilcommerce.Catalog.Models
         /// Set the category as visible
         /// </summary>
         /// <param name="from">The date and time from which the category is visible</param>
-        public void SetAsVisible(DateTime from)
+        public virtual void SetAsVisible(DateTime from)
         {
             this.IsVisible = true;
             this.VisibleFrom = from;
@@ -104,7 +104,7 @@ namespace Wilcommerce.Catalog.Models
         /// </summary>
         /// <param name="from">The date and time from which the category is visible</param>
         /// <param name="to">The date and time till which the category is visible</param>
-        public void SetAsVisible(DateTime from, DateTime to)
+        public virtual void SetAsVisible(DateTime from, DateTime to)
         {
             if (from >= to)
             {
@@ -119,7 +119,7 @@ namespace Wilcommerce.Catalog.Models
         /// Add a children to the category
         /// </summary>
         /// <param name="children">The category children</param>
-        public void AddChildren(Category children)
+        public virtual void AddChildren(Category children)
         {
             if(children == null)
             {

@@ -18,6 +18,7 @@
     }
   },
   "dependencies": {
+    "Wilcommerce.Core.Common": "0.1.0-alpha",
     "Wilcommerce.Core.Infrastructure": "0.1.0-alpha"
   }
 }
