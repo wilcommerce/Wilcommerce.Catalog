@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Wilcommerce.Core.Common.Domain.Models;
 using Wilcommerce.Core.Infrastructure;
 
@@ -15,7 +16,10 @@ namespace Wilcommerce.Catalog.Models
         public Guid Id { get; set; }
 
         #region Constructor
-        protected Brand() { }
+        protected Brand()
+        {
+            this._Products = new HashSet<Product>();
+        }
         #endregion
 
         #region Properties
@@ -43,7 +47,17 @@ namespace Wilcommerce.Catalog.Models
         /// Get or set the brand logo
         /// </summary>
         public Image Logo { get; set; }
-        
+
+        /// <summary>
+        /// Get or set the list of products associated to the brand
+        /// </summary>
+        protected virtual ICollection<Product> _Products { get; set; }
+
+        /// <summary>
+        /// Get the list of products associated to the brand
+        /// </summary>
+        public IEnumerable<Product> Products => _Products;
+
         #endregion
 
         #region Factory Methods
