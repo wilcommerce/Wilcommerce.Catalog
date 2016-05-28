@@ -295,5 +295,115 @@ namespace Wilcommerce.Catalog.Test.Models
 
             Assert.Equal(tierPrices + 1, product.TierPrices.Count());
         }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public void Product_AddReview_Should_Throw_ArgumentNullException_If_Name_IsEmpty(string value)
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            var ex = Assert.Throws<ArgumentNullException>(() => product.AddReview(value, 2));
+            Assert.Equal("name", ex.ParamName);
+        }
+
+        [Fact]
+        public void Product_AddReview_Should_Throw_ArgumentException_If_Rating_Is_LessThan_Zero()
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            var ex = Assert.Throws<ArgumentException>(() => product.AddReview("user", -1));
+            Assert.Equal("rating", ex.ParamName);
+        }
+
+        [Fact]
+        public void Product_AddReview_Should_Increment_Rating_Number()
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            int reviewCount = product.Reviews.Count();
+            product.AddReview("user", 2);
+
+            Assert.Equal(reviewCount + 1, product.Reviews.Count());
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public void Product_AddImage_Should_Throw_ArgumentNullException_If_Path_IsEmpty(string value)
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            var ex = Assert.Throws<ArgumentNullException>(() => product.AddImage(value, "name", "original", true, DateTime.Now));
+            Assert.Equal("path", ex.ParamName);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public void Product_AddImage_Should_Throw_ArgumentNullException_If_Name_IsEmpty(string value)
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            var ex = Assert.Throws<ArgumentNullException>(() => product.AddImage("path/to/image.ext", value, "original", true, DateTime.Now));
+            Assert.Equal("name", ex.ParamName);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public void Product_AddImage_Should_Throw_ArgumentNullException_If_OriginalName_IsEmpty(string value)
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            var ex = Assert.Throws<ArgumentNullException>(() => product.AddImage("path/to/image.ext", "name", value, true, DateTime.Now));
+            Assert.Equal("originalName", ex.ParamName);
+        }
+
+        [Fact]
+        public void Product_AddImage_Should_Increment_Image_Number()
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            int imageCount = product.Images.Count();
+            product.AddImage("path/to/image.ext", "name", "orignal_name.ext", true, DateTime.Now);
+
+            Assert.Equal(imageCount + 1, product.Images.Count());
+        }
     }
 }
