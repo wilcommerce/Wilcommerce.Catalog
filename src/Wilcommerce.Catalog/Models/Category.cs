@@ -18,6 +18,7 @@ namespace Wilcommerce.Catalog.Models
         protected Category()
         {
             this._Children = new HashSet<Category>();
+            this._Products = new HashSet<Product>();
         }
         #endregion
 
@@ -77,6 +78,16 @@ namespace Wilcommerce.Catalog.Models
         /// </summary>
         public IEnumerable<Category> Children => _Children;
 
+        /// <summary>
+        /// Get or set the list of products associated to the category
+        /// </summary>
+        protected virtual ICollection<Product> _Products { get; set; }
+
+        /// <summary>
+        /// Get the list of products associated to the category
+        /// </summary>
+        public IEnumerable<Product> Products => _Products;
+
         #endregion
 
         #region Behaviors
@@ -118,20 +129,20 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Add a children to the category
         /// </summary>
-        /// <param name="children">The category children</param>
-        public virtual void AddChildren(Category children)
+        /// <param name="child">The category children</param>
+        public virtual void AddChildren(Category child)
         {
-            if(children == null)
+            if(child == null)
             {
                 throw new ArgumentNullException("children");
             }
 
-            if (this._Children.Contains(children))
+            if (this._Children.Contains(child))
             {
                 throw new ArgumentException("The category contains the children yet");
             }
 
-            this._Children.Add(children);
+            this._Children.Add(child);
         }
 
         #endregion

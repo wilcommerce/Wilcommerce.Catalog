@@ -41,6 +41,11 @@ namespace Wilcommerce.Catalog.Models
         public string DataType { get; set; }
 
         /// <summary>
+        /// Get or set whether the custom attribute is deleted
+        /// </summary>
+        public bool Deleted { get; set; }
+
+        /// <summary>
         /// Get or set the available values for the attribute
         /// </summary>
         protected virtual string _Values { get; set; }
@@ -64,14 +69,14 @@ namespace Wilcommerce.Catalog.Models
                 throw new ArgumentNullException("value");
             }
 
-            var valueList = string.IsNullOrEmpty(this._Values) ? (new List<object>()) : this._Values.Split(",".ToCharArray()).ToList<object>();
+            var valueList = string.IsNullOrEmpty(_Values) ? (new List<object>()) : _Values.Split(",".ToCharArray()).ToList<object>();
             if (valueList.Contains(value))
             {
                 throw new ArgumentException("The value list contains the value", "value");
             }
 
             valueList.Add(value);
-            this._Values = string.Join(",", valueList);
+            _Values = string.Join(",", valueList);
         }
 
         /// <summary>
@@ -85,12 +90,12 @@ namespace Wilcommerce.Catalog.Models
                 throw new ArgumentNullException("value");
             }
 
-            if (string.IsNullOrEmpty(this._Values))
+            if (string.IsNullOrEmpty(_Values))
             {
                 throw new InvalidOperationException("Cannot remove item from empty list");
             }
 
-            var valueList = this._Values.Split(",".ToCharArray()).ToList<object>();
+            var valueList = _Values.Split(",".ToCharArray()).ToList<object>();
             if (!valueList.Contains(value))
             {
                 throw new ArgumentException("The value list does not contains the value", "value");
@@ -101,7 +106,7 @@ namespace Wilcommerce.Catalog.Models
                 throw new Exception("The value cannot be removed from the list");
             }
 
-            this._Values = string.Join(",", valueList);
+            _Values = string.Join(",", valueList);
         }
 
         #endregion
