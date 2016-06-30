@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{17D0648C-C73C-45B9-9F18-09F2EC133F6D}"
 EndProject
@@ -10,11 +10,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		global.json = global.json
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Wilcommerce.Catalog", "src\Wilcommerce.Catalog\Wilcommerce.Catalog.xproj", "{869C1E22-F81D-4BD5-977E-8AEEB7E640E1}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{E9262FCE-9E56-4E6E-9CA7-90BC9639AE84}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Wilcommerce.Catalog.Test", "Wilcommerce.Catalog.Test\Wilcommerce.Catalog.Test.xproj", "{C00A1C01-1A15-4373-9B21-D18A2572F142}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Wilcommerce.Catalog", "src\Wilcommerce.Catalog\Wilcommerce.Catalog.xproj", "{F7052383-5A0C-4CEB-B9E7-4C7EB2C3C6EB}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Wilcommerce.Catalog.Test", "Wilcommerce.Catalog.Test\Wilcommerce.Catalog.Test.xproj", "{93EC4EBB-F671-4D6B-8A63-2D912E796DED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,20 +22,20 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{869C1E22-F81D-4BD5-977E-8AEEB7E640E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{869C1E22-F81D-4BD5-977E-8AEEB7E640E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{869C1E22-F81D-4BD5-977E-8AEEB7E640E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{869C1E22-F81D-4BD5-977E-8AEEB7E640E1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C00A1C01-1A15-4373-9B21-D18A2572F142}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C00A1C01-1A15-4373-9B21-D18A2572F142}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C00A1C01-1A15-4373-9B21-D18A2572F142}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C00A1C01-1A15-4373-9B21-D18A2572F142}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7052383-5A0C-4CEB-B9E7-4C7EB2C3C6EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7052383-5A0C-4CEB-B9E7-4C7EB2C3C6EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7052383-5A0C-4CEB-B9E7-4C7EB2C3C6EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7052383-5A0C-4CEB-B9E7-4C7EB2C3C6EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93EC4EBB-F671-4D6B-8A63-2D912E796DED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93EC4EBB-F671-4D6B-8A63-2D912E796DED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93EC4EBB-F671-4D6B-8A63-2D912E796DED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93EC4EBB-F671-4D6B-8A63-2D912E796DED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{869C1E22-F81D-4BD5-977E-8AEEB7E640E1} = {17D0648C-C73C-45B9-9F18-09F2EC133F6D}
-		{C00A1C01-1A15-4373-9B21-D18A2572F142} = {E9262FCE-9E56-4E6E-9CA7-90BC9639AE84}
+		{F7052383-5A0C-4CEB-B9E7-4C7EB2C3C6EB} = {17D0648C-C73C-45B9-9F18-09F2EC133F6D}
+		{93EC4EBB-F671-4D6B-8A63-2D912E796DED} = {E9262FCE-9E56-4E6E-9CA7-90BC9639AE84}
 	EndGlobalSection
 EndGlobal
