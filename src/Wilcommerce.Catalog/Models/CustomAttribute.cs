@@ -23,27 +23,27 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Get or set the attribute's name
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; protected set; }
 
         /// <summary>
         /// Get or set a description for the attribute
         /// </summary>
-        public string Description { get; set; }
+        public string Description { get; protected set; }
 
         /// <summary>
         /// Get or set the unit of measure of the attribute
         /// </summary>
-        public string UnitOfMeasure { get; set; }
+        public string UnitOfMeasure { get; protected set; }
 
         /// <summary>
         /// Get or set the attribute's data type
         /// </summary>
-        public string DataType { get; set; }
+        public string DataType { get; protected set; }
 
         /// <summary>
         /// Get or set whether the custom attribute is deleted
         /// </summary>
-        public bool Deleted { get; set; }
+        public bool Deleted { get; protected set; }
 
         /// <summary>
         /// Get or set the available values for the attribute
@@ -107,6 +107,88 @@ namespace Wilcommerce.Catalog.Models
             }
 
             _Values = string.Join(",", valueList);
+        }
+
+        /// <summary>
+        /// Change the attribute name
+        /// </summary>
+        /// <param name="name">The new name</param>
+        public void ChangeName(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException("name");
+            }
+
+            Name = name;
+        }
+
+        /// <summary>
+        /// Change the attribute description
+        /// </summary>
+        /// <param name="description">The description</param>
+        public void ChangeDescription(string description)
+        {
+            if (string.IsNullOrEmpty(description))
+            {
+                throw new ArgumentNullException("description");
+            }
+
+            Description = description;
+        }
+
+        /// <summary>
+        /// Set the attribute unit of measure
+        /// </summary>
+        /// <param name="unitOfMeasure">The unit of measure</param>
+        public void SetUnitOfMeasure(string unitOfMeasure)
+        {
+            if (string.IsNullOrEmpty(unitOfMeasure))
+            {
+                throw new ArgumentNullException("unitOfMeasure");
+            }
+
+            UnitOfMeasure = unitOfMeasure;
+        }
+
+        /// <summary>
+        /// Change the attribute data type
+        /// </summary>
+        /// <param name="dataType">The data type</param>
+        public void ChangeDataType(string dataType)
+        {
+            if (string.IsNullOrEmpty(dataType))
+            {
+                throw new ArgumentNullException("dataType");
+            }
+
+            DataType = dataType;
+        }
+
+        /// <summary>
+        /// Delete the attribute
+        /// </summary>
+        public void Delete()
+        {
+            if (Deleted)
+            {
+                throw new InvalidOperationException("The attribute is already deleted");
+            }
+
+            Deleted = true;
+        }
+
+        /// <summary>
+        /// Restore the deleted attribute
+        /// </summary>
+        public void Restore()
+        {
+            if (!Deleted)
+            {
+                throw new InvalidOperationException("The attribute is not deleted");
+            }
+
+            Deleted = false;
         }
 
         #endregion

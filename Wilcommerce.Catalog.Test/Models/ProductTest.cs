@@ -245,7 +245,7 @@ namespace Wilcommerce.Catalog.Test.Models
                 "my-product"
                 );
 
-            product.EnableTierPrices = true;
+            product.TierPriceEnabled = true;
 
             var ex = Assert.Throws<ArgumentNullException>(() => product.AddTierPrice(1, 10, null));
             Assert.Equal("price", ex.ParamName);
@@ -261,12 +261,12 @@ namespace Wilcommerce.Catalog.Test.Models
                 "my-product"
                 );
 
-            product.EnableTierPrices = true;
+            product.TierPriceEnabled = true;
 
             int fromQuantity = 1;
             int toQuantity = 10;
 
-            product.EnableTierPrices = true;
+            product.TierPriceEnabled = true;
             product.AddTierPrice(fromQuantity, toQuantity, new Currency { Code = "EUR", Amount = 10 });
 
             var ex = Assert.Throws<ArgumentException>(() => product.AddTierPrice(fromQuantity, toQuantity, new Currency { Code = "EUR", Amount = 10 }));
@@ -283,14 +283,14 @@ namespace Wilcommerce.Catalog.Test.Models
                 "my-product"
                 );
 
-            product.EnableTierPrices = true;
+            product.TierPriceEnabled = true;
 
             int tierPrices = product.TierPrices.Count();
 
             int fromQuantity = 1;
             int toQuantity = 10;
 
-            product.EnableTierPrices = true;
+            product.TierPriceEnabled = true;
             product.AddTierPrice(fromQuantity, toQuantity, new Currency { Code = "EUR", Amount = 10 });
 
             Assert.Equal(tierPrices + 1, product.TierPrices.Count());

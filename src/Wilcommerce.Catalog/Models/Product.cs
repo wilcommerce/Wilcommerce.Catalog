@@ -20,7 +20,7 @@ namespace Wilcommerce.Catalog.Models
         protected Product()
         {
             _Variants = new HashSet<Product>();
-            _Categories = new HashSet<Category>();
+            _Categories = new HashSet<ProductCategory>();
             _TierPrices = new HashSet<TierPrice>();
             _Attributes = new HashSet<ProductAttribute>();
             _Reviews = new HashSet<ProductReview>();
@@ -102,12 +102,17 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Get or set the product's categories
         /// </summary>
-        protected virtual ICollection<Category> _Categories { get; set; }
+        protected virtual ICollection<ProductCategory> _Categories { get; set; }
 
         /// <summary>
         /// Get the product's category
         /// </summary>
-        public IEnumerable<Category> Categories => _Categories;
+        public IEnumerable<Category> Categories => _Categories.Select(p => p.Category);
+
+        /// <summary>
+        /// Get the main category for the product
+        /// </summary>
+        public Category MainCategory => _Categories.FirstOrDefault(c => c.IsMain)?.Category;
 
         /// <summary>
         /// Get or set the product's custom attributes
@@ -127,7 +132,7 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Get or set whether the tier prices are enabled for the product
         /// </summary>
-        public bool EnableTierPrices { get; set; }
+        public bool TierPriceEnabled { get; set; }
 
         /// <summary>
         /// Get or set the product's tier prices
@@ -214,23 +219,37 @@ namespace Wilcommerce.Catalog.Models
             OnSaleTo = endSaleDate;
         }
 
+        public virtual void AddCategory(Category category)
+        {
+            AddCategory(category, false);
+        }
+
         /// <summary>
         /// Add a category to the product
         /// </summary>
         /// <param name="category">The category to add</param>
-        public virtual void AddCategory(Category category)
+        public virtual void AddCategory(Category category, bool isMain)
         {
-            if(category == null)
+            if (category == null)
             {
                 throw new ArgumentNullException("category");
             }
 
-            if (_Categories.Contains(category))
+            if (_Categories.Any(c => c.Category == category))
             {
                 throw new ArgumentException("The category is already in collection");
             }
 
-            _Categories.Add(category);
+            if (isMain && _Categories.Any(c => c.IsMain))
+            {
+                throw new ArgumentException("There's already a main category");
+            }
+
+            _Categories.Add(new ProductCategory
+            {
+                CategoryId = category.Id,
+                IsMain = isMain
+            });
         }
 
         /// <summary>
@@ -239,7 +258,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="product">The variant to add</param>
         public virtual void AddVariant(Product product)
         {
-            if(product == null)
+            if (product == null)
             {
                 throw new ArgumentNullException("product");
             }
@@ -260,17 +279,17 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="price">The price amount</param>
         public virtual void AddTierPrice(int fromQuantity, int toQuantity, Currency price)
         {
-            if (!EnableTierPrices)
+            if (!TierPriceEnabled)
             {
                 throw new InvalidOperationException("Tier prices not enabled");
             }
 
-            if(price == null)
+            if (price == null)
             {
                 throw new ArgumentNullException("price");
             }
 
-            if(_TierPrices.Any(t => t.FromQuantity == fromQuantity && t.ToQuantity == toQuantity))
+            if (_TierPrices.Any(t => t.FromQuantity == fromQuantity && t.ToQuantity == toQuantity))
             {
                 throw new ArgumentException("The tier price is already in collection");
             }
