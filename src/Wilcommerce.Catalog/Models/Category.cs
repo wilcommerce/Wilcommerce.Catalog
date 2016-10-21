@@ -150,7 +150,7 @@ namespace Wilcommerce.Catalog.Models
         /// Change the category name
         /// </summary>
         /// <param name="name">The category name</param>
-        public void ChangeName(string name)
+        public virtual void ChangeName(string name)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -164,7 +164,7 @@ namespace Wilcommerce.Catalog.Models
         /// Change the category code
         /// </summary>
         /// <param name="code">The category code</param>
-        public void ChangeCode(string code)
+        public virtual void ChangeCode(string code)
         {
             if (string.IsNullOrEmpty(code))
             {
@@ -178,7 +178,7 @@ namespace Wilcommerce.Catalog.Models
         /// Change the category description
         /// </summary>
         /// <param name="description">The category description</param>
-        public void ChangeDescription(string description)
+        public virtual void ChangeDescription(string description)
         {
             if (string.IsNullOrEmpty(description))
             {
@@ -192,7 +192,7 @@ namespace Wilcommerce.Catalog.Models
         /// Change the category url
         /// </summary>
         /// <param name="url">The category url</param>
-        public void ChangeUrl(string url)
+        public virtual void ChangeUrl(string url)
         {
             if (string.IsNullOrEmpty(url))
             {
@@ -206,7 +206,7 @@ namespace Wilcommerce.Catalog.Models
         /// Set the parent category
         /// </summary>
         /// <param name="parent">The parent category</param>
-        public void SetParentCategory(Category parent)
+        public virtual void SetParentCategory(Category parent)
         {
             if (parent == null)
             {
@@ -219,7 +219,7 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Delete the category
         /// </summary>
-        public void Delete()
+        public virtual void Delete()
         {
             if (Deleted)
             {
@@ -232,7 +232,7 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Restore the deleted category
         /// </summary>
-        public void Restore()
+        public virtual void Restore()
         {
             if (!Deleted)
             {

@@ -113,7 +113,7 @@ namespace Wilcommerce.Catalog.Models
         /// Change the attribute name
         /// </summary>
         /// <param name="name">The new name</param>
-        public void ChangeName(string name)
+        public virtual void ChangeName(string name)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -127,7 +127,7 @@ namespace Wilcommerce.Catalog.Models
         /// Change the attribute description
         /// </summary>
         /// <param name="description">The description</param>
-        public void ChangeDescription(string description)
+        public virtual void ChangeDescription(string description)
         {
             if (string.IsNullOrEmpty(description))
             {
@@ -141,7 +141,7 @@ namespace Wilcommerce.Catalog.Models
         /// Set the attribute unit of measure
         /// </summary>
         /// <param name="unitOfMeasure">The unit of measure</param>
-        public void SetUnitOfMeasure(string unitOfMeasure)
+        public virtual void SetUnitOfMeasure(string unitOfMeasure)
         {
             if (string.IsNullOrEmpty(unitOfMeasure))
             {
@@ -155,7 +155,7 @@ namespace Wilcommerce.Catalog.Models
         /// Change the attribute data type
         /// </summary>
         /// <param name="dataType">The data type</param>
-        public void ChangeDataType(string dataType)
+        public virtual void ChangeDataType(string dataType)
         {
             if (string.IsNullOrEmpty(dataType))
             {
@@ -168,7 +168,7 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Delete the attribute
         /// </summary>
-        public void Delete()
+        public virtual void Delete()
         {
             if (Deleted)
             {
@@ -181,7 +181,7 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Restore the deleted attribute
         /// </summary>
-        public void Restore()
+        public virtual void Restore()
         {
             if (!Deleted)
             {

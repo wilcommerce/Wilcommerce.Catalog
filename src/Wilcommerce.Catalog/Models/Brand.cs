@@ -65,7 +65,7 @@ namespace Wilcommerce.Catalog.Models
         /// Change the brand name
         /// </summary>
         /// <param name="name">The new brand name</param>
-        public void ChangeName(string name)
+        public virtual void ChangeName(string name)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -79,7 +79,7 @@ namespace Wilcommerce.Catalog.Models
         /// Change the brand description
         /// </summary>
         /// <param name="description">The brand description</param>
-        public void ChangeDescription(string description)
+        public virtual void ChangeDescription(string description)
         {
             if (string.IsNullOrEmpty(description))
             {
@@ -93,7 +93,7 @@ namespace Wilcommerce.Catalog.Models
         /// Change the brand url
         /// </summary>
         /// <param name="url">The new brand url</param>
-        public void ChangeUrl(string url)
+        public virtual void ChangeUrl(string url)
         {
             if (string.IsNullOrEmpty(url))
             {
@@ -107,7 +107,7 @@ namespace Wilcommerce.Catalog.Models
         /// Set the brand logo
         /// </summary>
         /// <param name="logo">The logo image</param>
-        public void SetLogo(Image logo)
+        public virtual void SetLogo(Image logo)
         {
             if (logo == null)
             {
@@ -120,7 +120,7 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Set the brand as deleted
         /// </summary>
-        public void Delete()
+        public virtual void Delete()
         {
             if (Deleted)
             {
@@ -133,7 +133,7 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Restore the deleted brand
         /// </summary>
-        public void Restore()
+        public virtual void Restore()
         {
             if (!Deleted)
             {
