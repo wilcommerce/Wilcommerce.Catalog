@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Wilcommerce.Catalog.Models
 {
@@ -39,5 +36,10 @@ namespace Wilcommerce.Catalog.Models
         /// Get or set the date and time of when the image is uploaded
         /// </summary>
         public DateTime? UploadedOn { get; set; }
+
+        /// <summary>
+        /// Get the related product
+        /// </summary>
+        public virtual Product Product { get; protected set; }
     }
 }

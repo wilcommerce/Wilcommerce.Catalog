@@ -573,7 +573,8 @@ namespace Wilcommerce.Catalog.Models
                 Id = Guid.NewGuid(),
                 Name = name,
                 Rating = rating,
-                Comment = comment
+                Comment = comment,
+                Approved = false
             });
         }
 
@@ -611,6 +612,110 @@ namespace Wilcommerce.Catalog.Models
                 IsMain = isMain,
                 UploadedOn = uploadedOn
             });
+        }
+
+        /// <summary>
+        /// Approve the review
+        /// </summary>
+        /// <param name="reviewId">The id of the review to approve</param>
+        public virtual void ApproveReview(Guid reviewId)
+        {
+            var review = _Reviews.FirstOrDefault(r => r.Id == reviewId);
+            if (review == null)
+            {
+                throw new InvalidOperationException("Review not found");
+            }
+
+            review.Approved = true;
+            review.ApprovedOn = DateTime.Now;
+        }
+
+        /// <summary>
+        /// Remove the approval for the review
+        /// </summary>
+        /// <param name="reviewId">The id of the review</param>
+        public virtual void RemoveReviewApproval(Guid reviewId)
+        {
+            var review = _Reviews.FirstOrDefault(r => r.Id == reviewId);
+            if (review == null)
+            {
+                throw new InvalidOperationException("Review not found");
+            }
+
+            review.Approved = false;
+            review.ApprovedOn = null;
+        }
+
+        /// <summary>
+        /// Delete the review
+        /// </summary>
+        /// <param name="reviewId">The id of the review to delete</param>
+        public virtual void DeleteReview(Guid reviewId)
+        {
+            var review = _Reviews.FirstOrDefault(r => r.Id == reviewId);
+            if (review == null)
+            {
+                throw new InvalidOperationException("Review not found");
+            }
+
+            if (!_Reviews.Remove(review))
+            {
+                throw new InvalidOperationException("Review not removed");
+            }
+        }
+
+        /// <summary>
+        /// Delete the custom attribute
+        /// </summary>
+        /// <param name="attributeId">The id of the attribute to delete</param>
+        public virtual void DeleteAttribute(Guid attributeId)
+        {
+            var attribute = _Attributes.FirstOrDefault(a => a.Id == attributeId);
+            if (attribute == null)
+            {
+                throw new InvalidOperationException("Attribute not found");
+            }
+
+            if (!_Attributes.Remove(attribute))
+            {
+                throw new InvalidOperationException("Attribute not removed");
+            }
+        }
+
+        /// <summary>
+        /// Delete the image
+        /// </summary>
+        /// <param name="imageId">The id of the image to delete</param>
+        public virtual void DeleteImage(Guid imageId)
+        {
+            var image = _Images.FirstOrDefault(i => i.Id == imageId);
+            if (image == null)
+            {
+                throw new InvalidOperationException("Image not found");
+            }
+
+            if (!_Images.Remove(image))
+            {
+                throw new InvalidOperationException("Image not removed");
+            }
+        }
+
+        /// <summary>
+        /// Delete the tier price
+        /// </summary>
+        /// <param name="tierPriceId">The id of the tier price to delete</param>
+        public virtual void DeleteTierPrice(Guid tierPriceId)
+        {
+            var tierPrice = _TierPrices.FirstOrDefault(t => t.Id == tierPriceId);
+            if (tierPrice == null)
+            {
+                throw new InvalidOperationException("Tier price not found");
+            }
+
+            if (!_TierPrices.Remove(tierPrice))
+            {
+                throw new InvalidOperationException("Tier price not deleted");
+            }
         }
 
         #endregion

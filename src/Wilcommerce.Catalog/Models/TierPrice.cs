@@ -27,5 +27,10 @@ namespace Wilcommerce.Catalog.Models
         /// Get or set the price associated to quantity
         /// </summary>
         public Currency Price { get; set; }
+
+        /// <summary>
+        /// Get the related product
+        /// </summary>
+        public virtual Product Product { get; protected set; }
     }
 }
