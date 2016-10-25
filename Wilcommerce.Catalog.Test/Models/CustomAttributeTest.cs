@@ -136,5 +136,87 @@ namespace Wilcommerce.Catalog.Test.Models
 
             Assert.Equal(valuesCount - 1, attribute.Values.Count());
         }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public void ChangeName_Should_Throw_ArgumentNullException_If_Name_IsEmpty(string value)
+        {
+            var attribute = CustomAttribute.Create(
+                "Attribute",
+                "string"
+                );
+
+            var ex = Assert.Throws<ArgumentNullException>(() => attribute.ChangeName(value));
+            Assert.Equal("name", ex.ParamName);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public void ChangeDescription_Should_Throw_ArgumentNullException_If_Description_IsEmpty(string value)
+        {
+            var attribute = CustomAttribute.Create(
+                "Attribute",
+                "string"
+                );
+
+            var ex = Assert.Throws<ArgumentNullException>(() => attribute.ChangeDescription(value));
+            Assert.Equal("description", ex.ParamName);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public void SetUnitOfMeasure_Should_Throw_ArgumentNullException_If_UnitOfMeasure_IsEmpty(string value)
+        {
+            var attribute = CustomAttribute.Create(
+                "Attribute",
+                "string"
+                );
+
+            var ex = Assert.Throws<ArgumentNullException>(() => attribute.SetUnitOfMeasure(value));
+            Assert.Equal("unitOfMeasure", ex.ParamName);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public void ChangeDataType_Should_Throw_ArgumentNullException_If_DataType_IsEmpty(string value)
+        {
+            var attribute = CustomAttribute.Create(
+                "Attribute",
+                "string"
+                );
+
+            var ex = Assert.Throws<ArgumentNullException>(() => attribute.ChangeDataType(value));
+            Assert.Equal("dataType", ex.ParamName);
+        }
+
+        [Fact]
+        public void Delete_Should_Throw_InvalidOperationException_If_Attribute_IsDeleted()
+        {
+            var attribute = CustomAttribute.Create(
+                "Attribute",
+                "string"
+                );
+
+            attribute.Delete();
+
+            var ex = Assert.Throws<InvalidOperationException>(() => attribute.Delete());
+            Assert.Equal("The attribute is already deleted", ex.Message);
+        }
+
+        [Fact]
+        public void Restore_Should_Throw_InvalidOperationException_If_Attribute_IsNotDeleted()
+        {
+            var attribute = CustomAttribute.Create(
+                "Attribute",
+                "string"
+                );
+
+            var ex = Assert.Throws<InvalidOperationException>(() => attribute.Restore());
+            Assert.Equal("The attribute is not deleted", ex.Message);
+        }
     }
 }

@@ -199,7 +199,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="unitInStock">The product's unit in stock</param>
         public virtual void SetUnitInStock(int unitInStock)
         {
-            if(unitInStock < 0)
+            if (unitInStock < 0)
             {
                 throw new ArgumentException("Stock unit cannot be less than zero");
             }
@@ -395,7 +395,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="onSaleTo">The date and time till when the product will be on sale</param>
         public virtual void SetOnSale(DateTime onSaleFrom, DateTime onSaleTo)
         {
-            if(onSaleFrom >= onSaleTo)
+            if (onSaleFrom >= onSaleTo)
             {
                 throw new ArgumentException("The sale's start date must be precedent to the end date");
             }
@@ -563,7 +563,7 @@ namespace Wilcommerce.Catalog.Models
                 throw new ArgumentNullException("name");
             }
 
-            if(rating < 0)
+            if (rating < 0)
             {
                 throw new ArgumentException("rating could not be less than zero", "rating");
             }
@@ -715,6 +715,24 @@ namespace Wilcommerce.Catalog.Models
             if (!_TierPrices.Remove(tierPrice))
             {
                 throw new InvalidOperationException("Tier price not deleted");
+            }
+        }
+
+        /// <summary>
+        /// Remove the product variant
+        /// </summary>
+        /// <param name="variantId">The id of the variant to remove</param>
+        public virtual void RemoveVariant(Guid variantId)
+        {
+            var variant = _Variants.FirstOrDefault(v => v.Id == variantId);
+            if (variant == null)
+            {
+                throw new InvalidOperationException("Variant not found");
+            }
+
+            if (!_Variants.Remove(variant))
+            {
+                throw new InvalidOperationException("Variant not removed");
             }
         }
 
