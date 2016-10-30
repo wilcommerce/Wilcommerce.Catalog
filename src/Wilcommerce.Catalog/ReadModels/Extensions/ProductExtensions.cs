@@ -20,6 +20,13 @@ namespace Wilcommerce.Catalog.ReadModels
                    select p;
         }
 
+        public static IQueryable<Product> MainProducts(this IQueryable<Product> products)
+        {
+            return from p in products
+                   where p.MainProduct == null
+                   select p;
+        }
+
         public static IQueryable<Product> ByMainProduct(this IQueryable<Product> products, Guid productId)
         {
             return from p in products
