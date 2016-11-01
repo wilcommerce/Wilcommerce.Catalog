@@ -20,7 +20,7 @@ namespace Wilcommerce.Catalog.Models
         protected Product()
         {
             _Variants = new HashSet<Product>();
-            _Categories = new HashSet<Category>();
+            _Categories = new HashSet<ProductCategory>();
             _TierPrices = new HashSet<TierPrice>();
             _Attributes = new HashSet<ProductAttribute>();
             _Reviews = new HashSet<ProductReview>();
@@ -32,52 +32,52 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Get or set the EAN code for the product
         /// </summary>
-        public string EanCode { get; set; }
+        public string EanCode { get; protected set; }
 
         /// <summary>
         /// Get or set the SKU code for the product
         /// </summary>
-        public string Sku { get; set; }
+        public string Sku { get; protected set; }
 
         /// <summary>
         /// Get or set the product's name
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; protected set; }
 
         /// <summary>
         /// Get or set the product's url
         /// </summary>
-        public string Url { get; set; }
+        public string Url { get; protected set; }
 
         /// <summary>
         /// Get or set the product's description
         /// </summary>
-        public string Description { get; set; }
+        public string Description { get; protected set; }
 
         /// <summary>
         /// Get or set the product's price
         /// </summary>
-        public Currency Price { get; set; }
+        public Currency Price { get; protected set; }
 
         /// <summary>
         /// Get or set the number of units in stock
         /// </summary>
-        public int UnitInStock { get; set; }
+        public int UnitInStock { get; protected set; }
 
         /// <summary>
         /// Get or set whether the product is on sale
         /// </summary>
-        public bool IsOnSale { get; set; }
+        public bool IsOnSale { get; protected set; }
 
         /// <summary>
         /// Get or set the date and time from when the product is on sale
         /// </summary>
-        public DateTime? OnSaleFrom { get; set; }
+        public DateTime? OnSaleFrom { get; protected set; }
 
         /// <summary>
         /// Get or set the date and time till when the product is on sale
         /// </summary>
-        public DateTime? OnSaleTo { get; set; }
+        public DateTime? OnSaleTo { get; protected set; }
 
         /// <summary>
         /// Get or set the product's variants
@@ -92,22 +92,27 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Get or set the main product
         /// </summary>
-        public virtual Product MainProduct { get; set; }
+        public virtual Product MainProduct { get; protected set; }
 
         /// <summary>
         /// Get or set the product's vendor
         /// </summary>
-        public virtual Brand Vendor { get; set; }
+        public virtual Brand Vendor { get; protected set; }
 
         /// <summary>
         /// Get or set the product's categories
         /// </summary>
-        protected virtual ICollection<Category> _Categories { get; set; }
+        protected virtual ICollection<ProductCategory> _Categories { get; set; }
 
         /// <summary>
         /// Get the product's category
         /// </summary>
-        public IEnumerable<Category> Categories => _Categories;
+        public IEnumerable<Category> Categories => _Categories.Select(p => p.Category);
+
+        /// <summary>
+        /// Get the main category for the product
+        /// </summary>
+        public Category MainCategory => _Categories.FirstOrDefault(c => c.IsMain)?.Category;
 
         /// <summary>
         /// Get or set the product's custom attributes
@@ -122,12 +127,12 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Get or set whether the product is deleted
         /// </summary>
-        public bool Deleted { get; set; }
+        public bool Deleted { get; protected set; }
 
         /// <summary>
         /// Get or set whether the tier prices are enabled for the product
         /// </summary>
-        public bool EnableTierPrices { get; set; }
+        public bool TierPriceEnabled { get; protected set; }
 
         /// <summary>
         /// Get or set the product's tier prices
@@ -163,6 +168,209 @@ namespace Wilcommerce.Catalog.Models
 
         #region Behaviors
         /// <summary>
+        /// Delete the product
+        /// </summary>
+        public virtual void Delete()
+        {
+            if (Deleted)
+            {
+                throw new InvalidOperationException("Product already deleted");
+            }
+
+            Deleted = true;
+        }
+
+        /// <summary>
+        /// Restore the deleted protected
+        /// </summary>
+        public virtual void Restore()
+        {
+            if (!Deleted)
+            {
+                throw new InvalidOperationException("Product is not deleted");
+            }
+
+            Deleted = false;
+        }
+
+        /// <summary>
+        /// Set the unit in stock for the product
+        /// </summary>
+        /// <param name="unitInStock">The product's unit in stock</param>
+        public virtual void SetUnitInStock(int unitInStock)
+        {
+            if (unitInStock < 0)
+            {
+                throw new ArgumentException("Stock unit cannot be less than zero");
+            }
+
+            UnitInStock = unitInStock;
+        }
+
+        /// <summary>
+        /// Add product unit to the stock
+        /// </summary>
+        /// <param name="unit">The number of unit to add</param>
+        public virtual void AddUnitInStock(int unit)
+        {
+            if (unit < 0)
+            {
+                throw new ArgumentException("Stock unit cannot be less than zero");
+            }
+
+            SetUnitInStock(UnitInStock + unit);
+        }
+
+        /// <summary>
+        /// Remove product unit from stock
+        /// </summary>
+        /// <param name="unit">The number of unit to remove</param>
+        public virtual void RemoveUnitFromStock(int unit)
+        {
+            if (unit < 0)
+            {
+                throw new ArgumentException("Stock unit cannot be less than zero");
+            }
+
+            int newUnitInStock = UnitInStock - unit;
+            if (newUnitInStock < 0)
+            {
+                throw new InvalidOperationException("Stock unit cannot be less than zero");
+            }
+
+            SetUnitInStock(newUnitInStock);
+        }
+
+        /// <summary>
+        /// Change the product EAN code
+        /// </summary>
+        /// <param name="ean">The product's ean code</param>
+        public virtual void ChangeEanCode(string ean)
+        {
+            if (string.IsNullOrEmpty(ean))
+            {
+                throw new ArgumentNullException("ean");
+            }
+
+            EanCode = ean;
+        }
+
+        /// <summary>
+        /// Change the product SKU
+        /// </summary>
+        /// <param name="sku">The product's sku</param>
+        public virtual void ChangeSku(string sku)
+        {
+            if (string.IsNullOrEmpty(sku))
+            {
+                throw new ArgumentNullException("sku");
+            }
+
+            Sku = sku;
+        }
+
+        /// <summary>
+        /// Change the product name
+        /// </summary>
+        /// <param name="name">The product's name</param>
+        public virtual void ChangeName(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException("name");
+            }
+
+            Name = name;
+        }
+
+        /// <summary>
+        /// Change the product description
+        /// </summary>
+        /// <param name="description">The product's description</param>
+        public virtual void ChangeDescription(string description)
+        {
+            if (string.IsNullOrEmpty(description))
+            {
+                throw new ArgumentNullException("description");
+            }
+
+            Description = description;
+        }
+
+        /// <summary>
+        /// Change the product url
+        /// </summary>
+        /// <param name="url">The product's url</param>
+        public virtual void ChangeUrl(string url)
+        {
+            if (string.IsNullOrEmpty(url))
+            {
+                throw new ArgumentNullException("url");
+            }
+
+            Url = url;
+        }
+
+        /// <summary>
+        /// Set the product price
+        /// </summary>
+        /// <param name="price">The new price</param>
+        public virtual void SetPrice(Currency price)
+        {
+            if (price == null)
+            {
+                throw new ArgumentNullException("price");
+            }
+
+            if (price.Amount < 0)
+            {
+                throw new ArgumentException("Price amount cannot be less than zero");
+            }
+
+            Price = price;
+        }
+
+        /// <summary>
+        /// Enables the tier prices
+        /// </summary>
+        public virtual void EnableTierPrices()
+        {
+            if (TierPriceEnabled)
+            {
+                throw new InvalidOperationException("Tier prices already enabled");
+            }
+
+            TierPriceEnabled = true;
+        }
+
+        /// <summary>
+        /// Disable the tier prices
+        /// </summary>
+        public virtual void DisableTierPrices()
+        {
+            if (!TierPriceEnabled)
+            {
+                throw new InvalidOperationException("Tier prices already disabled");
+            }
+
+            TierPriceEnabled = false;
+        }
+
+        /// <summary>
+        /// Set the product vendor
+        /// </summary>
+        /// <param name="vendor">The product's vendor</param>
+        public virtual void SetVendor(Brand vendor)
+        {
+            if (vendor == null)
+            {
+                throw new ArgumentNullException("vendor");
+            }
+
+            Vendor = vendor;
+        }
+
+        /// <summary>
         /// Set the product on sale
         /// </summary>
         public virtual void SetOnSale()
@@ -187,7 +395,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="onSaleTo">The date and time till when the product will be on sale</param>
         public virtual void SetOnSale(DateTime onSaleFrom, DateTime onSaleTo)
         {
-            if(onSaleFrom >= onSaleTo)
+            if (onSaleFrom >= onSaleTo)
             {
                 throw new ArgumentException("The sale's start date must be precedent to the end date");
             }
@@ -214,23 +422,46 @@ namespace Wilcommerce.Catalog.Models
             OnSaleTo = endSaleDate;
         }
 
+        public virtual void AddCategory(Category category)
+        {
+            AddCategory(category, false);
+        }
+
         /// <summary>
         /// Add a category to the product
         /// </summary>
         /// <param name="category">The category to add</param>
-        public virtual void AddCategory(Category category)
+        public virtual void AddCategory(Category category, bool isMain)
         {
-            if(category == null)
+            if (category == null)
             {
                 throw new ArgumentNullException("category");
             }
 
-            if (_Categories.Contains(category))
+            if (_Categories.Any(c => c.CategoryId == category.Id))
             {
                 throw new ArgumentException("The category is already in collection");
             }
 
-            _Categories.Add(category);
+            if (isMain && _Categories.Any(c => c.IsMain))
+            {
+                throw new ArgumentException("There's already a main category");
+            }
+
+            _Categories.Add(new ProductCategory
+            {
+                CategoryId = category.Id,
+                IsMain = isMain
+            });
+        }
+
+        /// <summary>
+        /// Add the specified category as main category for the product
+        /// </summary>
+        /// <param name="category">The category to add</param>
+        public virtual void AddMainCategory(Category category)
+        {
+            AddCategory(category, true);
         }
 
         /// <summary>
@@ -239,7 +470,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="product">The variant to add</param>
         public virtual void AddVariant(Product product)
         {
-            if(product == null)
+            if (product == null)
             {
                 throw new ArgumentNullException("product");
             }
@@ -260,17 +491,17 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="price">The price amount</param>
         public virtual void AddTierPrice(int fromQuantity, int toQuantity, Currency price)
         {
-            if (!EnableTierPrices)
+            if (!TierPriceEnabled)
             {
                 throw new InvalidOperationException("Tier prices not enabled");
             }
 
-            if(price == null)
+            if (price == null)
             {
                 throw new ArgumentNullException("price");
             }
 
-            if(_TierPrices.Any(t => t.FromQuantity == fromQuantity && t.ToQuantity == toQuantity))
+            if (_TierPrices.Any(t => t.FromQuantity == fromQuantity && t.ToQuantity == toQuantity))
             {
                 throw new ArgumentException("The tier price is already in collection");
             }
@@ -332,7 +563,7 @@ namespace Wilcommerce.Catalog.Models
                 throw new ArgumentNullException("name");
             }
 
-            if(rating < 0)
+            if (rating < 0)
             {
                 throw new ArgumentException("rating could not be less than zero", "rating");
             }
@@ -342,7 +573,8 @@ namespace Wilcommerce.Catalog.Models
                 Id = Guid.NewGuid(),
                 Name = name,
                 Rating = rating,
-                Comment = comment
+                Comment = comment,
+                Approved = false
             });
         }
 
@@ -380,6 +612,128 @@ namespace Wilcommerce.Catalog.Models
                 IsMain = isMain,
                 UploadedOn = uploadedOn
             });
+        }
+
+        /// <summary>
+        /// Approve the review
+        /// </summary>
+        /// <param name="reviewId">The id of the review to approve</param>
+        public virtual void ApproveReview(Guid reviewId)
+        {
+            var review = _Reviews.FirstOrDefault(r => r.Id == reviewId);
+            if (review == null)
+            {
+                throw new InvalidOperationException("Review not found");
+            }
+
+            review.Approved = true;
+            review.ApprovedOn = DateTime.Now;
+        }
+
+        /// <summary>
+        /// Remove the approval for the review
+        /// </summary>
+        /// <param name="reviewId">The id of the review</param>
+        public virtual void RemoveReviewApproval(Guid reviewId)
+        {
+            var review = _Reviews.FirstOrDefault(r => r.Id == reviewId);
+            if (review == null)
+            {
+                throw new InvalidOperationException("Review not found");
+            }
+
+            review.Approved = false;
+            review.ApprovedOn = null;
+        }
+
+        /// <summary>
+        /// Delete the review
+        /// </summary>
+        /// <param name="reviewId">The id of the review to delete</param>
+        public virtual void DeleteReview(Guid reviewId)
+        {
+            var review = _Reviews.FirstOrDefault(r => r.Id == reviewId);
+            if (review == null)
+            {
+                throw new InvalidOperationException("Review not found");
+            }
+
+            if (!_Reviews.Remove(review))
+            {
+                throw new InvalidOperationException("Review not removed");
+            }
+        }
+
+        /// <summary>
+        /// Delete the custom attribute
+        /// </summary>
+        /// <param name="attributeId">The id of the attribute to delete</param>
+        public virtual void DeleteAttribute(Guid attributeId)
+        {
+            var attribute = _Attributes.FirstOrDefault(a => a.Id == attributeId);
+            if (attribute == null)
+            {
+                throw new InvalidOperationException("Attribute not found");
+            }
+
+            if (!_Attributes.Remove(attribute))
+            {
+                throw new InvalidOperationException("Attribute not removed");
+            }
+        }
+
+        /// <summary>
+        /// Delete the image
+        /// </summary>
+        /// <param name="imageId">The id of the image to delete</param>
+        public virtual void DeleteImage(Guid imageId)
+        {
+            var image = _Images.FirstOrDefault(i => i.Id == imageId);
+            if (image == null)
+            {
+                throw new InvalidOperationException("Image not found");
+            }
+
+            if (!_Images.Remove(image))
+            {
+                throw new InvalidOperationException("Image not removed");
+            }
+        }
+
+        /// <summary>
+        /// Delete the tier price
+        /// </summary>
+        /// <param name="tierPriceId">The id of the tier price to delete</param>
+        public virtual void DeleteTierPrice(Guid tierPriceId)
+        {
+            var tierPrice = _TierPrices.FirstOrDefault(t => t.Id == tierPriceId);
+            if (tierPrice == null)
+            {
+                throw new InvalidOperationException("Tier price not found");
+            }
+
+            if (!_TierPrices.Remove(tierPrice))
+            {
+                throw new InvalidOperationException("Tier price not deleted");
+            }
+        }
+
+        /// <summary>
+        /// Remove the product variant
+        /// </summary>
+        /// <param name="variantId">The id of the variant to remove</param>
+        public virtual void RemoveVariant(Guid variantId)
+        {
+            var variant = _Variants.FirstOrDefault(v => v.Id == variantId);
+            if (variant == null)
+            {
+                throw new InvalidOperationException("Variant not found");
+            }
+
+            if (!_Variants.Remove(variant))
+            {
+                throw new InvalidOperationException("Variant not removed");
+            }
         }
 
         #endregion

@@ -26,5 +26,20 @@ namespace Wilcommerce.Catalog.Models
         /// Get or set the comment given to the product
         /// </summary>
         public string Comment { get; set; }
+
+        /// <summary>
+        /// Get or set whether the review is approved
+        /// </summary>
+        public bool Approved { get; set; }
+
+        /// <summary>
+        /// Get or set the date and time of when the review is approved
+        /// </summary>
+        public DateTime? ApprovedOn { get; set; }
+
+        /// <summary>
+        /// Get the related product
+        /// </summary>
+        public virtual Product Product { get; protected set; }
     }
 }
