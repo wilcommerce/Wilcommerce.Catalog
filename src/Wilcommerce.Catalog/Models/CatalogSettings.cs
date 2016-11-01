@@ -113,6 +113,11 @@ namespace Wilcommerce.Catalog.Models
                 throw new ArgumentException("reviews per page cannot be less than zero");
             }
 
+            if (!ProductReviewsAllowed)
+            {
+                throw new InvalidOperationException("Reviews not allowed");
+            }
+
             ProductReviewsPerPage = reviewsPerPage;
         }
 
@@ -142,11 +147,10 @@ namespace Wilcommerce.Catalog.Models
         /// </summary>
         /// <param name="categoriesPerPage">The number of categories per page</param>
         /// <param name="productsPerPage">The number of products per page</param>
-        /// <param name="reviewsPerPage">The number of reviews per page</param>
         /// <param name="categoriesViewType">The categories view type</param>
         /// <param name="productsViewType">The products view type</param>
         /// <returns>The new catalog settings</returns>
-        public static CatalogSettings Create(int categoriesPerPage, int productsPerPage, int reviewsPerPage, ViewType categoriesViewType, ViewType productsViewType)
+        public static CatalogSettings Create(int categoriesPerPage, int productsPerPage, ViewType categoriesViewType, ViewType productsViewType)
         {
             if (categoriesPerPage < 0)
             {
