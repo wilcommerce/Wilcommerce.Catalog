@@ -20,5 +20,7 @@ namespace Wilcommerce.Catalog.ReadModels
         IQueryable<ProductReview> ProductReviews { get; }
 
         IQueryable<TierPrice> TierPrices { get; }
+
+        IQueryable<CatalogSettings> Settings { get; }
     }
 }
