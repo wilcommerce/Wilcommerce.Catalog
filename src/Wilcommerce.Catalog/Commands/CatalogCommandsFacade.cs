@@ -1,45 +1,18 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Wilcommerce.Core.Common.Domain.Models;
-using Wilcommerce.Catalog.Commands.Brand;
-using Wilcommerce.Catalog.Commands.Brand.Handlers.Interfaces;
+using Wilcommerce.Catalog.Repository;
+using Wilcommerce.Catalog.Models;
 
 namespace Wilcommerce.Catalog.Commands
 {
     public class CatalogCommandsFacade : ICatalogCommandsFacade
     {
-        #region Brand Handlers
-        public ICreateNewBrandCommandHandler CreateBrandHandler { get; }
+        public IRepository Repository { get; }
 
-        public IChangeBrandNameCommandHandler ChangeBrandNameHandler { get; }
-
-        public IChangeBrandUrlCommandHandler ChangeBrandUrlHandler { get; }
-
-        public IChangeBrandDescriptionCommandHandler ChangeBrandDescriptionHandler { get; }
-
-        public ISetBrandLogoCommandHandler SetBrandLogoHandler { get; }
-
-        public IDeleteBrandCommandHandler DeleteBrandHandler { get; }
-
-        public IRestoreBrandCommandHandler RestoreBrandHandler { get; }
-        #endregion
-
-        public CatalogCommandsFacade(
-            ICreateNewBrandCommandHandler createBrandHandler,
-            IChangeBrandNameCommandHandler changeBrandNameHandler,
-            IChangeBrandUrlCommandHandler changeBrandUrlHandler,
-            IChangeBrandDescriptionCommandHandler changeBrandDescriptionHandler,
-            ISetBrandLogoCommandHandler setBrandLogoHandler,
-            IDeleteBrandCommandHandler deleteBrandHandler,
-            IRestoreBrandCommandHandler restoreBrandHandler)
+        public CatalogCommandsFacade(IRepository repository)
         {
-            CreateBrandHandler = createBrandHandler;
-            ChangeBrandNameHandler = changeBrandNameHandler;
-            ChangeBrandUrlHandler = changeBrandUrlHandler;
-            ChangeBrandDescriptionHandler = changeBrandDescriptionHandler;
-            SetBrandLogoHandler = setBrandLogoHandler;
-            DeleteBrandHandler = deleteBrandHandler;
-            RestoreBrandHandler = restoreBrandHandler;
+            Repository = repository;
         }
 
         #region Brand Commands
@@ -47,8 +20,10 @@ namespace Wilcommerce.Catalog.Commands
         {
             try
             {
-                var command = new ChangeBrandDescriptionCommand(brandId, description);
-                await ChangeBrandDescriptionHandler.Handle(command);
+                var brand = await Repository.GetByKeyAsync<Brand>(brandId);
+                brand.ChangeDescription(description);
+
+                await Repository.SaveChangesAsync();
             }
             catch 
             {
@@ -60,8 +35,10 @@ namespace Wilcommerce.Catalog.Commands
         {
             try
             {
-                var command = new ChangeBrandNameCommand(brandId, name);
-                await ChangeBrandNameHandler.Handle(command);
+                var brand = await Repository.GetByKeyAsync<Brand>(brandId);
+                brand.ChangeName(name);
+
+                await Repository.SaveChangesAsync();
             }
             catch 
             {
@@ -73,8 +50,10 @@ namespace Wilcommerce.Catalog.Commands
         {
             try
             {
-                var command = new ChangeBrandUrlCommand(brandId, url);
-                await ChangeBrandUrlHandler.Handle(command);
+                var brand = await Repository.GetByKeyAsync<Brand>(brandId);
+                brand.ChangeUrl(url);
+
+                await Repository.SaveChangesAsync();
             }
             catch
             {
@@ -86,8 +65,19 @@ namespace Wilcommerce.Catalog.Commands
         {
             try
             {
-                var command = new CreateNewBrandCommand(name, url, description, logo);
-                await CreateBrandHandler.Handle(command);
+                var brand = Brand.Create(name, url);
+                if (!string.IsNullOrEmpty(description))
+                {
+                    brand.ChangeDescription(description);
+                }
+
+                if (logo != null)
+                {
+                    brand.SetLogo(logo);
+                }
+
+                Repository.Add(brand);
+                await Repository.SaveChangesAsync();
             }
             catch
             {
@@ -99,8 +89,10 @@ namespace Wilcommerce.Catalog.Commands
         {
             try
             {
-                var command = new DeleteBrandCommand(brandId);
-                await DeleteBrandHandler.Handle(command);
+                var brand = await Repository.GetByKeyAsync<Brand>(brandId);
+                brand.Delete();
+
+                await Repository.SaveChangesAsync();
             }
             catch 
             {
@@ -112,8 +104,10 @@ namespace Wilcommerce.Catalog.Commands
         {
             try
             {
-                var command = new RestoreBrandCommand(brandId);
-                await RestoreBrandHandler.Handle(command);
+                var brand = await Repository.GetByKeyAsync<Brand>(brandId);
+                brand.Restore();
+
+                await Repository.SaveChangesAsync();
             }
             catch
             {
@@ -125,8 +119,10 @@ namespace Wilcommerce.Catalog.Commands
         {
             try
             {
-                var command = new SetBrandLogoCommand(brandId, logo);
-                await SetBrandLogoHandler.Handle(command);
+                var brand = await Repository.GetByKeyAsync<Brand>(brandId);
+                brand.SetLogo(logo);
+
+                await Repository.SaveChangesAsync();
             }
             catch 
             {
