@@ -65,28 +65,103 @@ namespace Wilcommerce.Catalog.Commands
         #endregion
 
         #region Category Commands
+        /// <summary>
+        /// Create a new category
+        /// </summary>
+        /// <param name="code">The category code</param>
+        /// <param name="name">The category name</param>
+        /// <param name="url">The category url</param>
+        /// <param name="description">The category description</param>
+        /// <param name="isVisible">Whether the category is visible</param>
+        /// <param name="visibleFrom">The date and time of when the category starts to be visible</param>
+        /// <param name="visibleTo">The date and time till when the category is visible</param>
+        /// <returns></returns>
         Task CreateNewCategory(string code, string name, string url, string description, bool isVisible, DateTime? visibleFrom, DateTime? visibleTo);
 
+        /// <summary>
+        /// Set the category as visible
+        /// </summary>
+        /// <param name="categoryId">The category id</param>
+        /// <param name="from">The date and time of when the category starts to be visible</param>
+        /// <param name="to">The date and time till when the category is visible</param>
+        /// <returns></returns>
         Task SetCategoryAsVisible(Guid categoryId, DateTime? from, DateTime? to);
 
+        /// <summary>
+        /// Add a child to the category
+        /// </summary>
+        /// <param name="categoryId">The category id</param>
+        /// <param name="childId">The child id</param>
+        /// <returns></returns>
         Task AddCategoryChild(Guid categoryId, Guid childId);
 
+        /// <summary>
+        /// Change the category name
+        /// </summary>
+        /// <param name="categoryId">The category id</param>
+        /// <param name="name">The new category name</param>
+        /// <returns></returns>
         Task ChangeCategoryName(Guid categoryId, string name);
 
+        /// <summary>
+        /// Change the category code
+        /// </summary>
+        /// <param name="categoryId">The category id</param>
+        /// <param name="code">The new category code</param>
+        /// <returns></returns>
         Task ChangeCategoryCode(Guid categoryId, string code);
 
+        /// <summary>
+        /// Change the category description
+        /// </summary>
+        /// <param name="categoryId">The category id</param>
+        /// <param name="description">The new category description</param>
+        /// <returns></returns>
         Task ChangeCategoryDescription(Guid categoryId, string description);
 
+        /// <summary>
+        /// Change the category url
+        /// </summary>
+        /// <param name="categoryId">The category id</param>
+        /// <param name="url">The new category url</param>
+        /// <returns></returns>
         Task ChangeCategoryUrl(Guid categoryId, string url);
 
+        /// <summary>
+        /// Set the parent for the specified category
+        /// </summary>
+        /// <param name="categoryId">The category id</param>
+        /// <param name="parentId">The parent category id</param>
+        /// <returns></returns>
         Task SetParentForCategory(Guid categoryId, Guid parentId);
 
+        /// <summary>
+        /// Delete the category
+        /// </summary>
+        /// <param name="categoryId">The category id</param>
+        /// <returns></returns>
         Task DeleteCategory(Guid categoryId);
 
+        /// <summary>
+        /// Restore the category
+        /// </summary>
+        /// <param name="categoryId">The category id</param>
+        /// <returns></returns>
         Task RestoreCategory(Guid categoryId);
 
+        /// <summary>
+        /// Remove the specified child from the category
+        /// </summary>
+        /// <param name="categoryId">The category id</param>
+        /// <param name="childId">The child to remove</param>
+        /// <returns></returns>
         Task RemoveChildForCategory(Guid categoryId, Guid childId);
 
+        /// <summary>
+        /// Remove the parent from the specified category
+        /// </summary>
+        /// <param name="categoryId">The category id</param>
+        /// <returns></returns>
         Task RemoveParentForCategory(Guid categoryId);
         #endregion
     }
