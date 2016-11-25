@@ -92,7 +92,7 @@ namespace Wilcommerce.Catalog.Test.Models
                 "test-category"
                 );
 
-            var ex = Assert.Throws<ArgumentNullException>(() => category.AddChildren(null));
+            var ex = Assert.Throws<ArgumentNullException>(() => category.AddChild(null));
 
             Assert.Equal("children", ex.ParamName);
         }
@@ -112,9 +112,9 @@ namespace Wilcommerce.Catalog.Test.Models
                 "children-category"
                 );
 
-            category.AddChildren(children);
+            category.AddChild(children);
 
-            var ex = Assert.Throws<ArgumentException>(() => category.AddChildren(children));
+            var ex = Assert.Throws<ArgumentException>(() => category.AddChild(children));
             Assert.Equal("The category contains the children yet", ex.Message);
         }
 
@@ -135,7 +135,7 @@ namespace Wilcommerce.Catalog.Test.Models
                 "children-category"
                 );
 
-            category.AddChildren(children);
+            category.AddChild(children);
 
             Assert.Equal(childrenCount + 1, category.Children.Count());
         }

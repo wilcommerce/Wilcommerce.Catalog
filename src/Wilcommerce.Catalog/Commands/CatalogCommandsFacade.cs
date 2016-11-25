@@ -129,6 +129,223 @@ namespace Wilcommerce.Catalog.Commands
                 throw;
             }
         }
+
+        #endregion
+
+        #region Category Commands
+        public async Task CreateNewCategory(string code, string name, string url, string description, bool isVisible, DateTime? visibleFrom, DateTime? visibleTo)
+        {
+            try
+            {
+                var category = Category.Create(code, name, url);
+                if (!string.IsNullOrEmpty(description))
+                {
+                    category.ChangeDescription(description);
+                }
+
+                if (isVisible)
+                {
+                    if (visibleFrom == null)
+                    {
+                        category.SetAsVisible();
+                    }
+                    else if (visibleTo == null)
+                    {
+                        category.SetAsVisible((DateTime)visibleFrom);
+                    }
+                    else
+                    {
+                        category.SetAsVisible((DateTime)visibleFrom, (DateTime)visibleTo);
+                    }
+                }
+
+                Repository.Add(category);
+                await Repository.SaveChangesAsync();
+            }
+            catch 
+            {
+                throw;
+            }
+        }
+
+        public async Task SetCategoryAsVisible(Guid categoryId, DateTime? from, DateTime? to)
+        {
+            try
+            {
+                var category = await Repository.GetByKeyAsync<Category>(categoryId);
+                if (from == null)
+                {
+                    category.SetAsVisible();
+                }
+                else if (to == null)
+                {
+                    category.SetAsVisible((DateTime)from);
+                }
+                else
+                {
+                    category.SetAsVisible((DateTime)from, (DateTime)to);
+                }
+
+                await Repository.SaveChangesAsync();
+            }
+            catch 
+            {
+                throw;
+            }
+        }
+
+        public async Task AddCategoryChild(Guid categoryId, Guid childId)
+        {
+            try
+            {
+                var category = await Repository.GetByKeyAsync<Category>(categoryId);
+                var child = await Repository.GetByKeyAsync<Category>(childId);
+
+                category.AddChild(child);
+                await Repository.SaveChangesAsync();
+            }
+            catch 
+            {
+                throw;
+            }
+        }
+
+        public async Task ChangeCategoryName(Guid categoryId, string name)
+        {
+            try
+            {
+                var category = await Repository.GetByKeyAsync<Category>(categoryId);
+                category.ChangeName(name);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch 
+            {
+                throw;
+            }
+        }
+
+        public async Task ChangeCategoryCode(Guid categoryId, string code)
+        {
+            try
+            {
+                var category = await Repository.GetByKeyAsync<Category>(categoryId);
+                category.ChangeCode(code);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task ChangeCategoryDescription(Guid categoryId, string description)
+        {
+            try
+            {
+                var category = await Repository.GetByKeyAsync<Category>(categoryId);
+                category.ChangeDescription(description);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task ChangeCategoryUrl(Guid categoryId, string url)
+        {
+            try
+            {
+                var category = await Repository.GetByKeyAsync<Category>(categoryId);
+                category.ChangeUrl(url);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task SetParentForCategory(Guid categoryId, Guid parentId)
+        {
+            try
+            {
+                var category = await Repository.GetByKeyAsync<Category>(categoryId);
+                var parent = await Repository.GetByKeyAsync<Category>(parentId);
+                category.SetParentCategory(parent);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task DeleteCategory(Guid categoryId)
+        {
+            try
+            {
+                var category = await Repository.GetByKeyAsync<Category>(categoryId);
+                category.Delete();
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task RestoreCategory(Guid categoryId)
+        {
+            try
+            {
+                var category = await Repository.GetByKeyAsync<Category>(categoryId);
+                category.Restore();
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task RemoveChildForCategory(Guid categoryId, Guid childId)
+        {
+            try
+            {
+                var category = await Repository.GetByKeyAsync<Category>(categoryId);
+                category.RemoveChild(childId);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task RemoveParentForCategory(Guid categoryId)
+        {
+            try
+            {
+                var category = await Repository.GetByKeyAsync<Category>(categoryId);
+                category.RemoveParent();
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         #endregion
     }
 }

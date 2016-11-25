@@ -63,5 +63,31 @@ namespace Wilcommerce.Catalog.Commands
         /// <returns></returns>
         Task RestoreBrand(Guid brandId);
         #endregion
+
+        #region Category Commands
+        Task CreateNewCategory(string code, string name, string url, string description, bool isVisible, DateTime? visibleFrom, DateTime? visibleTo);
+
+        Task SetCategoryAsVisible(Guid categoryId, DateTime? from, DateTime? to);
+
+        Task AddCategoryChild(Guid categoryId, Guid childId);
+
+        Task ChangeCategoryName(Guid categoryId, string name);
+
+        Task ChangeCategoryCode(Guid categoryId, string code);
+
+        Task ChangeCategoryDescription(Guid categoryId, string description);
+
+        Task ChangeCategoryUrl(Guid categoryId, string url);
+
+        Task SetParentForCategory(Guid categoryId, Guid parentId);
+
+        Task DeleteCategory(Guid categoryId);
+
+        Task RestoreCategory(Guid categoryId);
+
+        Task RemoveChildForCategory(Guid categoryId, Guid childId);
+
+        Task RemoveParentForCategory(Guid categoryId);
+        #endregion
     }
 }

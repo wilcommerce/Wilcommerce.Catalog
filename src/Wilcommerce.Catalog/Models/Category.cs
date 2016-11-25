@@ -128,10 +128,10 @@ namespace Wilcommerce.Catalog.Models
         }
 
         /// <summary>
-        /// Add a children to the category
+        /// Add a child to the category
         /// </summary>
         /// <param name="child">The category children</param>
-        public virtual void AddChildren(Category child)
+        public virtual void AddChild(Category child)
         {
             if(child == null)
             {
@@ -240,6 +240,32 @@ namespace Wilcommerce.Catalog.Models
             }
 
             Deleted = false;
+        }
+
+        /// <summary>
+        /// Remove the child category
+        /// </summary>
+        /// <param name="childId">The id of the category to remove</param>
+        public virtual void RemoveChild(Guid childId)
+        {
+            var child = _Children.FirstOrDefault(c => c.Id == childId);
+            if (!_Children.Remove(child))
+            {
+                throw new InvalidOperationException("Cannot remove child");
+            }
+        }
+
+        /// <summary>
+        /// Remove the parent category
+        /// </summary>
+        public virtual void RemoveParent()
+        {
+            if (Parent == null)
+            {
+                throw new InvalidOperationException("Parent already empty");
+            }
+
+            Parent = null;
         }
 
         #endregion
