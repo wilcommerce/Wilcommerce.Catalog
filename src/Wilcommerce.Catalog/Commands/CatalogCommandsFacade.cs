@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Wilcommerce.Core.Common.Domain.Models;
 using Wilcommerce.Catalog.Repository;
 using Wilcommerce.Catalog.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Wilcommerce.Catalog.Commands
 {
@@ -345,7 +347,157 @@ namespace Wilcommerce.Catalog.Commands
                 throw;
             }
         }
+        #endregion
 
+        #region CustomAttribute Commands
+        public async Task CreateNewCustomAttribute(string name, string type, string description, string unitOfMeasure, IEnumerable<object> values)
+        {
+            try
+            {
+                var attribute = CustomAttribute.Create(name, type);
+                if (!string.IsNullOrEmpty(description))
+                {
+                    attribute.ChangeDescription(description);
+                }
+
+                if (!string.IsNullOrEmpty(unitOfMeasure))
+                {
+                    attribute.SetUnitOfMeasure(unitOfMeasure);
+                }
+
+                if(values != null && values.Count() > 0)
+                {
+                    values.ToList().ForEach(v => attribute.AddValue(v));
+                }
+
+                Repository.Add(attribute);
+                await Repository.SaveChangesAsync();
+            }
+            catch 
+            {
+                throw;
+            }
+        }
+
+        public async Task AddValueForAttribute(Guid attributeId, object value)
+        {
+            try
+            {
+                var attribute = await Repository.GetByKeyAsync<CustomAttribute>(attributeId);
+                attribute.AddValue(value);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch 
+            {
+                throw;
+            }
+        }
+
+        public async Task RemoveValueFromAttribute(Guid attributeId, object value)
+        {
+            try
+            {
+                var attribute = await Repository.GetByKeyAsync<CustomAttribute>(attributeId);
+                attribute.RemoveValue(value);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task ChangeAttributeName(Guid attributeId, string name)
+        {
+            try
+            {
+                var attribute = await Repository.GetByKeyAsync<CustomAttribute>(attributeId);
+                attribute.ChangeName(name);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task ChangeAttributeDescription(Guid attributeId, string description)
+        {
+            try
+            {
+                var attribute = await Repository.GetByKeyAsync<CustomAttribute>(attributeId);
+                attribute.ChangeDescription(description);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task SetAttributeUnitOfMeasure(Guid attributeId, string unitOfMeasure)
+        {
+            try
+            {
+                var attribute = await Repository.GetByKeyAsync<CustomAttribute>(attributeId);
+                attribute.SetUnitOfMeasure(unitOfMeasure);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task ChangeAttributeDataType(Guid attributeId, string dataType)
+        {
+            try
+            {
+                var attribute = await Repository.GetByKeyAsync<CustomAttribute>(attributeId);
+                attribute.ChangeDataType(dataType);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task DeleteCustomAttribute(Guid attributeId)
+        {
+            try
+            {
+                var attribute = await Repository.GetByKeyAsync<CustomAttribute>(attributeId);
+                attribute.Delete();
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task RestoreCustomAttribute(Guid attributeId)
+        {
+            try
+            {
+                var attribute = await Repository.GetByKeyAsync<CustomAttribute>(attributeId);
+                attribute.Restore();
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
         #endregion
     }
 }

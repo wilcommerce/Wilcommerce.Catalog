@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Wilcommerce.Core.Common.Domain.Models;
 
@@ -163,6 +164,26 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="categoryId">The category id</param>
         /// <returns></returns>
         Task RemoveParentForCategory(Guid categoryId);
+        #endregion
+
+        #region CustomAttribute Commands
+        Task CreateNewCustomAttribute(string name, string type, string description, string unitOfMeasure, IEnumerable<object> values);
+
+        Task AddValueForAttribute(Guid attributeId, object value);
+
+        Task RemoveValueFromAttribute(Guid attributeId, object value);
+
+        Task ChangeAttributeName(Guid attributeId, string name);
+
+        Task ChangeAttributeDescription(Guid attributeId, string description);
+
+        Task SetAttributeUnitOfMeasure(Guid attributeId, string unitOfMeasure);
+
+        Task ChangeAttributeDataType(Guid attributeId, string dataType);
+
+        Task DeleteCustomAttribute(Guid attributeId);
+
+        Task RestoreCustomAttribute(Guid attributeId);
         #endregion
     }
 }
