@@ -167,22 +167,77 @@ namespace Wilcommerce.Catalog.Commands
         #endregion
 
         #region CustomAttribute Commands
+        /// <summary>
+        /// Create a new custom attribute
+        /// </summary>
+        /// <param name="name">The custom attribute's name</param>
+        /// <param name="type">The data type of the custom attribute</param>
+        /// <param name="description">The custom attribute's description</param>
+        /// <param name="unitOfMeasure">The unit of measure of the custom attribute</param>
+        /// <param name="values">The available values for the custom attribute</param>
+        /// <returns></returns>
         Task CreateNewCustomAttribute(string name, string type, string description, string unitOfMeasure, IEnumerable<object> values);
 
+        /// <summary>
+        /// Add the value for the custom attribute
+        /// </summary>
+        /// <param name="attributeId">The custom attribute id</param>
+        /// <param name="value">The value to add</param>
+        /// <returns></returns>
         Task AddValueForAttribute(Guid attributeId, object value);
 
+        /// <summary>
+        /// Remove the value from the custom attribute
+        /// </summary>
+        /// <param name="attributeId">The custom attribute id</param>
+        /// <param name="value">The value to remove</param>
+        /// <returns></returns>
         Task RemoveValueFromAttribute(Guid attributeId, object value);
 
+        /// <summary>
+        /// Change the attribute's name
+        /// </summary>
+        /// <param name="attributeId">The custom attribute id</param>
+        /// <param name="name">The new name</param>
+        /// <returns></returns>
         Task ChangeAttributeName(Guid attributeId, string name);
 
+        /// <summary>
+        /// Change the attribute description
+        /// </summary>
+        /// <param name="attributeId">The custom attribute id</param>
+        /// <param name="description">The new description</param>
+        /// <returns></returns>
         Task ChangeAttributeDescription(Guid attributeId, string description);
 
+        /// <summary>
+        /// Set the attribute unit of measure
+        /// </summary>
+        /// <param name="attributeId">The custom attribute id</param>
+        /// <param name="unitOfMeasure">The attribute's unit of measure</param>
+        /// <returns></returns>
         Task SetAttributeUnitOfMeasure(Guid attributeId, string unitOfMeasure);
 
+        /// <summary>
+        /// Change the attribute data type
+        /// </summary>
+        /// <param name="attributeId">The custom attribute id</param>
+        /// <param name="dataType">The new data type</param>
+        /// <returns></returns>
         Task ChangeAttributeDataType(Guid attributeId, string dataType);
 
+        /// <summary>
+        /// Delete the custom attribute
+        /// </summary>
+        /// <param name="attributeId">The custom attribute id</param>
+        /// <returns></returns>
         Task DeleteCustomAttribute(Guid attributeId);
 
+        /// <summary>
+        /// Restore the custom attribute
+        /// </summary>
+        /// <param name="attributeId">The custom attribute id</param>
+        /// <returns></returns>
         Task RestoreCustomAttribute(Guid attributeId);
         #endregion
     }
