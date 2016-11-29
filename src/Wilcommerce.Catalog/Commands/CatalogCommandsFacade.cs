@@ -499,5 +499,484 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
         #endregion
+
+        #region Product Commands
+        public async Task CreateNewProduct(string ean, string sku, string name, string url, Currency price, string description, int unitInStock, bool isOnSale, DateTime? onSaleFrom, DateTime? onSaleTo)
+        {
+            try
+            {
+                var product = Product.Create(ean, sku, name, url);
+                if (price != null)
+                {
+                    product.SetPrice(price);
+                }
+
+                if (!string.IsNullOrEmpty(description))
+                {
+                    product.ChangeDescription(description);
+                }
+
+                if (unitInStock > 0)
+                {
+                    product.SetUnitInStock(unitInStock);
+                }
+
+                if (isOnSale)
+                {
+                    if (onSaleFrom == null)
+                    {
+                        product.SetOnSale();
+                    }
+                    else if (onSaleTo == null)
+                    {
+                        product.SetOnSale((DateTime)onSaleFrom);
+                    }
+                    else
+                    {
+                        product.SetOnSale((DateTime)onSaleFrom, (DateTime)onSaleTo);
+                    }
+                }
+
+                Repository.Add(product);
+                await Repository.SaveChangesAsync();
+            }
+            catch 
+            {
+                throw;
+            }
+        }
+
+        public async Task DeleteProduct(Guid productId)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                product.Delete();
+
+                await Repository.SaveChangesAsync();
+            }
+            catch 
+            {
+                throw;
+            }
+        }
+
+        public async Task RestoreProduct(Guid productId)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                product.Restore();
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task SetUnitInStockForProduct(Guid productId, int unitInStock)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                product.SetUnitInStock(unitInStock);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task AddUnitInStockToProduct(Guid productId, int unitToAdd)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                product.AddUnitInStock(unitToAdd);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task RemoveUnitInStockFromProduct(Guid productId, int unitToRemove)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                product.RemoveUnitFromStock(unitToRemove);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task ChangeProductEanCode(Guid productId, string ean)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                product.ChangeEanCode(ean);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task ChangeProductSku(Guid productId, string sku)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                product.ChangeSku(sku);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task ChangeProductName(Guid productId, string name)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                product.ChangeName(name);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task ChangeProductDescription(Guid productId, string description)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                product.ChangeDescription(description);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task ChangeProductUrl(Guid productId, string url)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                product.ChangeUrl(url);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task SetProductPrice(Guid productId, Currency price)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                product.SetPrice(price);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task SetProductOnSale(Guid productId, DateTime? from, DateTime? to)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                if (from == null)
+                {
+                    product.SetOnSale();
+                }
+                else if (to == null)
+                {
+                    product.SetOnSale((DateTime)from);
+                }
+                else
+                {
+                    product.SetOnSale((DateTime)from, (DateTime)to);
+                }
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task RemoveProductFromSale(Guid productId)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                product.RemoveFromSale();
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task SetProductVendor(Guid productId, Guid brandId)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                var brand = await Repository.GetByKeyAsync<Brand>(brandId);
+
+                product.SetVendor(brand);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task AddCategoryToProduct(Guid productId, Guid categoryId)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                var category = await Repository.GetByKeyAsync<Category>(categoryId);
+
+                product.AddCategory(category);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task AddMainCategoryToProduct(Guid productId, Guid categoryId)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                var category = await Repository.GetByKeyAsync<Category>(categoryId);
+
+                product.AddMainCategory(category);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task AddProductVariant(Guid productId, Guid variantId)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                var variant = await Repository.GetByKeyAsync<Product>(variantId);
+
+                product.AddVariant(variant);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task RemoveProductVariant(Guid productId, Guid variantId)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                product.RemoveVariant(variantId);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task AddAttributeToProduct(Guid productId, Guid attributeId, object value)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                var attribute = await Repository.GetByKeyAsync<CustomAttribute>(attributeId);
+
+                product.AddAttribute(attribute, value);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task RemoveProductAttribute(Guid productId, Guid attributeId)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                product.DeleteAttribute(attributeId);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task AddProductTierPrice(Guid productId, int fromQuantity, int toQuantity, Currency price)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                if (!product.TierPriceEnabled)
+                {
+                    product.EnableTierPrices();
+                }
+
+                product.AddTierPrice(fromQuantity, toQuantity, price);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task RemoveTierPriceFromProduct(Guid productId, Guid tierPriceId)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                product.DeleteTierPrice(tierPriceId);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task AddProductReview(Guid productId, string name, int rating, string comment)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                product.AddReview(name, rating, comment);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task ApproveProductReview(Guid productId, Guid reviewId)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                product.ApproveReview(reviewId);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task RemoveProductReview(Guid productId, Guid reviewId)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                product.RemoveReviewApproval(reviewId);
+                product.DeleteReview(reviewId);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task AddProductImage(Guid productId, string path, string name, string originalName, bool isMain, DateTime uploadedOn)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                product.AddImage(path, name, originalName, isMain, uploadedOn);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task RemoveProductImage(Guid productId, Guid imageId)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                product.DeleteImage(imageId);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+        #endregion
     }
 }

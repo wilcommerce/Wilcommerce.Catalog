@@ -240,5 +240,63 @@ namespace Wilcommerce.Catalog.Commands
         /// <returns></returns>
         Task RestoreCustomAttribute(Guid attributeId);
         #endregion
+
+        #region Product Commands
+        Task CreateNewProduct(string ean, string sku, string name, string url, Currency price, string description, int unitInStock, bool isOnSale, DateTime? onSaleFrom, DateTime? onSaleTo);
+
+        Task DeleteProduct(Guid productId);
+
+        Task RestoreProduct(Guid productId);
+
+        Task SetUnitInStockForProduct(Guid productId, int unitInStock);
+
+        Task AddUnitInStockToProduct(Guid productId, int unitToAdd);
+
+        Task RemoveUnitInStockFromProduct(Guid productId, int unitToRemove);
+
+        Task ChangeProductEanCode(Guid productId, string ean);
+
+        Task ChangeProductSku(Guid productId, string sku);
+
+        Task ChangeProductName(Guid productId, string name);
+
+        Task ChangeProductDescription(Guid productId, string description);
+
+        Task ChangeProductUrl(Guid productId, string url);
+
+        Task SetProductPrice(Guid productId, Currency price);
+
+        Task SetProductOnSale(Guid productId, DateTime? from, DateTime? to);
+
+        Task RemoveProductFromSale(Guid productId);
+
+        Task SetProductVendor(Guid productId, Guid brandId);
+
+        Task AddCategoryToProduct(Guid productId, Guid categoryId);
+
+        Task AddMainCategoryToProduct(Guid productId, Guid categoryId);
+
+        Task AddProductVariant(Guid productId, Guid variantId);
+
+        Task RemoveProductVariant(Guid productId, Guid variantId);
+
+        Task AddAttributeToProduct(Guid productId, Guid attributeId, object value);
+
+        Task RemoveProductAttribute(Guid productId, Guid attributeId);
+
+        Task AddProductTierPrice(Guid productId, int fromQuantity, int toQuantity, Currency price);
+
+        Task RemoveTierPriceFromProduct(Guid productId, Guid tierPriceId);
+
+        Task AddProductReview(Guid productId, string name, int rating, string comment);
+
+        Task ApproveProductReview(Guid productId, Guid reviewId);
+
+        Task RemoveProductReview(Guid productId, Guid reviewId);
+
+        Task AddProductImage(Guid productId, string path, string name, string originalName, bool isMain, DateTime uploadedOn);
+
+        Task RemoveProductImage(Guid productId, Guid imageId);
+        #endregion
     }
 }
