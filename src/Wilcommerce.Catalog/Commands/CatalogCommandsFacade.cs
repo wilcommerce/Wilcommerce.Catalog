@@ -63,7 +63,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
-        public async Task CreateNewBrand(string name, string url, string description, Image logo)
+        public async Task<Guid> CreateNewBrand(string name, string url, string description, Image logo)
         {
             try
             {
@@ -80,6 +80,8 @@ namespace Wilcommerce.Catalog.Commands
 
                 Repository.Add(brand);
                 await Repository.SaveChangesAsync();
+
+                return brand.Id;
             }
             catch
             {
@@ -135,7 +137,7 @@ namespace Wilcommerce.Catalog.Commands
         #endregion
 
         #region Category Commands
-        public async Task CreateNewCategory(string code, string name, string url, string description, bool isVisible, DateTime? visibleFrom, DateTime? visibleTo)
+        public async Task<Guid> CreateNewCategory(string code, string name, string url, string description, bool isVisible, DateTime? visibleFrom, DateTime? visibleTo)
         {
             try
             {
@@ -163,6 +165,8 @@ namespace Wilcommerce.Catalog.Commands
 
                 Repository.Add(category);
                 await Repository.SaveChangesAsync();
+
+                return category.Id;
             }
             catch 
             {
@@ -350,7 +354,7 @@ namespace Wilcommerce.Catalog.Commands
         #endregion
 
         #region CustomAttribute Commands
-        public async Task CreateNewCustomAttribute(string name, string type, string description, string unitOfMeasure, IEnumerable<object> values)
+        public async Task<Guid> CreateNewCustomAttribute(string name, string type, string description, string unitOfMeasure, IEnumerable<object> values)
         {
             try
             {
@@ -372,6 +376,8 @@ namespace Wilcommerce.Catalog.Commands
 
                 Repository.Add(attribute);
                 await Repository.SaveChangesAsync();
+
+                return attribute.Id;
             }
             catch 
             {
@@ -501,7 +507,7 @@ namespace Wilcommerce.Catalog.Commands
         #endregion
 
         #region Product Commands
-        public async Task CreateNewProduct(string ean, string sku, string name, string url, Currency price, string description, int unitInStock, bool isOnSale, DateTime? onSaleFrom, DateTime? onSaleTo)
+        public async Task<Guid> CreateNewProduct(string ean, string sku, string name, string url, Currency price, string description, int unitInStock, bool isOnSale, DateTime? onSaleFrom, DateTime? onSaleTo)
         {
             try
             {
@@ -539,6 +545,8 @@ namespace Wilcommerce.Catalog.Commands
 
                 Repository.Add(product);
                 await Repository.SaveChangesAsync();
+
+                return product.Id;
             }
             catch 
             {
