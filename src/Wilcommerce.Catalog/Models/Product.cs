@@ -467,20 +467,49 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Add a product variant
         /// </summary>
-        /// <param name="product">The variant to add</param>
-        public virtual void AddVariant(Product product)
+        /// <param name="name">The variant name</param>
+        /// <param name="ean">The EAN code</param>
+        /// <param name="sku">The SKU code</param>
+        /// <param name="price">The variant price</param>
+        public virtual void AddVariant(string name, string ean, string sku, Currency price)
         {
-            if (product == null)
+            if (string.IsNullOrEmpty(name))
             {
-                throw new ArgumentNullException("product");
+                throw new ArgumentNullException("name");
             }
 
-            if (_Variants.Contains(product))
+            if (string.IsNullOrEmpty(ean))
             {
-                throw new ArgumentException("The product is already in collection");
+                throw new ArgumentNullException("ean");
             }
 
-            _Variants.Add(product);
+            if (string.IsNullOrEmpty(sku))
+            {
+                throw new ArgumentNullException("sku");
+            }
+
+            if (price == null)
+            {
+                throw new ArgumentNullException("price");
+            }
+
+            if (price.Amount < 0)
+            {
+                throw new ArgumentException("Price amount cannot be less than zero");
+            }
+
+            if (_Variants.Any(v => v.Name == name && v.EanCode == ean && v.Sku == sku))
+            {
+                throw new InvalidOperationException("The variant is already in collection");
+            }
+
+            _Variants.Add(new Product
+            {
+                Name = name,
+                EanCode = ean,
+                Sku = sku,
+                Price = price
+            });
         }
 
         /// <summary>

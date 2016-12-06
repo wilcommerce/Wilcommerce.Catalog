@@ -373,8 +373,10 @@ namespace Wilcommerce.Catalog.Test.Models
             Assert.Equal(categoryNumber + 1, product.Categories.Count());
         }
 
-        [Fact]
-        public void Product_AddVariant_Throws_ArgumentNullException_If_Product_IsNull()
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public void Product_AddVariant_Should_Throw_ArgumentNullException_If_Name_IsEmpty(string value)
         {
             var product = Product.Create(
                 "ean",
@@ -383,12 +385,50 @@ namespace Wilcommerce.Catalog.Test.Models
                 "my-product"
                 );
 
-            var ex = Assert.Throws<ArgumentNullException>(() => product.AddVariant(null));
-            Assert.Equal("product", ex.ParamName);
+            var price = new Currency { Code = "EUR", Amount = 10 };
+            var ex = Assert.Throws<ArgumentNullException>(() => product.AddVariant(value, "ean", "sku", price));
+
+            Assert.Equal("name", ex.ParamName);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public void Product_AddVariant_Should_Throw_ArgumentNullException_If_Ean_IsEmpty(string value)
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            var price = new Currency { Code = "EUR", Amount = 10 };
+            var ex = Assert.Throws<ArgumentNullException>(() => product.AddVariant("name", value, "sku", price));
+
+            Assert.Equal("ean", ex.ParamName);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public void Product_AddVariant_Should_Throw_ArgumentNullException_If_Sku_IsEmpty(string value)
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            var price = new Currency { Code = "EUR", Amount = 10 };
+            var ex = Assert.Throws<ArgumentNullException>(() => product.AddVariant("name", "ean", value, price));
+
+            Assert.Equal("sku", ex.ParamName);
         }
 
         [Fact]
-        public void Product_AddVariant_Throws_ArgumentException_If_Product_Is_Already_In_Collection()
+        public void Product_AddVariant_Should_Throw_ArgumentNullException_If_Price_IsNull()
         {
             var product = Product.Create(
                 "ean",
@@ -397,11 +437,41 @@ namespace Wilcommerce.Catalog.Test.Models
                 "my-product"
                 );
 
-            var product2 = Product.Create("ean2", "sku2", "product2", "my-product-2");
-            product.AddVariant(product2);
+            var ex = Assert.Throws<ArgumentNullException>(() => product.AddVariant("name", "ean", "sku", null));
+            Assert.Equal("price", ex.ParamName);
+        }
 
-            var ex = Assert.Throws<ArgumentException>(() => product.AddVariant(product2));
-            Assert.Equal("The product is already in collection", ex.Message);
+        [Fact]
+        public void Product_AddVariant_Should_Throw_ArgumentException_If_PriceAmount_IsLessThanZero()
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            var price = new Currency { Code = "EUR", Amount = -10 };
+            var ex = Assert.Throws<ArgumentException>(() => product.AddVariant("name", "ean", "sku", price));
+
+            Assert.Equal("Price amount cannot be less than zero", ex.Message);
+        }
+
+        [Fact]
+        public void Product_AddVariant_Should_Throw_InvalidOperationException_If_Variant_Is_Already_InCollection()
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            var price = new Currency { Code = "EUR", Amount = 10 };
+            product.AddVariant("name", "ean", "sku", price);
+            var ex = Assert.Throws<InvalidOperationException>(() => product.AddVariant("name", "ean", "sku", price));
+
+            Assert.Equal("The variant is already in collection", ex.Message);
         }
 
         [Fact]
@@ -416,9 +486,7 @@ namespace Wilcommerce.Catalog.Test.Models
 
             int variantNumber = product.Variants.Count();
 
-            var product2 = Product.Create("ean2", "sku2", "product2", "my-product-2");
-            product.AddVariant(product2);
-
+            product.AddVariant("product2", "ean2", "sku2", new Currency { Code = "EUR", Amount = 10 });
             Assert.Equal(variantNumber + 1, product.Variants.Count());
         }
 
@@ -823,7 +891,13 @@ namespace Wilcommerce.Catalog.Test.Models
                 "my-product"
                 );
 
-            product.AddVariant(Product.Create("123", "123", "variant", "variant"));
+            var price = new Currency
+            {
+                Code = "EUR",
+                Amount = 10
+            };
+
+            product.AddVariant("name", "ean", "sku", price);
             var variant = product.Variants.First();
 
             product.RemoveVariant(variant.Id);

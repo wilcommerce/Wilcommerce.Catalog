@@ -811,14 +811,12 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
-        public async Task AddProductVariant(Guid productId, Guid variantId)
+        public async Task AddProductVariant(Guid productId, string name, string ean, string sku, Currency price)
         {
             try
             {
                 var product = await Repository.GetByKeyAsync<Product>(productId);
-                var variant = await Repository.GetByKeyAsync<Product>(variantId);
-
-                product.AddVariant(variant);
+                product.AddVariant(name, ean, sku, price);
 
                 await Repository.SaveChangesAsync();
             }

@@ -388,9 +388,12 @@ namespace Wilcommerce.Catalog.Commands
         /// Add a variant to the product
         /// </summary>
         /// <param name="productId">The product id</param>
-        /// <param name="variantId">The variant id</param>
+        /// <param name="name">The variant name</param>
+        /// <param name="ean">The variant EAN code</param>
+        /// <param name="sku">The variant SKU code</param>
+        /// <param name="price">The variant price</param>
         /// <returns></returns>
-        Task AddProductVariant(Guid productId, Guid variantId);
+        Task AddProductVariant(Guid productId, string name, string ean, string sku, Currency price);
 
         /// <summary>
         /// Remove the variant from the product
