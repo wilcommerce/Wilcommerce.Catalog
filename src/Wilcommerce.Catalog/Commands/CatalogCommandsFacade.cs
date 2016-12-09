@@ -983,6 +983,112 @@ namespace Wilcommerce.Catalog.Commands
                 throw;
             }
         }
+
+        #endregion
+
+        #region CatalogSettings Commands
+
+        public async Task<Guid> CreateCatalogSettings(int categoriesPerPage, int productsPerPage, CatalogSettings.ViewType categoriesViewType, CatalogSettings.ViewType productsViewType, bool showPrices, bool allowReviews, int reviewsPerPage)
+        {
+            try
+            {
+                var settings = CatalogSettings.Create(categoriesPerPage, productsPerPage, categoriesViewType, productsViewType);
+                settings.ShowPrices(showPrices);
+                settings.AllowProductReviews(allowReviews);
+
+                if (settings.ProductReviewsAllowed)
+                {
+                    settings.SetProductReviewsPerPage(reviewsPerPage);
+                }
+
+                Repository.Add(settings);
+                await Repository.SaveChangesAsync();
+
+                return settings.Id;
+            }
+            catch 
+            {
+                throw;
+            }
+        }
+
+        public async Task ShowPrices(Guid settingsId, bool showPrices)
+        {
+            try
+            {
+                var settings = await Repository.GetByKeyAsync<CatalogSettings>(settingsId);
+                settings.ShowPrices(showPrices);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch 
+            {
+                throw;
+            }
+        }
+
+        public async Task AllowProductReviews(Guid settingsId, bool allowReviews)
+        {
+            try
+            {
+                var settings = await Repository.GetByKeyAsync<CatalogSettings>(settingsId);
+                settings.AllowProductReviews(allowReviews);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch 
+            {
+                throw;
+            }
+        }
+
+        public async Task SetProductReviewsPerPage(Guid settingsId, int reviewsPerPage)
+        {
+            try
+            {
+                var settings = await Repository.GetByKeyAsync<CatalogSettings>(settingsId);
+                settings.SetProductReviewsPerPage(reviewsPerPage);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch 
+            {
+                throw;
+            }
+        }
+
+        public async Task SetCategoriesView(Guid settingsId, CatalogSettings.ViewType viewType, int categoriesPerPage)
+        {
+            try
+            {
+                var settings = await Repository.GetByKeyAsync<CatalogSettings>(settingsId);
+                settings.SetCategoriesViewType(viewType);
+                settings.SetCategoriesPerPage(categoriesPerPage);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch 
+            {
+                throw;
+            }
+        }
+
+        public async Task SetProductsView(Guid settingsId, CatalogSettings.ViewType viewType, int productsPerPage)
+        {
+            try
+            {
+                var settings = await Repository.GetByKeyAsync<CatalogSettings>(settingsId);
+                settings.SetProductsViewType(viewType);
+                settings.SetProductsPerPage(productsPerPage);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         #endregion
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Wilcommerce.Catalog.Models;
 using Wilcommerce.Core.Common.Domain.Models;
 
 namespace Wilcommerce.Catalog.Commands
@@ -483,6 +484,20 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="imageId">The image id</param>
         /// <returns></returns>
         Task RemoveProductImage(Guid productId, Guid imageId);
+        #endregion
+
+        #region CatalogSettings Commands
+        Task<Guid> CreateCatalogSettings(int categoriesPerPage, int productsPerPage, CatalogSettings.ViewType categoriesViewType, CatalogSettings.ViewType productsViewType, bool showPrices, bool allowReviews, int reviewsPerPage);
+
+        Task ShowPrices(Guid settingsId, bool showPrices);
+
+        Task AllowProductReviews(Guid settingsId, bool allowReviews);
+
+        Task SetProductReviewsPerPage(Guid settingsId, int reviewsPerPage);
+
+        Task SetCategoriesView(Guid settingsId, CatalogSettings.ViewType viewType, int categoriesPerPage);
+
+        Task SetProductsView(Guid settingsId, CatalogSettings.ViewType viewType, int productsPerPage);
         #endregion
     }
 }
