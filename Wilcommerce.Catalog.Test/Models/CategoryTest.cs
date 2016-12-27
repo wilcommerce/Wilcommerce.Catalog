@@ -240,5 +240,18 @@ namespace Wilcommerce.Catalog.Test.Models
             var ex = Assert.Throws<InvalidOperationException>(() => category.Restore());
             Assert.Equal("The category is not deleted", ex.Message);
         }
+
+        [Fact]
+        public void SetSeoData_Should_Throw_ArgumentNullException_If_Seo_IsNull()
+        {
+            var category = Category.Create(
+                "TEST1",
+                "Test Category",
+                "test-category"
+                );
+
+            var ex = Assert.Throws<ArgumentNullException>(() => category.SetSeoData(null));
+            Assert.Equal("seo", ex.ParamName);
+        }
     }
 }

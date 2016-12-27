@@ -173,6 +173,14 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="categoryId">The category id</param>
         /// <returns></returns>
         Task RemoveParentForCategory(Guid categoryId);
+
+        /// <summary>
+        /// Set the seo information for the specified category
+        /// </summary>
+        /// <param name="categoryId">The category id</param>
+        /// <param name="seo">The seo information</param>
+        /// <returns></returns>
+        Task SetCategorySeoData(Guid categoryId, SeoData seo);
         #endregion
 
         #region CustomAttribute Commands

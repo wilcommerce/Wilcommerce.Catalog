@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Wilcommerce.Core.Common.Domain.Models;
 using Wilcommerce.Core.Infrastructure;
 
 namespace Wilcommerce.Catalog.Models
@@ -88,6 +89,11 @@ namespace Wilcommerce.Catalog.Models
         /// Get the list of products associated to the category
         /// </summary>
         public IEnumerable<Product> Products => _Products.Select(p => p.Product);
+
+        /// <summary>
+        /// Get or set the SEO information
+        /// </summary>
+        public SeoData Seo { get; protected set; }
 
         #endregion
 
@@ -266,6 +272,20 @@ namespace Wilcommerce.Catalog.Models
             }
 
             Parent = null;
+        }
+
+        /// <summary>
+        /// Set the seo information for the category
+        /// </summary>
+        /// <param name="seo">The seo information</param>
+        public virtual void SetSeoData(SeoData seo)
+        {
+            if (seo == null)
+            {
+                throw new ArgumentNullException("seo");
+            }
+
+            Seo = seo;
         }
 
         #endregion

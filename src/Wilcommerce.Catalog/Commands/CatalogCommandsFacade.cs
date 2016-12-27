@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Wilcommerce.Core.Infrastructure;
 using Wilcommerce.Catalog.Events.Brand;
+using Wilcommerce.Catalog.Events.Category;
 
 namespace Wilcommerce.Catalog.Commands
 {
@@ -215,10 +216,16 @@ namespace Wilcommerce.Catalog.Commands
                 Repository.Add(category);
                 await Repository.SaveChangesAsync();
 
+                var @event = new CategoryCreatedEvent(category.Id, name, code);
+                EventBus.RaiseEvent(@event);
+
                 return category.Id;
             }
-            catch 
+            catch (Exception ex)
             {
+                var @event = new CategoryNotCreatedEvent(name, code, ex.Message);
+                EventBus.RaiseEvent(@event);
+
                 throw;
             }
         }
@@ -396,6 +403,21 @@ namespace Wilcommerce.Catalog.Commands
                 await Repository.SaveChangesAsync();
             }
             catch
+            {
+                throw;
+            }
+        }
+
+        public async Task SetCategorySeoData(Guid categoryId, SeoData seo)
+        {
+            try
+            {
+                var category = await Repository.GetByKeyAsync<Category>(categoryId);
+                category.SetSeoData(seo);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch 
             {
                 throw;
             }
