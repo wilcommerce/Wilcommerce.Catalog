@@ -46,7 +46,12 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Get or set the brand logo
         /// </summary>
-        public Image Logo { get; protected set; }
+        public virtual Image Logo { get; protected set; }
+
+        /// <summary>
+        /// Get or set the seo data for the brand
+        /// </summary>
+        public virtual SeoData Seo { get; protected set; }
 
         /// <summary>
         /// Get or set the list of products associated to the brand
@@ -115,6 +120,20 @@ namespace Wilcommerce.Catalog.Models
             }
 
             Logo = logo;
+        }
+
+        /// <summary>
+        /// Set the brand seo data
+        /// </summary>
+        /// <param name="seo">The seo data</param>
+        public virtual void SetSeoData(SeoData seo)
+        {
+            if (seo == null)
+            {
+                throw new ArgumentNullException("seo");
+            }
+
+            Seo = seo;
         }
 
         /// <summary>

@@ -1,20 +1,24 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Wilcommerce.Core.Common.Domain.Models;
-using Wilcommerce.Catalog.Repository;
 using Wilcommerce.Catalog.Models;
 using System.Collections.Generic;
 using System.Linq;
+using Wilcommerce.Core.Infrastructure;
+using Wilcommerce.Catalog.Events.Brand;
 
 namespace Wilcommerce.Catalog.Commands
 {
     public class CatalogCommandsFacade : ICatalogCommandsFacade
     {
-        public IRepository Repository { get; }
+        public Repository.IRepository Repository { get; }
 
-        public CatalogCommandsFacade(IRepository repository)
+        public IEventBus EventBus { get; }
+
+        public CatalogCommandsFacade(Repository.IRepository repository, IEventBus eventBus)
         {
             Repository = repository;
+            EventBus = eventBus;
         }
 
         #region Brand Commands
@@ -26,9 +30,15 @@ namespace Wilcommerce.Catalog.Commands
                 brand.ChangeDescription(description);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new BrandDescriptionChangedEvent(brandId, description);
+                EventBus.RaiseEvent(@event);
             }
-            catch 
+            catch (Exception ex)
             {
+                var @event = new BrandDescriptionNotChangedEvent(brandId, description, ex.Message);
+                EventBus.RaiseEvent(@event);
+
                 throw;
             }
         }
@@ -41,9 +51,15 @@ namespace Wilcommerce.Catalog.Commands
                 brand.ChangeName(name);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new BrandNameChangedEvent(brandId, name);
+                EventBus.RaiseEvent(@event);
             }
-            catch 
+            catch (Exception ex)
             {
+                var @event = new BrandNameNotChangedEvent(brandId, name, ex.Message);
+                EventBus.RaiseEvent(@event);
+
                 throw;
             }
         }
@@ -56,9 +72,15 @@ namespace Wilcommerce.Catalog.Commands
                 brand.ChangeUrl(url);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new BrandUrlChangedEvent(brandId, url);
+                EventBus.RaiseEvent(@event);
             }
-            catch
+            catch (Exception ex)
             {
+                var @event = new BrandUrlNotChangedEvent(brandId, url, ex.Message);
+                EventBus.RaiseEvent(@event);
+
                 throw;
             }
         }
@@ -81,10 +103,16 @@ namespace Wilcommerce.Catalog.Commands
                 Repository.Add(brand);
                 await Repository.SaveChangesAsync();
 
+                var @event = new BrandCreatedEvent(brand.Id, brand.Name);
+                EventBus.RaiseEvent(@event);
+
                 return brand.Id;
             }
-            catch
+            catch (Exception ex)
             {
+                var @event = new BrandNotCreatedEvent(name, ex.Message);
+                EventBus.RaiseEvent(@event);
+
                 throw;
             }
         }
@@ -97,6 +125,9 @@ namespace Wilcommerce.Catalog.Commands
                 brand.Delete();
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new BrandDeletedEvent(brandId);
+                EventBus.RaiseEvent(@event);
             }
             catch 
             {
@@ -112,6 +143,9 @@ namespace Wilcommerce.Catalog.Commands
                 brand.Restore();
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new BrandRestoredEvent(brandId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -125,6 +159,21 @@ namespace Wilcommerce.Catalog.Commands
             {
                 var brand = await Repository.GetByKeyAsync<Brand>(brandId);
                 brand.SetLogo(logo);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch 
+            {
+                throw;
+            }
+        }
+
+        public async Task SetBrandSeoData(Guid brandId, SeoData seo)
+        {
+            try
+            {
+                var brand = await Repository.GetByKeyAsync<Brand>(brandId);
+                brand.SetSeoData(seo);
 
                 await Repository.SaveChangesAsync();
             }

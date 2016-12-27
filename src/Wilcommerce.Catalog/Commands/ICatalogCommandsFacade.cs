@@ -64,6 +64,14 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="brandId">The brand's id</param>
         /// <returns></returns>
         Task RestoreBrand(Guid brandId);
+
+        /// <summary>
+        /// Set the brand seo data
+        /// </summary>
+        /// <param name="brandId">The brand's id</param>
+        /// <param name="seo">The seo data</param>
+        /// <returns></returns>
+        Task SetBrandSeoData(Guid brandId, SeoData seo);
         #endregion
 
         #region Category Commands
