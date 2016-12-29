@@ -4,13 +4,9 @@ namespace Wilcommerce.Catalog.Events.Brand.Handlers
 {
     public class BrandEventHandler : 
         IHandleEvent<BrandCreatedEvent>,
-        IHandleEvent<BrandNotCreatedEvent>,
         IHandleEvent<BrandNameChangedEvent>,
-        IHandleEvent<BrandNameNotChangedEvent>,
         IHandleEvent<BrandUrlChangedEvent>,
-        IHandleEvent<BrandUrlNotChangedEvent>,
         IHandleEvent<BrandDescriptionChangedEvent>,
-        IHandleEvent<BrandDescriptionNotChangedEvent>,
         IHandleEvent<BrandDeletedEvent>,
         IHandleEvent<BrandRestoredEvent>
     {
@@ -33,31 +29,7 @@ namespace Wilcommerce.Catalog.Events.Brand.Handlers
             }
         }
 
-        public void Handle(BrandNotCreatedEvent @event)
-        {
-            try
-            {
-                EventStore.Save(@event);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
         public void Handle(BrandNameChangedEvent @event)
-        {
-            try
-            {
-                EventStore.Save(@event);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        public void Handle(BrandNameNotChangedEvent @event)
         {
             try
             {
@@ -81,31 +53,7 @@ namespace Wilcommerce.Catalog.Events.Brand.Handlers
             }
         }
 
-        public void Handle(BrandUrlNotChangedEvent @event)
-        {
-            try
-            {
-                EventStore.Save(@event);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
         public void Handle(BrandDescriptionChangedEvent @event)
-        {
-            try
-            {
-                EventStore.Save(@event);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        public void Handle(BrandDescriptionNotChangedEvent @event)
         {
             try
             {

@@ -35,11 +35,8 @@ namespace Wilcommerce.Catalog.Commands
                 var @event = new BrandDescriptionChangedEvent(brandId, description);
                 EventBus.RaiseEvent(@event);
             }
-            catch (Exception ex)
+            catch 
             {
-                var @event = new BrandDescriptionNotChangedEvent(brandId, description, ex.Message);
-                EventBus.RaiseEvent(@event);
-
                 throw;
             }
         }
@@ -56,11 +53,8 @@ namespace Wilcommerce.Catalog.Commands
                 var @event = new BrandNameChangedEvent(brandId, name);
                 EventBus.RaiseEvent(@event);
             }
-            catch (Exception ex)
+            catch 
             {
-                var @event = new BrandNameNotChangedEvent(brandId, name, ex.Message);
-                EventBus.RaiseEvent(@event);
-
                 throw;
             }
         }
@@ -77,11 +71,8 @@ namespace Wilcommerce.Catalog.Commands
                 var @event = new BrandUrlChangedEvent(brandId, url);
                 EventBus.RaiseEvent(@event);
             }
-            catch (Exception ex)
+            catch 
             {
-                var @event = new BrandUrlNotChangedEvent(brandId, url, ex.Message);
-                EventBus.RaiseEvent(@event);
-
                 throw;
             }
         }
@@ -109,11 +100,8 @@ namespace Wilcommerce.Catalog.Commands
 
                 return brand.Id;
             }
-            catch (Exception ex)
+            catch 
             {
-                var @event = new BrandNotCreatedEvent(name, ex.Message);
-                EventBus.RaiseEvent(@event);
-
                 throw;
             }
         }
