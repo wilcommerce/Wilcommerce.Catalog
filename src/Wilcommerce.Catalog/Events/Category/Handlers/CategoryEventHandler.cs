@@ -1,10 +1,18 @@
-﻿using Wilcommerce.Core.Infrastructure;
+﻿using System;
+using Wilcommerce.Core.Infrastructure;
 
 namespace Wilcommerce.Catalog.Events.Category.Handlers
 {
     public class CategoryEventHandler :
         IHandleEvent<CategoryCreatedEvent>,
-        IHandleEvent<CategoryNotCreatedEvent>
+        IHandleEvent<CategoryChildAddedEvent>,
+        IHandleEvent<CategoryNameChangedEvent>,
+        IHandleEvent<CategoryCodeChangedEvent>,
+        IHandleEvent<CategoryDescriptionChangedEvent>,
+        IHandleEvent<CategoryUrlChangedEvent>,
+        IHandleEvent<CategoryDeletedEvent>,
+        IHandleEvent<CategoryRestoredEvent>,
+        IHandleEvent<CategoryChildRemovedEvent>
     {
         public IEventStore EventStore { get; }
 
@@ -25,7 +33,91 @@ namespace Wilcommerce.Catalog.Events.Category.Handlers
             }
         }
 
-        public void Handle(CategoryNotCreatedEvent @event)
+        public void Handle(CategoryChildAddedEvent @event)
+        {
+            try
+            {
+                EventStore.Save(@event);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void Handle(CategoryNameChangedEvent @event)
+        {
+            try
+            {
+                EventStore.Save(@event);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void Handle(CategoryCodeChangedEvent @event)
+        {
+            try
+            {
+                EventStore.Save(@event);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void Handle(CategoryDescriptionChangedEvent @event)
+        {
+            try
+            {
+                EventStore.Save(@event);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void Handle(CategoryUrlChangedEvent @event)
+        {
+            try
+            {
+                EventStore.Save(@event);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void Handle(CategoryDeletedEvent @event)
+        {
+            try
+            {
+                EventStore.Save(@event);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void Handle(CategoryRestoredEvent @event)
+        {
+            try
+            {
+                EventStore.Save(@event);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void Handle(CategoryChildRemovedEvent @event)
         {
             try
             {

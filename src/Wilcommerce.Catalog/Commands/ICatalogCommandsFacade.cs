@@ -98,6 +98,13 @@ namespace Wilcommerce.Catalog.Commands
         Task SetCategoryAsVisible(Guid categoryId, DateTime? from, DateTime? to);
 
         /// <summary>
+        /// Hide the category
+        /// </summary>
+        /// <param name="categoryId">The category id</param>
+        /// <returns></returns>
+        Task HideCategory(Guid categoryId);
+
+        /// <summary>
         /// Add a child to the category
         /// </summary>
         /// <param name="categoryId">The category id</param>

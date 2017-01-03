@@ -209,11 +209,8 @@ namespace Wilcommerce.Catalog.Commands
 
                 return category.Id;
             }
-            catch (Exception ex)
+            catch 
             {
-                var @event = new CategoryNotCreatedEvent(name, code, ex.Message);
-                EventBus.RaiseEvent(@event);
-
                 throw;
             }
         }
@@ -244,6 +241,26 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <summary>
+        /// Hide the category
+        /// </summary>
+        /// <param name="categoryId">The category id</param>
+        /// <returns></returns>
+        public async Task HideCategory(Guid categoryId)
+        {
+            try
+            {
+                var category = await Repository.GetByKeyAsync<Category>(categoryId);
+                category.Hide();
+
+                await Repository.SaveChangesAsync();
+            }
+            catch 
+            {
+                throw;
+            }
+        }
+
         public async Task AddCategoryChild(Guid categoryId, Guid childId)
         {
             try
@@ -253,6 +270,9 @@ namespace Wilcommerce.Catalog.Commands
 
                 category.AddChild(child);
                 await Repository.SaveChangesAsync();
+
+                var @event = new CategoryChildAddedEvent(categoryId, childId);
+                EventBus.RaiseEvent(@event);
             }
             catch 
             {
@@ -268,6 +288,9 @@ namespace Wilcommerce.Catalog.Commands
                 category.ChangeName(name);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CategoryNameChangedEvent(categoryId, name);
+                EventBus.RaiseEvent(@event);
             }
             catch 
             {
@@ -283,6 +306,9 @@ namespace Wilcommerce.Catalog.Commands
                 category.ChangeCode(code);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CategoryCodeChangedEvent(categoryId, code);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -298,6 +324,9 @@ namespace Wilcommerce.Catalog.Commands
                 category.ChangeDescription(description);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CategoryDescriptionChangedEvent(categoryId, description);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -313,6 +342,9 @@ namespace Wilcommerce.Catalog.Commands
                 category.ChangeUrl(url);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CategoryUrlChangedEvent(categoryId, url);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -329,6 +361,9 @@ namespace Wilcommerce.Catalog.Commands
                 category.SetParentCategory(parent);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CategoryChildAddedEvent(parentId, categoryId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -344,6 +379,9 @@ namespace Wilcommerce.Catalog.Commands
                 category.Delete();
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CategoryDeletedEvent(categoryId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -359,6 +397,9 @@ namespace Wilcommerce.Catalog.Commands
                 category.Restore();
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CategoryRestoredEvent(categoryId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -374,6 +415,9 @@ namespace Wilcommerce.Catalog.Commands
                 category.RemoveChild(childId);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CategoryChildRemovedEvent(categoryId, childId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -386,9 +430,17 @@ namespace Wilcommerce.Catalog.Commands
             try
             {
                 var category = await Repository.GetByKeyAsync<Category>(categoryId);
+                var parentId = category.Parent?.Id;
+
                 category.RemoveParent();
 
                 await Repository.SaveChangesAsync();
+
+                if (parentId != null)
+                {
+                    var @event = new CategoryChildRemovedEvent((Guid)parentId, categoryId);
+                    EventBus.RaiseEvent(@event);
+                }
             }
             catch
             {

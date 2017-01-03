@@ -133,6 +133,17 @@ namespace Wilcommerce.Catalog.Models
             VisibleTo = to;
         }
 
+        public virtual void Hide()
+        {
+            if (!IsVisible)
+            {
+                throw new InvalidOperationException("The category is not visible");
+            }
+
+            IsVisible = false;
+            VisibleTo = DateTime.Now;
+        }
+
         /// <summary>
         /// Add a child to the category
         /// </summary>
