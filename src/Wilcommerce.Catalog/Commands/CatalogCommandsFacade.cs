@@ -7,6 +7,7 @@ using System.Linq;
 using Wilcommerce.Core.Infrastructure;
 using Wilcommerce.Catalog.Events.Brand;
 using Wilcommerce.Catalog.Events.Category;
+using Wilcommerce.Catalog.Events.CustomAttribute;
 
 namespace Wilcommerce.Catalog.Commands
 {
@@ -488,6 +489,9 @@ namespace Wilcommerce.Catalog.Commands
                 Repository.Add(attribute);
                 await Repository.SaveChangesAsync();
 
+                var @event = new CustomAttributeCreatedEvent(attribute.Id, attribute.Name, attribute.DataType);
+                EventBus.RaiseEvent(@event);
+
                 return attribute.Id;
             }
             catch 
@@ -504,6 +508,9 @@ namespace Wilcommerce.Catalog.Commands
                 attribute.AddValue(value);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CustomAttributeValueAddedEvent(attributeId, value);
+                EventBus.RaiseEvent(@event);
             }
             catch 
             {
@@ -519,6 +526,9 @@ namespace Wilcommerce.Catalog.Commands
                 attribute.RemoveValue(value);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CustomAttributeValueRemovedEvent(attributeId, value);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -534,6 +544,9 @@ namespace Wilcommerce.Catalog.Commands
                 attribute.ChangeName(name);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CustomAttributeNameChangedEvent(attributeId, name);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -549,6 +562,9 @@ namespace Wilcommerce.Catalog.Commands
                 attribute.ChangeDescription(description);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CustomAttributeDescriptionChangedEvent(attributeId, description);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -564,6 +580,9 @@ namespace Wilcommerce.Catalog.Commands
                 attribute.SetUnitOfMeasure(unitOfMeasure);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CustomAttributeUnitOfMeasureSetEvent(attributeId, unitOfMeasure);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -579,6 +598,9 @@ namespace Wilcommerce.Catalog.Commands
                 attribute.ChangeDataType(dataType);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CustomAttributeDataTypeChangedEvent(attributeId, dataType);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -594,6 +616,9 @@ namespace Wilcommerce.Catalog.Commands
                 attribute.Delete();
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CustomAttributeDeletedEvent(attributeId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -609,6 +634,9 @@ namespace Wilcommerce.Catalog.Commands
                 attribute.Restore();
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CustomAttributeRestoredEvent(attributeId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
