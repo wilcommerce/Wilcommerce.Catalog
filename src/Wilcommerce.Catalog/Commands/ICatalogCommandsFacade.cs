@@ -507,6 +507,14 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="imageId">The image id</param>
         /// <returns></returns>
         Task RemoveProductImage(Guid productId, Guid imageId);
+
+        /// <summary>
+        /// Set the SEO information for the procut
+        /// </summary>
+        /// <param name="productId">The product id</param>
+        /// <param name="seo">The SEO information</param>
+        /// <returns></returns>
+        Task SetProductSeo(Guid productId, SeoData seo);
         #endregion
 
         #region CatalogSettings Commands

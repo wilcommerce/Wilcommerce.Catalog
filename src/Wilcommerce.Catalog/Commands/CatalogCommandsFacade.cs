@@ -1123,6 +1123,21 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        public async Task SetProductSeo(Guid productId, SeoData seo)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                product.SetSeoData(seo);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch 
+            {
+                throw;
+            }
+        }
+
         #endregion
 
         #region CatalogSettings Commands
