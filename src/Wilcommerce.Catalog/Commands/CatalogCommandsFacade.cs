@@ -8,6 +8,7 @@ using Wilcommerce.Core.Infrastructure;
 using Wilcommerce.Catalog.Events.Brand;
 using Wilcommerce.Catalog.Events.Category;
 using Wilcommerce.Catalog.Events.CustomAttribute;
+using Wilcommerce.Catalog.Events.Product;
 
 namespace Wilcommerce.Catalog.Commands
 {
@@ -685,6 +686,9 @@ namespace Wilcommerce.Catalog.Commands
                 Repository.Add(product);
                 await Repository.SaveChangesAsync();
 
+                var @event = new ProductCreatedEvent(product.Id, product.EanCode, product.Sku, product.Name);
+                EventBus.RaiseEvent(@event);
+
                 return product.Id;
             }
             catch 
@@ -701,6 +705,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.Delete();
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductDeletedEvent(productId);
+                EventBus.RaiseEvent(@event);
             }
             catch 
             {
@@ -716,6 +723,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.Restore();
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductRestoredEvent(productId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -731,6 +741,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.SetUnitInStock(unitInStock);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductUnitInStockChangedEvent(productId, product.UnitInStock);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -746,6 +759,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.AddUnitInStock(unitToAdd);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductUnitInStockChangedEvent(productId, product.UnitInStock);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -761,6 +777,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.RemoveUnitFromStock(unitToRemove);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductUnitInStockChangedEvent(productId, product.UnitInStock);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -776,6 +795,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.ChangeEanCode(ean);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductEanCodeChangedEvent(productId, ean);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -791,6 +813,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.ChangeSku(sku);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductSkuChangedEvent(productId, sku);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -806,6 +831,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.ChangeName(name);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductNameChangedEvent(productId, name);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -821,6 +849,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.ChangeDescription(description);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductDescriptionChangedEvent(productId, description);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -836,6 +867,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.ChangeUrl(url);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductUrlChangedEvent(productId, url);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -851,6 +885,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.SetPrice(price);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductPriceSetEvent(productId, price);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -877,6 +914,9 @@ namespace Wilcommerce.Catalog.Commands
                 }
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductSetOnSaleEvent(productId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -892,6 +932,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.RemoveFromSale();
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductRemovedFromSaleEvent(productId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
