@@ -952,6 +952,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.SetVendor(brand);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductVendorSetEvent(productId, brandId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -969,6 +972,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.AddCategory(category);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductCategoryAddedEvent(productId, categoryId, false);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -986,6 +992,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.AddMainCategory(category);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductCategoryAddedEvent(productId, categoryId, true);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -1001,6 +1010,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.AddVariant(name, ean, sku, price);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductVariantAddedEvent(productId, name, ean, sku);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -1016,6 +1028,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.RemoveVariant(variantId);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductVariantRemovedEvent(productId, variantId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -1033,6 +1048,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.AddAttribute(attribute, value);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductAttributeAddedEvent(productId, attributeId, value);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -1048,6 +1066,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.DeleteAttribute(attributeId);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductAttributeRemovedEvent(productId, attributeId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {

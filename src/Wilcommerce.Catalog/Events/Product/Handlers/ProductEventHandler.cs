@@ -15,7 +15,13 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
         IHandleEvent<ProductUrlChangedEvent>,
         IHandleEvent<ProductPriceSetEvent>,
         IHandleEvent<ProductSetOnSaleEvent>,
-        IHandleEvent<ProductRemovedFromSaleEvent>
+        IHandleEvent<ProductRemovedFromSaleEvent>,
+        IHandleEvent<ProductVendorSetEvent>,
+        IHandleEvent<ProductCategoryAddedEvent>,
+        IHandleEvent<ProductVariantAddedEvent>,
+        IHandleEvent<ProductVariantRemovedEvent>,
+        IHandleEvent<ProductAttributeAddedEvent>,
+        IHandleEvent<ProductAttributeRemovedEvent>
     {
         public IEventStore EventStore { get; }
 
@@ -157,6 +163,78 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
         }
 
         public void Handle(ProductRemovedFromSaleEvent @event)
+        {
+            try
+            {
+                EventStore.Save(@event);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void Handle(ProductVendorSetEvent @event)
+        {
+            try
+            {
+                EventStore.Save(@event);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void Handle(ProductCategoryAddedEvent @event)
+        {
+            try
+            {
+                EventStore.Save(@event);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void Handle(ProductVariantAddedEvent @event)
+        {
+            try
+            {
+                EventStore.Save(@event);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void Handle(ProductVariantRemovedEvent @event)
+        {
+            try
+            {
+                EventStore.Save(@event);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void Handle(ProductAttributeAddedEvent @event)
+        {
+            try
+            {
+                EventStore.Save(@event);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void Handle(ProductAttributeRemovedEvent @event)
         {
             try
             {
