@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Wilcommerce.Core.Common.Domain.Models;
 using Wilcommerce.Core.Infrastructure;
 
 namespace Wilcommerce.Catalog.Models
@@ -17,8 +19,8 @@ namespace Wilcommerce.Catalog.Models
         #region Constructor
         protected Category()
         {
-            this._Children = new HashSet<Category>();
-            this._Products = new HashSet<Product>();
+            _Children = new HashSet<Category>();
+            _Products = new HashSet<ProductCategory>();
         }
         #endregion
 
@@ -26,47 +28,47 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Get or set the category unique code
         /// </summary>
-        public string Code { get; set; }
+        public string Code { get; protected set; }
 
         /// <summary>
         /// Get or set the category name
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; protected set; }
 
         /// <summary>
         /// Get or set the category url (unique slug)
         /// </summary>
-        public string Url { get; set; }
+        public string Url { get; protected set; }
 
         /// <summary>
         /// Get or set a description for the category
         /// </summary>
-        public string Description { get; set; }
+        public string Description { get; protected set; }
 
         /// <summary>
         /// Get or set whether the category is visible
         /// </summary>
-        public bool IsVisible { get; set; }
+        public bool IsVisible { get; protected set; }
 
         /// <summary>
         /// Get or set the date and time from which the category is visible
         /// </summary>
-        public DateTime? VisibleFrom { get; set; }
+        public DateTime? VisibleFrom { get; protected set; }
 
         /// <summary>
         /// Get or set the date and time till which the category is visible
         /// </summary>
-        public DateTime? VisibleTo { get; set; }
+        public DateTime? VisibleTo { get; protected set; }
 
         /// <summary>
         /// Get or set whether the category is deleted
         /// </summary>
-        public bool Deleted { get; set; }
+        public bool Deleted { get; protected set; }
 
         /// <summary>
         /// Get or set the parent category
         /// </summary>
-        public virtual Category Parent { get; set; }
+        public virtual Category Parent { get; protected set; }
 
         /// <summary>
         /// Get or set the list of children categories
@@ -81,12 +83,17 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Get or set the list of products associated to the category
         /// </summary>
-        protected virtual ICollection<Product> _Products { get; set; }
+        protected virtual ICollection<ProductCategory> _Products { get; set; }
 
         /// <summary>
         /// Get the list of products associated to the category
         /// </summary>
-        public IEnumerable<Product> Products => _Products;
+        public IEnumerable<Product> Products => _Products.Select(p => p.Product);
+
+        /// <summary>
+        /// Get or set the SEO information
+        /// </summary>
+        public SeoData Seo { get; protected set; }
 
         #endregion
 
@@ -97,7 +104,7 @@ namespace Wilcommerce.Catalog.Models
         /// </summary>
         public virtual void SetAsVisible()
         {
-            this.SetAsVisible(DateTime.Now);
+            SetAsVisible(DateTime.Now);
         }
 
         /// <summary>
@@ -106,8 +113,8 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="from">The date and time from which the category is visible</param>
         public virtual void SetAsVisible(DateTime from)
         {
-            this.IsVisible = true;
-            this.VisibleFrom = from;
+            IsVisible = true;
+            VisibleFrom = from;
         }
 
         /// <summary>
@@ -122,27 +129,174 @@ namespace Wilcommerce.Catalog.Models
                 throw new ArgumentException("the from date should be previous to the end date");
             }
 
-            this.SetAsVisible(from);
-            this.VisibleTo = to;
+            SetAsVisible(from);
+            VisibleTo = to;
+        }
+
+        public virtual void Hide()
+        {
+            if (!IsVisible)
+            {
+                throw new InvalidOperationException("The category is not visible");
+            }
+
+            IsVisible = false;
+            VisibleTo = DateTime.Now;
         }
 
         /// <summary>
-        /// Add a children to the category
+        /// Add a child to the category
         /// </summary>
         /// <param name="child">The category children</param>
-        public virtual void AddChildren(Category child)
+        public virtual void AddChild(Category child)
         {
             if(child == null)
             {
                 throw new ArgumentNullException("children");
             }
 
-            if (this._Children.Contains(child))
+            if (_Children.Contains(child))
             {
                 throw new ArgumentException("The category contains the children yet");
             }
 
-            this._Children.Add(child);
+            _Children.Add(child);
+        }
+
+        /// <summary>
+        /// Change the category name
+        /// </summary>
+        /// <param name="name">The category name</param>
+        public virtual void ChangeName(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException("name");
+            }
+
+            Name = name;
+        }
+
+        /// <summary>
+        /// Change the category code
+        /// </summary>
+        /// <param name="code">The category code</param>
+        public virtual void ChangeCode(string code)
+        {
+            if (string.IsNullOrEmpty(code))
+            {
+                throw new ArgumentNullException("code");
+            }
+
+            Code = code;
+        }
+
+        /// <summary>
+        /// Change the category description
+        /// </summary>
+        /// <param name="description">The category description</param>
+        public virtual void ChangeDescription(string description)
+        {
+            if (string.IsNullOrEmpty(description))
+            {
+                throw new ArgumentNullException("description");
+            }
+
+            Description = description;
+        }
+
+        /// <summary>
+        /// Change the category url
+        /// </summary>
+        /// <param name="url">The category url</param>
+        public virtual void ChangeUrl(string url)
+        {
+            if (string.IsNullOrEmpty(url))
+            {
+                throw new ArgumentNullException("url");
+            }
+
+            Url = url;
+        }
+
+        /// <summary>
+        /// Set the parent category
+        /// </summary>
+        /// <param name="parent">The parent category</param>
+        public virtual void SetParentCategory(Category parent)
+        {
+            if (parent == null)
+            {
+                throw new ArgumentNullException("parent");
+            }
+
+            Parent = parent;
+        }
+
+        /// <summary>
+        /// Delete the category
+        /// </summary>
+        public virtual void Delete()
+        {
+            if (Deleted)
+            {
+                throw new InvalidOperationException("The category is already deleted");
+            }
+
+            Deleted = true;
+        }
+
+        /// <summary>
+        /// Restore the deleted category
+        /// </summary>
+        public virtual void Restore()
+        {
+            if (!Deleted)
+            {
+                throw new InvalidOperationException("The category is not deleted");
+            }
+
+            Deleted = false;
+        }
+
+        /// <summary>
+        /// Remove the child category
+        /// </summary>
+        /// <param name="childId">The id of the category to remove</param>
+        public virtual void RemoveChild(Guid childId)
+        {
+            var child = _Children.FirstOrDefault(c => c.Id == childId);
+            if (!_Children.Remove(child))
+            {
+                throw new InvalidOperationException("Cannot remove child");
+            }
+        }
+
+        /// <summary>
+        /// Remove the parent category
+        /// </summary>
+        public virtual void RemoveParent()
+        {
+            if (Parent == null)
+            {
+                throw new InvalidOperationException("Parent already empty");
+            }
+
+            Parent = null;
+        }
+
+        /// <summary>
+        /// Set the seo information for the category
+        /// </summary>
+        /// <param name="seo">The seo information</param>
+        public virtual void SetSeoData(SeoData seo)
+        {
+            if (seo == null)
+            {
+                throw new ArgumentNullException("seo");
+            }
+
+            Seo = seo;
         }
 
         #endregion

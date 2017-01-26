@@ -1,14 +1,15 @@
 ﻿{
-  "version": "0.1.0",
+  "version": "1.0.0-beta1",
 
   "dependencies": {
-    "NETStandard.Library": "1.5.0-rc2-24027",
-    "Wilcommerce.Core.Infrastructure": "0.1.0",
-    "Wilcommerce.Core.Common": "0.1.0"
+    "NETStandard.Library": "1.6.0",
+    "System.Linq.Queryable": "4.0.1",
+    "Wilcommerce.Core.Common": "1.0.0-beta3",
+    "Wilcommerce.Core.Infrastructure": "1.0.0-beta3"
   },
 
   "frameworks": {
-    "netstandard1.5": {
+    "netstandard1.6": {
       "imports": "dnxcore50"
     }
   }
