@@ -1,5 +1,4 @@
-﻿using System;
-using Wilcommerce.Core.Infrastructure;
+﻿using Wilcommerce.Core.Infrastructure;
 
 namespace Wilcommerce.Catalog.Events.Product.Handlers
 {
@@ -21,7 +20,14 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
         IHandleEvent<ProductVariantAddedEvent>,
         IHandleEvent<ProductVariantRemovedEvent>,
         IHandleEvent<ProductAttributeAddedEvent>,
-        IHandleEvent<ProductAttributeRemovedEvent>
+        IHandleEvent<ProductAttributeRemovedEvent>,
+        IHandleEvent<ProductTierPriceAddedEvent>,
+        IHandleEvent<ProductTierPriceRemovedEvent>,
+        IHandleEvent<ProductReviewAddedEvent>,
+        IHandleEvent<ProductReviewApprovedEvent>,
+        IHandleEvent<ProductReviewRemovedEvent>,
+        IHandleEvent<ProductImageAddedEvent>,
+        IHandleEvent<ProductImageRemovedEvent>
     {
         public IEventStore EventStore { get; }
 
@@ -235,6 +241,90 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
         }
 
         public void Handle(ProductAttributeRemovedEvent @event)
+        {
+            try
+            {
+                EventStore.Save(@event);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void Handle(ProductTierPriceAddedEvent @event)
+        {
+            try
+            {
+                EventStore.Save(@event);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void Handle(ProductTierPriceRemovedEvent @event)
+        {
+            try
+            {
+                EventStore.Save(@event);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void Handle(ProductReviewAddedEvent @event)
+        {
+            try
+            {
+                EventStore.Save(@event);
+            }
+            catch 
+            {
+                throw;
+            }
+        }
+
+        public void Handle(ProductReviewApprovedEvent @event)
+        {
+            try
+            {
+                EventStore.Save(@event);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void Handle(ProductReviewRemovedEvent @event)
+        {
+            try
+            {
+                EventStore.Save(@event);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void Handle(ProductImageAddedEvent @event)
+        {
+            try
+            {
+                EventStore.Save(@event);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void Handle(ProductImageRemovedEvent @event)
         {
             try
             {

@@ -1089,6 +1089,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.AddTierPrice(fromQuantity, toQuantity, price);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductTierPriceAddedEvent(productId, fromQuantity, toQuantity, price);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -1104,6 +1107,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.DeleteTierPrice(tierPriceId);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductTierPriceRemovedEvent(productId, tierPriceId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -1119,6 +1125,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.AddReview(name, rating, comment);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductReviewAddedEvent(productId, name, rating, comment);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -1134,6 +1143,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.ApproveReview(reviewId);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductReviewApprovedEvent(productId, reviewId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -1150,6 +1162,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.DeleteReview(reviewId);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductReviewRemovedEvent(productId, reviewId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -1165,6 +1180,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.AddImage(path, name, originalName, isMain, uploadedOn);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductImageAddedEvent(productId, name, originalName);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -1180,6 +1198,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.DeleteImage(imageId);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductImageRemovedEvent(productId, imageId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
