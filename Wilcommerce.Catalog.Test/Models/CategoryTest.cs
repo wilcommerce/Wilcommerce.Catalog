@@ -240,5 +240,47 @@ namespace Wilcommerce.Catalog.Test.Models
             var ex = Assert.Throws<InvalidOperationException>(() => category.Restore());
             Assert.Equal("The category is not deleted", ex.Message);
         }
+
+        [Fact]
+        public void SetSeoData_Should_Throw_ArgumentNullException_If_Seo_IsNull()
+        {
+            var category = Category.Create(
+                "TEST1",
+                "Test Category",
+                "test-category"
+                );
+
+            var ex = Assert.Throws<ArgumentNullException>(() => category.SetSeoData(null));
+            Assert.Equal("seo", ex.ParamName);
+        }
+
+        [Fact]
+        public void Hide_Should_Throw_InvalidOperationException_If_Category_IsNotVisible()
+        {
+            var category = Category.Create(
+                "TEST1",
+                "Test Category",
+                "test-category"
+                );
+
+            var ex = Assert.Throws<InvalidOperationException>(() => category.Hide());
+            Assert.Equal("The category is not visible", ex.Message);
+        }
+
+        [Fact]
+        public void Hide_Should_Set_IsVisible_To_False()
+        {
+            var category = Category.Create(
+                "TEST1",
+                "Test Category",
+                "test-category"
+                );
+
+            category.SetAsVisible();
+            category.Hide();
+
+            Assert.Equal(false, category.IsVisible);
+            Assert.Equal(DateTime.Now.ToString("yyyy-MM-dd"), category.VisibleTo?.ToString("yyyy-MM-dd"));
+        }
     }
 }

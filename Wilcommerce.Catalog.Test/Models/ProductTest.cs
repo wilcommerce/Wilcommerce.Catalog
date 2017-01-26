@@ -903,5 +903,19 @@ namespace Wilcommerce.Catalog.Test.Models
             product.RemoveVariant(variant.Id);
             Assert.Equal(0, product.Variants.Count(v => v.Id == variant.Id));
         }
+
+        [Fact]
+        public void SetSeoData_Should_Throw_ArgumentNullException_If_Seo_IsNull()
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            var ex = Assert.Throws<ArgumentNullException>(() => product.SetSeoData(null));
+            Assert.Equal("seo", ex.ParamName);
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Wilcommerce.Core.Common.Domain.Models;
 using Wilcommerce.Core.Infrastructure;
 
 namespace Wilcommerce.Catalog.Models
@@ -89,6 +90,11 @@ namespace Wilcommerce.Catalog.Models
         /// </summary>
         public IEnumerable<Product> Products => _Products.Select(p => p.Product);
 
+        /// <summary>
+        /// Get or set the SEO information
+        /// </summary>
+        public SeoData Seo { get; protected set; }
+
         #endregion
 
         #region Behaviors
@@ -125,6 +131,17 @@ namespace Wilcommerce.Catalog.Models
 
             SetAsVisible(from);
             VisibleTo = to;
+        }
+
+        public virtual void Hide()
+        {
+            if (!IsVisible)
+            {
+                throw new InvalidOperationException("The category is not visible");
+            }
+
+            IsVisible = false;
+            VisibleTo = DateTime.Now;
         }
 
         /// <summary>
@@ -266,6 +283,20 @@ namespace Wilcommerce.Catalog.Models
             }
 
             Parent = null;
+        }
+
+        /// <summary>
+        /// Set the seo information for the category
+        /// </summary>
+        /// <param name="seo">The seo information</param>
+        public virtual void SetSeoData(SeoData seo)
+        {
+            if (seo == null)
+            {
+                throw new ArgumentNullException("seo");
+            }
+
+            Seo = seo;
         }
 
         #endregion

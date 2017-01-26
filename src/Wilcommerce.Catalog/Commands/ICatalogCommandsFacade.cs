@@ -64,6 +64,14 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="brandId">The brand's id</param>
         /// <returns></returns>
         Task RestoreBrand(Guid brandId);
+
+        /// <summary>
+        /// Set the brand seo data
+        /// </summary>
+        /// <param name="brandId">The brand's id</param>
+        /// <param name="seo">The seo data</param>
+        /// <returns></returns>
+        Task SetBrandSeoData(Guid brandId, SeoData seo);
         #endregion
 
         #region Category Commands
@@ -88,6 +96,13 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="to">The date and time till when the category is visible</param>
         /// <returns></returns>
         Task SetCategoryAsVisible(Guid categoryId, DateTime? from, DateTime? to);
+
+        /// <summary>
+        /// Hide the category
+        /// </summary>
+        /// <param name="categoryId">The category id</param>
+        /// <returns></returns>
+        Task HideCategory(Guid categoryId);
 
         /// <summary>
         /// Add a child to the category
@@ -165,6 +180,14 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="categoryId">The category id</param>
         /// <returns></returns>
         Task RemoveParentForCategory(Guid categoryId);
+
+        /// <summary>
+        /// Set the seo information for the specified category
+        /// </summary>
+        /// <param name="categoryId">The category id</param>
+        /// <param name="seo">The seo information</param>
+        /// <returns></returns>
+        Task SetCategorySeoData(Guid categoryId, SeoData seo);
         #endregion
 
         #region CustomAttribute Commands
@@ -484,19 +507,70 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="imageId">The image id</param>
         /// <returns></returns>
         Task RemoveProductImage(Guid productId, Guid imageId);
+
+        /// <summary>
+        /// Set the SEO information for the procut
+        /// </summary>
+        /// <param name="productId">The product id</param>
+        /// <param name="seo">The SEO information</param>
+        /// <returns></returns>
+        Task SetProductSeo(Guid productId, SeoData seo);
         #endregion
 
         #region CatalogSettings Commands
+        /// <summary>
+        /// Create a new catalog settings
+        /// </summary>
+        /// <param name="categoriesPerPage">The number of categories per page</param>
+        /// <param name="productsPerPage">The number of products per page</param>
+        /// <param name="categoriesViewType">How the category are shown in the page</param>
+        /// <param name="productsViewType">How the products are shown in the page</param>
+        /// <param name="showPrices">Whether the prices are shown</param>
+        /// <param name="allowReviews">Whether the reviews are allowed</param>
+        /// <param name="reviewsPerPage">The number of reviews per page</param>
+        /// <returns>The id of the created settings</returns>
         Task<Guid> CreateCatalogSettings(int categoriesPerPage, int productsPerPage, CatalogSettings.ViewType categoriesViewType, CatalogSettings.ViewType productsViewType, bool showPrices, bool allowReviews, int reviewsPerPage);
 
+        /// <summary>
+        /// Set whether show prices
+        /// </summary>
+        /// <param name="settingsId">The settings id</param>
+        /// <param name="showPrices">Whether the prices are shown</param>
+        /// <returns></returns>
         Task ShowPrices(Guid settingsId, bool showPrices);
 
+        /// <summary>
+        /// Allow the product reviews
+        /// </summary>
+        /// <param name="settingsId">The settings id</param>
+        /// <param name="allowReviews">Whether the reviews are allowed</param>
+        /// <returns></returns>
         Task AllowProductReviews(Guid settingsId, bool allowReviews);
 
+        /// <summary>
+        /// Set the number of product reviews per page
+        /// </summary>
+        /// <param name="settingsId">The settings id</param>
+        /// <param name="reviewsPerPage">The number of reviews per page</param>
+        /// <returns></returns>
         Task SetProductReviewsPerPage(Guid settingsId, int reviewsPerPage);
 
+        /// <summary>
+        /// Set the categories view
+        /// </summary>
+        /// <param name="settingsId">The settings id</param>
+        /// <param name="viewType">The view type</param>
+        /// <param name="categoriesPerPage">The number of categories per page</param>
+        /// <returns></returns>
         Task SetCategoriesView(Guid settingsId, CatalogSettings.ViewType viewType, int categoriesPerPage);
 
+        /// <summary>
+        /// Set the products view
+        /// </summary>
+        /// <param name="settingsId">The settings id</param>
+        /// <param name="viewType">The view type</param>
+        /// <param name="productsPerPage">The number of products per page</param>
+        /// <returns></returns>
         Task SetProductsView(Guid settingsId, CatalogSettings.ViewType viewType, int productsPerPage);
         #endregion
     }

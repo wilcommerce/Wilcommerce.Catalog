@@ -164,6 +164,11 @@ namespace Wilcommerce.Catalog.Models
         /// </summary>
         public IEnumerable<ProductImage> Images => _Images;
 
+        /// <summary>
+        /// Get or set the SEO information for the product
+        /// </summary>
+        public SeoData Seo { get; protected set; }
+
         #endregion
 
         #region Behaviors
@@ -422,6 +427,10 @@ namespace Wilcommerce.Catalog.Models
             OnSaleTo = endSaleDate;
         }
 
+        /// <summary>
+        /// Add a category to the product
+        /// </summary>
+        /// <param name="category">The category to add</param>
         public virtual void AddCategory(Category category)
         {
             AddCategory(category, false);
@@ -431,6 +440,7 @@ namespace Wilcommerce.Catalog.Models
         /// Add a category to the product
         /// </summary>
         /// <param name="category">The category to add</param>
+        /// <param name="isMain">Whether the category is the main category</param>
         public virtual void AddCategory(Category category, bool isMain)
         {
             if (category == null)
@@ -763,6 +773,20 @@ namespace Wilcommerce.Catalog.Models
             {
                 throw new InvalidOperationException("Variant not removed");
             }
+        }
+
+        /// <summary>
+        /// Set the SEO information for the product
+        /// </summary>
+        /// <param name="seo">The SEO information</param>
+        public virtual void SetSeoData(SeoData seo)
+        {
+            if (seo == null)
+            {
+                throw new ArgumentNullException("seo");
+            }
+
+            Seo = seo;
         }
 
         #endregion

@@ -1,20 +1,27 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Wilcommerce.Core.Common.Domain.Models;
-using Wilcommerce.Catalog.Repository;
 using Wilcommerce.Catalog.Models;
 using System.Collections.Generic;
 using System.Linq;
+using Wilcommerce.Core.Infrastructure;
+using Wilcommerce.Catalog.Events.Brand;
+using Wilcommerce.Catalog.Events.Category;
+using Wilcommerce.Catalog.Events.CustomAttribute;
+using Wilcommerce.Catalog.Events.Product;
 
 namespace Wilcommerce.Catalog.Commands
 {
     public class CatalogCommandsFacade : ICatalogCommandsFacade
     {
-        public IRepository Repository { get; }
+        public Repository.IRepository Repository { get; }
 
-        public CatalogCommandsFacade(IRepository repository)
+        public IEventBus EventBus { get; }
+
+        public CatalogCommandsFacade(Repository.IRepository repository, IEventBus eventBus)
         {
             Repository = repository;
+            EventBus = eventBus;
         }
 
         #region Brand Commands
@@ -26,6 +33,9 @@ namespace Wilcommerce.Catalog.Commands
                 brand.ChangeDescription(description);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new BrandDescriptionChangedEvent(brandId, description);
+                EventBus.RaiseEvent(@event);
             }
             catch 
             {
@@ -41,6 +51,9 @@ namespace Wilcommerce.Catalog.Commands
                 brand.ChangeName(name);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new BrandNameChangedEvent(brandId, name);
+                EventBus.RaiseEvent(@event);
             }
             catch 
             {
@@ -56,8 +69,11 @@ namespace Wilcommerce.Catalog.Commands
                 brand.ChangeUrl(url);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new BrandUrlChangedEvent(brandId, url);
+                EventBus.RaiseEvent(@event);
             }
-            catch
+            catch 
             {
                 throw;
             }
@@ -81,9 +97,12 @@ namespace Wilcommerce.Catalog.Commands
                 Repository.Add(brand);
                 await Repository.SaveChangesAsync();
 
+                var @event = new BrandCreatedEvent(brand.Id, brand.Name);
+                EventBus.RaiseEvent(@event);
+
                 return brand.Id;
             }
-            catch
+            catch 
             {
                 throw;
             }
@@ -97,6 +116,9 @@ namespace Wilcommerce.Catalog.Commands
                 brand.Delete();
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new BrandDeletedEvent(brandId);
+                EventBus.RaiseEvent(@event);
             }
             catch 
             {
@@ -112,6 +134,9 @@ namespace Wilcommerce.Catalog.Commands
                 brand.Restore();
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new BrandRestoredEvent(brandId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -125,6 +150,21 @@ namespace Wilcommerce.Catalog.Commands
             {
                 var brand = await Repository.GetByKeyAsync<Brand>(brandId);
                 brand.SetLogo(logo);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch 
+            {
+                throw;
+            }
+        }
+
+        public async Task SetBrandSeoData(Guid brandId, SeoData seo)
+        {
+            try
+            {
+                var brand = await Repository.GetByKeyAsync<Brand>(brandId);
+                brand.SetSeoData(seo);
 
                 await Repository.SaveChangesAsync();
             }
@@ -166,6 +206,9 @@ namespace Wilcommerce.Catalog.Commands
                 Repository.Add(category);
                 await Repository.SaveChangesAsync();
 
+                var @event = new CategoryCreatedEvent(category.Id, name, code);
+                EventBus.RaiseEvent(@event);
+
                 return category.Id;
             }
             catch 
@@ -200,6 +243,26 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <summary>
+        /// Hide the category
+        /// </summary>
+        /// <param name="categoryId">The category id</param>
+        /// <returns></returns>
+        public async Task HideCategory(Guid categoryId)
+        {
+            try
+            {
+                var category = await Repository.GetByKeyAsync<Category>(categoryId);
+                category.Hide();
+
+                await Repository.SaveChangesAsync();
+            }
+            catch 
+            {
+                throw;
+            }
+        }
+
         public async Task AddCategoryChild(Guid categoryId, Guid childId)
         {
             try
@@ -209,6 +272,9 @@ namespace Wilcommerce.Catalog.Commands
 
                 category.AddChild(child);
                 await Repository.SaveChangesAsync();
+
+                var @event = new CategoryChildAddedEvent(categoryId, childId);
+                EventBus.RaiseEvent(@event);
             }
             catch 
             {
@@ -224,6 +290,9 @@ namespace Wilcommerce.Catalog.Commands
                 category.ChangeName(name);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CategoryNameChangedEvent(categoryId, name);
+                EventBus.RaiseEvent(@event);
             }
             catch 
             {
@@ -239,6 +308,9 @@ namespace Wilcommerce.Catalog.Commands
                 category.ChangeCode(code);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CategoryCodeChangedEvent(categoryId, code);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -254,6 +326,9 @@ namespace Wilcommerce.Catalog.Commands
                 category.ChangeDescription(description);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CategoryDescriptionChangedEvent(categoryId, description);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -269,6 +344,9 @@ namespace Wilcommerce.Catalog.Commands
                 category.ChangeUrl(url);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CategoryUrlChangedEvent(categoryId, url);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -285,6 +363,9 @@ namespace Wilcommerce.Catalog.Commands
                 category.SetParentCategory(parent);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CategoryChildAddedEvent(parentId, categoryId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -300,6 +381,9 @@ namespace Wilcommerce.Catalog.Commands
                 category.Delete();
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CategoryDeletedEvent(categoryId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -315,6 +399,9 @@ namespace Wilcommerce.Catalog.Commands
                 category.Restore();
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CategoryRestoredEvent(categoryId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -330,6 +417,9 @@ namespace Wilcommerce.Catalog.Commands
                 category.RemoveChild(childId);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CategoryChildRemovedEvent(categoryId, childId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -342,11 +432,34 @@ namespace Wilcommerce.Catalog.Commands
             try
             {
                 var category = await Repository.GetByKeyAsync<Category>(categoryId);
+                var parentId = category.Parent?.Id;
+
                 category.RemoveParent();
 
                 await Repository.SaveChangesAsync();
+
+                if (parentId != null)
+                {
+                    var @event = new CategoryChildRemovedEvent((Guid)parentId, categoryId);
+                    EventBus.RaiseEvent(@event);
+                }
             }
             catch
+            {
+                throw;
+            }
+        }
+
+        public async Task SetCategorySeoData(Guid categoryId, SeoData seo)
+        {
+            try
+            {
+                var category = await Repository.GetByKeyAsync<Category>(categoryId);
+                category.SetSeoData(seo);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch 
             {
                 throw;
             }
@@ -377,6 +490,9 @@ namespace Wilcommerce.Catalog.Commands
                 Repository.Add(attribute);
                 await Repository.SaveChangesAsync();
 
+                var @event = new CustomAttributeCreatedEvent(attribute.Id, attribute.Name, attribute.DataType);
+                EventBus.RaiseEvent(@event);
+
                 return attribute.Id;
             }
             catch 
@@ -393,6 +509,9 @@ namespace Wilcommerce.Catalog.Commands
                 attribute.AddValue(value);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CustomAttributeValueAddedEvent(attributeId, value);
+                EventBus.RaiseEvent(@event);
             }
             catch 
             {
@@ -408,6 +527,9 @@ namespace Wilcommerce.Catalog.Commands
                 attribute.RemoveValue(value);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CustomAttributeValueRemovedEvent(attributeId, value);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -423,6 +545,9 @@ namespace Wilcommerce.Catalog.Commands
                 attribute.ChangeName(name);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CustomAttributeNameChangedEvent(attributeId, name);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -438,6 +563,9 @@ namespace Wilcommerce.Catalog.Commands
                 attribute.ChangeDescription(description);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CustomAttributeDescriptionChangedEvent(attributeId, description);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -453,6 +581,9 @@ namespace Wilcommerce.Catalog.Commands
                 attribute.SetUnitOfMeasure(unitOfMeasure);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CustomAttributeUnitOfMeasureSetEvent(attributeId, unitOfMeasure);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -468,6 +599,9 @@ namespace Wilcommerce.Catalog.Commands
                 attribute.ChangeDataType(dataType);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CustomAttributeDataTypeChangedEvent(attributeId, dataType);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -483,6 +617,9 @@ namespace Wilcommerce.Catalog.Commands
                 attribute.Delete();
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CustomAttributeDeletedEvent(attributeId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -498,6 +635,9 @@ namespace Wilcommerce.Catalog.Commands
                 attribute.Restore();
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CustomAttributeRestoredEvent(attributeId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -546,6 +686,9 @@ namespace Wilcommerce.Catalog.Commands
                 Repository.Add(product);
                 await Repository.SaveChangesAsync();
 
+                var @event = new ProductCreatedEvent(product.Id, product.EanCode, product.Sku, product.Name);
+                EventBus.RaiseEvent(@event);
+
                 return product.Id;
             }
             catch 
@@ -562,6 +705,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.Delete();
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductDeletedEvent(productId);
+                EventBus.RaiseEvent(@event);
             }
             catch 
             {
@@ -577,6 +723,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.Restore();
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductRestoredEvent(productId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -592,6 +741,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.SetUnitInStock(unitInStock);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductUnitInStockChangedEvent(productId, product.UnitInStock);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -607,6 +759,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.AddUnitInStock(unitToAdd);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductUnitInStockChangedEvent(productId, product.UnitInStock);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -622,6 +777,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.RemoveUnitFromStock(unitToRemove);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductUnitInStockChangedEvent(productId, product.UnitInStock);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -637,6 +795,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.ChangeEanCode(ean);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductEanCodeChangedEvent(productId, ean);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -652,6 +813,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.ChangeSku(sku);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductSkuChangedEvent(productId, sku);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -667,6 +831,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.ChangeName(name);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductNameChangedEvent(productId, name);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -682,6 +849,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.ChangeDescription(description);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductDescriptionChangedEvent(productId, description);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -697,6 +867,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.ChangeUrl(url);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductUrlChangedEvent(productId, url);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -712,6 +885,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.SetPrice(price);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductPriceSetEvent(productId, price);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -738,6 +914,9 @@ namespace Wilcommerce.Catalog.Commands
                 }
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductSetOnSaleEvent(productId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -753,6 +932,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.RemoveFromSale();
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductRemovedFromSaleEvent(productId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -770,6 +952,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.SetVendor(brand);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductVendorSetEvent(productId, brandId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -787,6 +972,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.AddCategory(category);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductCategoryAddedEvent(productId, categoryId, false);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -804,6 +992,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.AddMainCategory(category);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductCategoryAddedEvent(productId, categoryId, true);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -819,6 +1010,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.AddVariant(name, ean, sku, price);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductVariantAddedEvent(productId, name, ean, sku);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -834,6 +1028,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.RemoveVariant(variantId);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductVariantRemovedEvent(productId, variantId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -851,6 +1048,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.AddAttribute(attribute, value);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductAttributeAddedEvent(productId, attributeId, value);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -866,6 +1066,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.DeleteAttribute(attributeId);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductAttributeRemovedEvent(productId, attributeId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -886,6 +1089,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.AddTierPrice(fromQuantity, toQuantity, price);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductTierPriceAddedEvent(productId, fromQuantity, toQuantity, price);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -901,6 +1107,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.DeleteTierPrice(tierPriceId);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductTierPriceRemovedEvent(productId, tierPriceId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -916,6 +1125,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.AddReview(name, rating, comment);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductReviewAddedEvent(productId, name, rating, comment);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -931,6 +1143,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.ApproveReview(reviewId);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductReviewApprovedEvent(productId, reviewId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -947,6 +1162,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.DeleteReview(reviewId);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductReviewRemovedEvent(productId, reviewId);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -962,6 +1180,9 @@ namespace Wilcommerce.Catalog.Commands
                 product.AddImage(path, name, originalName, isMain, uploadedOn);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductImageAddedEvent(productId, name, originalName);
+                EventBus.RaiseEvent(@event);
             }
             catch
             {
@@ -977,8 +1198,26 @@ namespace Wilcommerce.Catalog.Commands
                 product.DeleteImage(imageId);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductImageRemovedEvent(productId, imageId);
+                EventBus.RaiseEvent(@event);
             }
             catch
+            {
+                throw;
+            }
+        }
+
+        public async Task SetProductSeo(Guid productId, SeoData seo)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                product.SetSeoData(seo);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch 
             {
                 throw;
             }

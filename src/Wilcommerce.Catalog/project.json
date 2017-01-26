@@ -4,8 +4,8 @@
   "dependencies": {
     "NETStandard.Library": "1.6.0",
     "System.Linq.Queryable": "4.0.1",
-    "Wilcommerce.Core.Common": "1.0.0-beta*",
-    "Wilcommerce.Core.Infrastructure": "1.0.0-beta*"
+    "Wilcommerce.Core.Common": "1.0.0-beta3",
+    "Wilcommerce.Core.Infrastructure": "1.0.0-beta3"
   },
 
   "frameworks": {

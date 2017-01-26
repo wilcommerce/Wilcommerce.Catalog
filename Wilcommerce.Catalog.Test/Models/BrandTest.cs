@@ -92,5 +92,14 @@ namespace Wilcommerce.Catalog.Test.Models
             var ex = Assert.Throws<InvalidOperationException>(() => brand.Restore());
             Assert.Equal("The brand is not deleted", ex.Message);
         }
+
+        [Fact]
+        public void SetSeoData_Should_Throw_ArgumentNullException_If_Seo_IsNull()
+        {
+            var brand = Brand.Create("brand", "brand");
+
+            var ex = Assert.Throws<ArgumentNullException>(() => brand.SetSeoData(null));
+            Assert.Equal("seo", ex.ParamName);
+        }
     }
 }
