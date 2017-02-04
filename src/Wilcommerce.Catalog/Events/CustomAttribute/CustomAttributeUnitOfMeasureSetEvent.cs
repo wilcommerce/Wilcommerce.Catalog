@@ -10,7 +10,7 @@ namespace Wilcommerce.Catalog.Events.CustomAttribute
         public string UnitOfMeasure { get; }
 
         public CustomAttributeUnitOfMeasureSetEvent(Guid attributeId, string unitOfMeasure)
-            : base()
+            : base(attributeId, typeof(Models.CustomAttribute))
         {
             AttributeId = attributeId;
             UnitOfMeasure = unitOfMeasure;

@@ -1,11 +1,11 @@
-﻿{
-  "version": "1.0.0-beta1",
+{
+  "version": "1.0.0-beta2",
 
   "dependencies": {
-    "NETStandard.Library": "1.6.0",
-    "System.Linq.Queryable": "4.0.1",
-    "Wilcommerce.Core.Common": "1.0.0-beta3",
-    "Wilcommerce.Core.Infrastructure": "1.0.0-beta3"
+    "NETStandard.Library": "1.6.1",
+    "System.Linq.Queryable": "4.3.0",
+    "Wilcommerce.Core.Common": "1.0.0-beta4",
+    "Wilcommerce.Core.Infrastructure": "1.0.0-beta4"
   },
 
   "frameworks": {

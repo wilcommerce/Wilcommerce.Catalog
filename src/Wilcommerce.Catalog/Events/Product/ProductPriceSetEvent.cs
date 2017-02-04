@@ -11,7 +11,7 @@ namespace Wilcommerce.Catalog.Events.Product
         public Currency Price { get; }
 
         public ProductPriceSetEvent(Guid productId, Currency price)
-            : base()
+            : base(productId, typeof(Models.Product))
         {
             ProductId = productId;
             Price = price;

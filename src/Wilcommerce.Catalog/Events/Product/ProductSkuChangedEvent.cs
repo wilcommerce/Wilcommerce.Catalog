@@ -10,7 +10,7 @@ namespace Wilcommerce.Catalog.Events.Product
         public string Sku { get; }
 
         public ProductSkuChangedEvent(Guid productId, string sku)
-            : base()
+            : base(productId, typeof(Models.Product))
         {
             ProductId = productId;
             Sku = sku;

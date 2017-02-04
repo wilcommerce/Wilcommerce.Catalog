@@ -10,7 +10,7 @@ namespace Wilcommerce.Catalog.Events.Brand
         public string Name { get; }
 
         public BrandNameChangedEvent(Guid brandId, string name)
-            : base()
+            : base(brandId, typeof(Models.Brand))
         {
             BrandId = brandId;
             Name = name;
