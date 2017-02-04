@@ -8,7 +8,7 @@ namespace Wilcommerce.Catalog.Events.Product
         public Guid ProductId { get; }
 
         public ProductRemovedFromSaleEvent(Guid productId)
-            : base()
+            : base(productId, typeof(Models.Product))
         {
             ProductId = productId;
         }

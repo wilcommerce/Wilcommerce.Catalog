@@ -8,7 +8,7 @@ namespace Wilcommerce.Catalog.Events.Category
         public Guid CategoryId { get; }
 
         public CategoryDeletedEvent(Guid categoryId)
-            : base()
+            : base(categoryId, typeof(Models.Category))
         {
             CategoryId = categoryId;
         }

@@ -12,7 +12,7 @@ namespace Wilcommerce.Catalog.Events.Product
         public bool IsMain { get; }
 
         public ProductCategoryAddedEvent(Guid productId, Guid categoryId, bool isMain)
-            : base()
+            : base(productId, typeof(Models.Product))
         {
             ProductId = productId;
             CategoryId = categoryId;

@@ -12,7 +12,7 @@ namespace Wilcommerce.Catalog.Events.Product
         public string OriginalName { get; }
 
         public ProductImageAddedEvent(Guid productId, string name, string originalName)
-            : base()
+            : base(productId, typeof(Models.Product))
         {
             ProductId = productId;
             Name = name;

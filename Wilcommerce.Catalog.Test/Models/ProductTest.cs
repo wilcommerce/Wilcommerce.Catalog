@@ -917,5 +917,35 @@ namespace Wilcommerce.Catalog.Test.Models
             var ex = Assert.Throws<ArgumentNullException>(() => product.SetSeoData(null));
             Assert.Equal("seo", ex.ParamName);
         }
+
+        [Fact]
+        public void ChangeTierPrice_Should_Throw_InvalidOperationException_If_TierPrice_Are_Disabled()
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            var ex = Assert.Throws<InvalidOperationException>(() => product.ChangeTierPrice(Guid.NewGuid(), 1, 15, new Currency { Code = "EUR", Amount = 20 }));
+            Assert.Equal("Tier price disabled", ex.Message);
+        }
+
+        [Fact]
+        public void ChangeTierPrice_Should_Throw_InvalidOperationException_If_TierPrice_IsNull()
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            product.EnableTierPrices();
+
+            var ex = Assert.Throws<InvalidOperationException>(() => product.ChangeTierPrice(Guid.NewGuid(), 1, 15, new Currency { Code = "EUR", Amount = 20 }));
+            Assert.Equal("Tier price not found", ex.Message);
+        }
     }
 }

@@ -14,7 +14,7 @@ namespace Wilcommerce.Catalog.Events.Product
         public string Sku { get; }
 
         public ProductVariantAddedEvent(Guid productId, string name, string ean, string sku)
-            : base()
+            : base(productId, typeof(Models.Product))
         {
             ProductId = productId;
             VariantName = name;

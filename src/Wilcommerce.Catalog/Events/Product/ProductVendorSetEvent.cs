@@ -10,7 +10,7 @@ namespace Wilcommerce.Catalog.Events.Product
         public Guid VendorId { get; }
 
         public ProductVendorSetEvent(Guid productId, Guid vendorId)
-            : base()
+            : base(productId, typeof(Models.Product))
         {
             ProductId = productId;
             VendorId = vendorId;

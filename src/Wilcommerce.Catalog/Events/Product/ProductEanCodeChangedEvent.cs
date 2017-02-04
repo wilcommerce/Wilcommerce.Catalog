@@ -10,7 +10,7 @@ namespace Wilcommerce.Catalog.Events.Product
         public string EanCode { get; }
 
         public ProductEanCodeChangedEvent(Guid productId, string ean)
-            : base()
+            : base(productId, typeof(Models.Product))
         {
             ProductId = productId;
             EanCode = ean;

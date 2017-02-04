@@ -10,7 +10,7 @@ namespace Wilcommerce.Catalog.Events.Product
         public string Url { get; }
 
         public ProductUrlChangedEvent(Guid productId, string url)
-            : base()
+            : base(productId, typeof(Models.Product))
         {
             ProductId = productId;
             Url = url;

@@ -10,7 +10,7 @@ namespace Wilcommerce.Catalog.Events.Product
         public Guid AttributeId { get; }
 
         public ProductAttributeRemovedEvent(Guid productId, Guid attributeId)
-            : base()
+            : base(productId, typeof(Models.Product))
         {
             ProductId = productId;
             AttributeId = attributeId;
