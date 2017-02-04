@@ -12,7 +12,7 @@ namespace Wilcommerce.Catalog.Events.CustomAttribute
         public string Type { get; }
 
         public CustomAttributeCreatedEvent(Guid attributeId, string name, string type)
-            : base()
+            : base(attributeId, typeof(Models.CustomAttribute))
         {
             AttributeId = attributeId;
             Name = name;

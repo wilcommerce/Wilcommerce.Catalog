@@ -12,7 +12,7 @@ namespace Wilcommerce.Catalog.Events.Product
         public object Value { get; }
 
         public ProductAttributeAddedEvent(Guid productId, Guid attributeId, object value)
-            : base()
+            : base(productId, typeof(Models.Product))
         {
             ProductId = productId;
             AttributeId = attributeId;

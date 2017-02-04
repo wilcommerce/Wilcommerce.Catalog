@@ -10,7 +10,7 @@ namespace Wilcommerce.Catalog.Events.Product
         public int UnitInStock { get; }
 
         public ProductUnitInStockChangedEvent(Guid productId, int unitInStock)
-            : base()
+            : base(productId, typeof(Models.Product))
         {
             ProductId = productId;
             UnitInStock = unitInStock;

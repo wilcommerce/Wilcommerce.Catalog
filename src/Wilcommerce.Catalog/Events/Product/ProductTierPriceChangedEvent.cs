@@ -4,9 +4,11 @@ using Wilcommerce.Core.Infrastructure;
 
 namespace Wilcommerce.Catalog.Events.Product
 {
-    public class ProductTierPriceAddedEvent : DomainEvent
+    public class ProductTierPriceChangedEvent : DomainEvent
     {
         public Guid ProductId { get; }
+
+        public Guid TierPriceId { get; }
 
         public int FromQuantity { get; }
 
@@ -14,10 +16,11 @@ namespace Wilcommerce.Catalog.Events.Product
 
         public Currency Price { get; }
 
-        public ProductTierPriceAddedEvent(Guid productId, int fromQuantity, int toQuantity, Currency price)
+        public ProductTierPriceChangedEvent(Guid productId, Guid tierPriceId, int fromQuantity, int toQuantity, Currency price)
             : base(productId, typeof(Models.Product))
         {
             ProductId = productId;
+            TierPriceId = tierPriceId;
             FromQuantity = fromQuantity;
             ToQuantity = toQuantity;
             Price = price;
@@ -25,7 +28,7 @@ namespace Wilcommerce.Catalog.Events.Product
 
         public override string ToString()
         {
-            return $"[{FiredOn.ToString()}] Tier price {FromQuantity} - {ToQuantity} ({Price.Code} {Price.Amount}) added to product {ProductId}";
+            return $"[{FiredOn.ToString()}] Tier price {TierPriceId} changed to {FromQuantity} - {ToQuantity} ({Price.Code} {Price.Amount}) for product {ProductId}";
         }
     }
 }

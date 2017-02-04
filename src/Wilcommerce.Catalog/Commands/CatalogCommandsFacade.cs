@@ -1223,6 +1223,24 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        public async Task ChangeProductTierPrice(Guid productId, Guid tierPriceId, int fromQuantity, int toQuantity, Currency price)
+        {
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                product.ChangeTierPrice(tierPriceId, fromQuantity, toQuantity, price);
+
+                await Repository.SaveChangesAsync();
+
+                var @event = new ProductTierPriceChangedEvent(productId, tierPriceId, fromQuantity, toQuantity, price);
+                EventBus.RaiseEvent(@event);
+            }
+            catch 
+            {
+                throw;
+            }
+        }
+
         #endregion
 
         #region CatalogSettings Commands

@@ -515,6 +515,17 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="seo">The SEO information</param>
         /// <returns></returns>
         Task SetProductSeo(Guid productId, SeoData seo);
+
+        /// <summary>
+        /// Change the tier price for the product
+        /// </summary>
+        /// <param name="productId">The product id</param>
+        /// <param name="tierPriceId">The tier price id</param>
+        /// <param name="fromQuantity">The new starting quantity</param>
+        /// <param name="toQuantity">The new ending quantity</param>
+        /// <param name="price">The new price</param>
+        /// <returns></returns>
+        Task ChangeProductTierPrice(Guid productId, Guid tierPriceId, int fromQuantity, int toQuantity, Currency price);
         #endregion
 
         #region CatalogSettings Commands

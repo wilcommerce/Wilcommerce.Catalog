@@ -10,7 +10,7 @@ namespace Wilcommerce.Catalog.Events.Category
         public string Code { get; }
 
         public CategoryCodeChangedEvent(Guid categoryId, string code)
-            : base()
+            : base(categoryId, typeof(Models.Category))
         {
             CategoryId = categoryId;
             Code = code;

@@ -10,7 +10,7 @@ namespace Wilcommerce.Catalog.Events.Product
         public Guid TierPriceId { get; }
 
         public ProductTierPriceRemovedEvent(Guid productId, Guid tierPriceId)
-            : base()
+            : base(productId, typeof(Models.Product))
         {
             ProductId = productId;
             TierPriceId = tierPriceId;

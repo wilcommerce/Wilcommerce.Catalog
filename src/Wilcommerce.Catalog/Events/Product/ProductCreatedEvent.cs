@@ -14,7 +14,7 @@ namespace Wilcommerce.Catalog.Events.Product
         public string Name { get; }
 
         public ProductCreatedEvent(Guid productId, string ean, string sku, string name)
-            : base()
+            : base(productId, typeof(Models.Product))
         {
             ProductId = productId;
             EanCode = ean;

@@ -8,7 +8,7 @@ namespace Wilcommerce.Catalog.Events.CustomAttribute
         public Guid AttributeId { get; }
 
         public CustomAttributeDeletedEvent(Guid attributeId)
-            : base()
+            : base(attributeId, typeof(Models.CustomAttribute))
         {
             AttributeId = attributeId;
         }
