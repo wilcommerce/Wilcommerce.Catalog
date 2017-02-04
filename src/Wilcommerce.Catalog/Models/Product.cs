@@ -789,6 +789,35 @@ namespace Wilcommerce.Catalog.Models
             Seo = seo;
         }
 
+        public virtual void ChangeTierPrice(Guid tierPriceId, int fromQuantity, int toQuantity, Currency price)
+        {
+            if (!TierPriceEnabled)
+            {
+                throw new InvalidOperationException("Tier price disabled");
+            }
+
+            var tierPrice = _TierPrices.FirstOrDefault(t => t.Id == tierPriceId);
+            if (tierPrice == null)
+            {
+                throw new InvalidOperationException("Tier price not found");
+            }
+
+            if (tierPrice.FromQuantity != fromQuantity)
+            {
+                tierPrice.FromQuantity = fromQuantity;
+            }
+
+            if (tierPrice.ToQuantity != toQuantity)
+            {
+                tierPrice.ToQuantity = toQuantity;
+            }
+
+            if (tierPrice.Price != price)
+            {
+                tierPrice.Price = price;
+            }
+        }
+
         #endregion
 
         #region Factory Methods

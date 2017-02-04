@@ -1,4 +1,5 @@
-﻿using Wilcommerce.Core.Infrastructure;
+﻿using System;
+using Wilcommerce.Core.Infrastructure;
 
 namespace Wilcommerce.Catalog.Events.Product.Handlers
 {
@@ -27,7 +28,8 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
         IHandleEvent<ProductReviewApprovedEvent>,
         IHandleEvent<ProductReviewRemovedEvent>,
         IHandleEvent<ProductImageAddedEvent>,
-        IHandleEvent<ProductImageRemovedEvent>
+        IHandleEvent<ProductImageRemovedEvent>,
+        IHandleEvent<ProductTierPriceChangedEvent>
     {
         public IEventStore EventStore { get; }
 
@@ -325,6 +327,18 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
         }
 
         public void Handle(ProductImageRemovedEvent @event)
+        {
+            try
+            {
+                EventStore.Save(@event);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void Handle(ProductTierPriceChangedEvent @event)
         {
             try
             {
