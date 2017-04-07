@@ -16,15 +16,47 @@ namespace Wilcommerce.Catalog.Models
         /// </summary>
         public Guid Id { get; set; }
 
+        #region Protected fields
+        /// <summary>
+        /// The product's variants
+        /// </summary>
+        protected ICollection<Product> _variants;
+
+        /// <summary>
+        /// The product's categories
+        /// </summary>
+        protected ICollection<ProductCategory> _categories;
+
+        /// <summary>
+        /// The product's tier prices
+        /// </summary>
+        protected ICollection<TierPrice> _tierPrices;
+
+        /// <summary>
+        /// The product's attributes
+        /// </summary>
+        protected ICollection<ProductAttribute> _attributes;
+
+        /// <summary>
+        /// The product's reviews
+        /// </summary>
+        protected ICollection<ProductReview> _reviews;
+
+        /// <summary>
+        /// The product's images
+        /// </summary>
+        protected ICollection<ProductImage> _images;
+        #endregion
+
         #region Constructor
         protected Product()
         {
-            _Variants = new HashSet<Product>();
-            _Categories = new HashSet<ProductCategory>();
-            _TierPrices = new HashSet<TierPrice>();
-            _Attributes = new HashSet<ProductAttribute>();
-            _Reviews = new HashSet<ProductReview>();
-            _Images = new HashSet<ProductImage>();
+            _variants = new HashSet<Product>();
+            _categories = new HashSet<ProductCategory>();
+            _tierPrices = new HashSet<TierPrice>();
+            _attributes = new HashSet<ProductAttribute>();
+            _reviews = new HashSet<ProductReview>();
+            _images = new HashSet<ProductImage>();
         }
         #endregion
 
@@ -80,14 +112,9 @@ namespace Wilcommerce.Catalog.Models
         public DateTime? OnSaleTo { get; protected set; }
 
         /// <summary>
-        /// Get or set the product's variants
-        /// </summary>
-        protected virtual ICollection<Product> _Variants { get; set; }
-
-        /// <summary>
         /// Get the product's variants
         /// </summary>
-        public IEnumerable<Product> Variants => _Variants;
+        public IEnumerable<Product> Variants => _variants;
 
         /// <summary>
         /// Get or set the main product
@@ -100,29 +127,24 @@ namespace Wilcommerce.Catalog.Models
         public virtual Brand Vendor { get; protected set; }
 
         /// <summary>
-        /// Get or set the product's categories
+        /// Get the associated category
         /// </summary>
-        protected virtual ICollection<ProductCategory> _Categories { get; set; }
+        public IEnumerable<ProductCategory> ProductCategories => _categories;
 
         /// <summary>
         /// Get the product's category
         /// </summary>
-        public IEnumerable<Category> Categories => _Categories.Select(p => p.Category);
+        public IEnumerable<Category> Categories => _categories.Select(c => c.Category);
 
         /// <summary>
         /// Get the main category for the product
         /// </summary>
-        public Category MainCategory => _Categories.FirstOrDefault(c => c.IsMain)?.Category;
-
-        /// <summary>
-        /// Get or set the product's custom attributes
-        /// </summary>
-        protected virtual ICollection<ProductAttribute> _Attributes { get; set; }
+        public Category MainCategory => _categories.FirstOrDefault(c => c.IsMain)?.Category;
 
         /// <summary>
         /// Get the product's custom attributes
         /// </summary>
-        public IEnumerable<ProductAttribute> Attributes => _Attributes;
+        public IEnumerable<ProductAttribute> Attributes => _attributes;
 
         /// <summary>
         /// Get or set whether the product is deleted
@@ -135,34 +157,19 @@ namespace Wilcommerce.Catalog.Models
         public bool TierPriceEnabled { get; protected set; }
 
         /// <summary>
-        /// Get or set the product's tier prices
-        /// </summary>
-        protected virtual ICollection<TierPrice> _TierPrices { get; set; }
-
-        /// <summary>
         /// Get the product's tier prices
         /// </summary>
-        public IEnumerable<TierPrice> TierPrices => _TierPrices;
-
-        /// <summary>
-        /// Get or set the product's reviews
-        /// </summary>
-        protected virtual ICollection<ProductReview> _Reviews { get; set; }
+        public IEnumerable<TierPrice> TierPrices => _tierPrices;
 
         /// <summary>
         /// Get the product's reviews
         /// </summary>
-        public IEnumerable<ProductReview> Reviews => _Reviews;
-
-        /// <summary>
-        /// Get or set the product's images
-        /// </summary>
-        protected virtual ICollection<ProductImage> _Images { get; set; }
+        public IEnumerable<ProductReview> Reviews => _reviews;
 
         /// <summary>
         /// Get the product's images
         /// </summary>
-        public IEnumerable<ProductImage> Images => _Images;
+        public IEnumerable<ProductImage> Images => _images;
 
         /// <summary>
         /// Get or set the SEO information for the product
@@ -448,17 +455,17 @@ namespace Wilcommerce.Catalog.Models
                 throw new ArgumentNullException("category");
             }
 
-            if (_Categories.Any(c => c.CategoryId == category.Id))
+            if (_categories.Any(c => c.CategoryId == category.Id))
             {
                 throw new ArgumentException("The category is already in collection");
             }
 
-            if (isMain && _Categories.Any(c => c.IsMain))
+            if (isMain && _categories.Any(c => c.IsMain))
             {
                 throw new ArgumentException("There's already a main category");
             }
 
-            _Categories.Add(new ProductCategory
+            _categories.Add(new ProductCategory
             {
                 CategoryId = category.Id,
                 IsMain = isMain
@@ -508,12 +515,12 @@ namespace Wilcommerce.Catalog.Models
                 throw new ArgumentException("Price amount cannot be less than zero");
             }
 
-            if (_Variants.Any(v => v.Name == name && v.EanCode == ean && v.Sku == sku))
+            if (_variants.Any(v => v.Name == name && v.EanCode == ean && v.Sku == sku))
             {
                 throw new InvalidOperationException("The variant is already in collection");
             }
 
-            _Variants.Add(new Product
+            _variants.Add(new Product
             {
                 Name = name,
                 EanCode = ean,
@@ -540,12 +547,12 @@ namespace Wilcommerce.Catalog.Models
                 throw new ArgumentNullException("price");
             }
 
-            if (_TierPrices.Any(t => t.FromQuantity == fromQuantity && t.ToQuantity == toQuantity))
+            if (_tierPrices.Any(t => t.FromQuantity == fromQuantity && t.ToQuantity == toQuantity))
             {
                 throw new ArgumentException("The tier price is already in collection");
             }
 
-            _TierPrices.Add(new TierPrice
+            _tierPrices.Add(new TierPrice
             {
                 Id = Guid.NewGuid(),
                 FromQuantity = fromQuantity,
@@ -566,12 +573,12 @@ namespace Wilcommerce.Catalog.Models
                 throw new ArgumentNullException("attribute");
             }
 
-            if(_Attributes.Any(a => a.Attribute == attribute))
+            if(_attributes.Any(a => a.Attribute == attribute))
             {
                 throw new ArgumentException("The attribute is already in collection");
             }
 
-            _Attributes.Add(new ProductAttribute
+            _attributes.Add(new ProductAttribute
             {
                 Id = Guid.NewGuid(),
                 Attribute = attribute,
@@ -607,7 +614,7 @@ namespace Wilcommerce.Catalog.Models
                 throw new ArgumentException("rating could not be less than zero", "rating");
             }
 
-            _Reviews.Add(new ProductReview
+            _reviews.Add(new ProductReview
             {
                 Id = Guid.NewGuid(),
                 Name = name,
@@ -642,7 +649,7 @@ namespace Wilcommerce.Catalog.Models
                 throw new ArgumentNullException("originalName");
             }
 
-            _Images.Add(new ProductImage
+            _images.Add(new ProductImage
             {
                 Id = Guid.NewGuid(),
                 Path = path,
@@ -659,7 +666,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="reviewId">The id of the review to approve</param>
         public virtual void ApproveReview(Guid reviewId)
         {
-            var review = _Reviews.FirstOrDefault(r => r.Id == reviewId);
+            var review = _reviews.FirstOrDefault(r => r.Id == reviewId);
             if (review == null)
             {
                 throw new InvalidOperationException("Review not found");
@@ -675,7 +682,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="reviewId">The id of the review</param>
         public virtual void RemoveReviewApproval(Guid reviewId)
         {
-            var review = _Reviews.FirstOrDefault(r => r.Id == reviewId);
+            var review = _reviews.FirstOrDefault(r => r.Id == reviewId);
             if (review == null)
             {
                 throw new InvalidOperationException("Review not found");
@@ -691,13 +698,13 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="reviewId">The id of the review to delete</param>
         public virtual void DeleteReview(Guid reviewId)
         {
-            var review = _Reviews.FirstOrDefault(r => r.Id == reviewId);
+            var review = _reviews.FirstOrDefault(r => r.Id == reviewId);
             if (review == null)
             {
                 throw new InvalidOperationException("Review not found");
             }
 
-            if (!_Reviews.Remove(review))
+            if (!_reviews.Remove(review))
             {
                 throw new InvalidOperationException("Review not removed");
             }
@@ -709,13 +716,13 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="attributeId">The id of the attribute to delete</param>
         public virtual void DeleteAttribute(Guid attributeId)
         {
-            var attribute = _Attributes.FirstOrDefault(a => a.Id == attributeId);
+            var attribute = _attributes.FirstOrDefault(a => a.Id == attributeId);
             if (attribute == null)
             {
                 throw new InvalidOperationException("Attribute not found");
             }
 
-            if (!_Attributes.Remove(attribute))
+            if (!_attributes.Remove(attribute))
             {
                 throw new InvalidOperationException("Attribute not removed");
             }
@@ -727,13 +734,13 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="imageId">The id of the image to delete</param>
         public virtual void DeleteImage(Guid imageId)
         {
-            var image = _Images.FirstOrDefault(i => i.Id == imageId);
+            var image = _images.FirstOrDefault(i => i.Id == imageId);
             if (image == null)
             {
                 throw new InvalidOperationException("Image not found");
             }
 
-            if (!_Images.Remove(image))
+            if (!_images.Remove(image))
             {
                 throw new InvalidOperationException("Image not removed");
             }
@@ -745,13 +752,13 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="tierPriceId">The id of the tier price to delete</param>
         public virtual void DeleteTierPrice(Guid tierPriceId)
         {
-            var tierPrice = _TierPrices.FirstOrDefault(t => t.Id == tierPriceId);
+            var tierPrice = _tierPrices.FirstOrDefault(t => t.Id == tierPriceId);
             if (tierPrice == null)
             {
                 throw new InvalidOperationException("Tier price not found");
             }
 
-            if (!_TierPrices.Remove(tierPrice))
+            if (!_tierPrices.Remove(tierPrice))
             {
                 throw new InvalidOperationException("Tier price not deleted");
             }
@@ -763,13 +770,13 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="variantId">The id of the variant to remove</param>
         public virtual void RemoveVariant(Guid variantId)
         {
-            var variant = _Variants.FirstOrDefault(v => v.Id == variantId);
+            var variant = _variants.FirstOrDefault(v => v.Id == variantId);
             if (variant == null)
             {
                 throw new InvalidOperationException("Variant not found");
             }
 
-            if (!_Variants.Remove(variant))
+            if (!_variants.Remove(variant))
             {
                 throw new InvalidOperationException("Variant not removed");
             }
@@ -796,7 +803,7 @@ namespace Wilcommerce.Catalog.Models
                 throw new InvalidOperationException("Tier price disabled");
             }
 
-            var tierPrice = _TierPrices.FirstOrDefault(t => t.Id == tierPriceId);
+            var tierPrice = _tierPrices.FirstOrDefault(t => t.Id == tierPriceId);
             if (tierPrice == null)
             {
                 throw new InvalidOperationException("Tier price not found");
