@@ -16,11 +16,23 @@ namespace Wilcommerce.Catalog.Models
         /// </summary>
         public Guid Id { get; set; }
 
+        #region Protected fields
+        /// <summary>
+        /// The list of children categories
+        /// </summary>
+        protected ICollection<Category> _children;
+
+        /// <summary>
+        /// The products association
+        /// </summary>
+        protected ICollection<ProductCategory> _products;
+        #endregion
+
         #region Constructor
         protected Category()
         {
-            _Children = new HashSet<Category>();
-            _Products = new HashSet<ProductCategory>();
+            _children = new HashSet<Category>();
+            _products = new HashSet<ProductCategory>();
         }
         #endregion
 
@@ -71,24 +83,14 @@ namespace Wilcommerce.Catalog.Models
         public virtual Category Parent { get; protected set; }
 
         /// <summary>
-        /// Get or set the list of children categories
+        /// Get the list of children categories
         /// </summary>
-        protected virtual ICollection<Category> _Children { get; set; }
-
-        /// <summary>
-        /// Get the list of childrend categories
-        /// </summary>
-        public IEnumerable<Category> Children => _Children;
-
-        /// <summary>
-        /// Get or set the list of products associated to the category
-        /// </summary>
-        protected virtual ICollection<ProductCategory> _Products { get; set; }
+        public IEnumerable<Category> Children => _children;
 
         /// <summary>
         /// Get the list of products associated to the category
         /// </summary>
-        public IEnumerable<Product> Products => _Products.Select(p => p.Product);
+        public IEnumerable<ProductCategory> Products => _products;
 
         /// <summary>
         /// Get or set the SEO information
@@ -155,12 +157,12 @@ namespace Wilcommerce.Catalog.Models
                 throw new ArgumentNullException("children");
             }
 
-            if (_Children.Contains(child))
+            if (_children.Contains(child))
             {
                 throw new ArgumentException("The category contains the children yet");
             }
 
-            _Children.Add(child);
+            _children.Add(child);
         }
 
         /// <summary>
@@ -265,8 +267,8 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="childId">The id of the category to remove</param>
         public virtual void RemoveChild(Guid childId)
         {
-            var child = _Children.FirstOrDefault(c => c.Id == childId);
-            if (!_Children.Remove(child))
+            var child = _children.FirstOrDefault(c => c.Id == childId);
+            if (!_children.Remove(child))
             {
                 throw new InvalidOperationException("Cannot remove child");
             }

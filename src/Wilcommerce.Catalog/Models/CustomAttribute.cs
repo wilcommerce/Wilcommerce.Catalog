@@ -15,6 +15,13 @@ namespace Wilcommerce.Catalog.Models
         /// </summary>
         public Guid Id { get; set; }
 
+        #region Protected fields
+        /// <summary>
+        /// The list of values as a string
+        /// </summary>
+        protected string _values;
+        #endregion
+
         #region Constructor
         protected CustomAttribute() { }
         #endregion
@@ -46,15 +53,9 @@ namespace Wilcommerce.Catalog.Models
         public bool Deleted { get; protected set; }
 
         /// <summary>
-        /// Get or set the available values for the attribute
-        /// </summary>
-        protected virtual string _Values { get; set; }
-
-        /// <summary>
         /// Get the list of available values for the attribute
         /// </summary>
-        public IEnumerable<object> Values => _Values?.Split(",".ToCharArray()).AsEnumerable<object>();
-
+        public IEnumerable<object> Values => _values?.Split(",".ToCharArray()).AsEnumerable<object>();
         #endregion
 
         #region Behaviors
@@ -69,14 +70,14 @@ namespace Wilcommerce.Catalog.Models
                 throw new ArgumentNullException("value");
             }
 
-            var valueList = string.IsNullOrEmpty(_Values) ? (new List<object>()) : _Values.Split(",".ToCharArray()).ToList<object>();
+            var valueList = string.IsNullOrEmpty(_values) ? (new List<object>()) : _values.Split(",".ToCharArray()).ToList<object>();
             if (valueList.Contains(value))
             {
                 throw new ArgumentException("The value list contains the value", "value");
             }
 
             valueList.Add(value);
-            _Values = string.Join(",", valueList);
+            _values = string.Join(",", valueList);
         }
 
         /// <summary>
@@ -90,12 +91,12 @@ namespace Wilcommerce.Catalog.Models
                 throw new ArgumentNullException("value");
             }
 
-            if (string.IsNullOrEmpty(_Values))
+            if (string.IsNullOrEmpty(_values))
             {
                 throw new InvalidOperationException("Cannot remove item from empty list");
             }
 
-            var valueList = _Values.Split(",".ToCharArray()).ToList<object>();
+            var valueList = _values.Split(",".ToCharArray()).ToList<object>();
             if (!valueList.Contains(value))
             {
                 throw new ArgumentException("The value list does not contains the value", "value");
@@ -106,7 +107,7 @@ namespace Wilcommerce.Catalog.Models
                 throw new Exception("The value cannot be removed from the list");
             }
 
-            _Values = string.Join(",", valueList);
+            _values = string.Join(",", valueList);
         }
 
         /// <summary>
