@@ -27,16 +27,16 @@ namespace Wilcommerce.Catalog.ReadModels
                    select p;
         }
 
-        public static IQueryable<Product> ByMainProduct(this IQueryable<Product> products, Guid productId)
+        public static IQueryable<Product> VariantsOf(this IQueryable<Product> products, Guid productId)
         {
             return from p in products
-                   where p.MainProduct.Id == productId
+                   where p.MainProduct != null && p.MainProduct.Id == productId
                    select p;
         }
 
         public static IQueryable<Product> WithUnitInStock(this IQueryable<Product> products)
         {
-            return WithUnitInStock(products, 0);
+            return products.WithUnitInStock(0);
         }
 
         public static IQueryable<Product> WithUnitInStock(this IQueryable<Product> products, int unitInStock)
@@ -71,6 +71,13 @@ namespace Wilcommerce.Catalog.ReadModels
         {
             return from p in products
                    where p.IsOnSale && p.OnSaleTo <= tillDate
+                   select p;
+        }
+
+        public static IQueryable<Product> ByVendor(this IQueryable<Product> products, Guid vendorId)
+        {
+            return from p in products
+                   where p.Vendor != null && p.Vendor.Id == vendorId
                    select p;
         }
     }

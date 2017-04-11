@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Wilcommerce.Core.Common.Domain.Models;
 using Wilcommerce.Core.Infrastructure;
 
@@ -18,8 +19,15 @@ namespace Wilcommerce.Catalog.Models
         #region Constructor
         protected Brand()
         {
-            _Products = new HashSet<Product>();
+            _products = new HashSet<Product>();
         }
+        #endregion
+
+        #region Protected fields
+        /// <summary>
+        /// The list of associated products
+        /// </summary>
+        protected ICollection<Product> _products;
         #endregion
 
         #region Properties
@@ -54,14 +62,9 @@ namespace Wilcommerce.Catalog.Models
         public virtual SeoData Seo { get; protected set; }
 
         /// <summary>
-        /// Get or set the list of products associated to the brand
-        /// </summary>
-        protected virtual ICollection<Product> _Products { get; set; }
-
-        /// <summary>
         /// Get the list of products associated to the brand
         /// </summary>
-        public IEnumerable<Product> Products => _Products;
+        public IEnumerable<Product> Products => _products;
 
         #endregion
 
