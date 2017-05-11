@@ -48,7 +48,7 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Get the string for the available values
         /// </summary>
-        public virtual string _Values { get; protected set; }
+        public string _Values { get; protected set; }
 
         /// <summary>
         /// Get the list of available values for the attribute
