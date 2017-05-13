@@ -4,7 +4,7 @@
   "testRunner": "xunit",
   "dependencies": {
     "NETStandard.Library": "1.6.1",
-    "Wilcommerce.Catalog": "1.0.0-beta2",
+    "Wilcommerce.Catalog": "1.0.0-beta4",
     "xunit": "2.1.0",
     "dotnet-test-xunit": "2.2.0-preview2-build1029"
   },

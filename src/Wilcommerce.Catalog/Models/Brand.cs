@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Wilcommerce.Core.Common.Domain.Models;
 using Wilcommerce.Core.Infrastructure;
 
