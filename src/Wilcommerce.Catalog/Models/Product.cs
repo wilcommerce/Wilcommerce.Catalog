@@ -522,6 +522,7 @@ namespace Wilcommerce.Catalog.Models
 
             _variants.Add(new Product
             {
+                Id = Guid.NewGuid(),
                 Name = name,
                 EanCode = ean,
                 Sku = sku,
