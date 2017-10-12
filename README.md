@@ -17,3 +17,6 @@ Using this command component you can manage the persistence of all the catalog e
 
 ## Events
 In the **Events** namespace there are all the events that could happen after an action made on a catalog component.
+
+# Contributing
+If you want to contribute to Wilcommerce please, check the [CONTRIBUTING](CONTRIBUTING.md) file.
