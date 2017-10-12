@@ -14,7 +14,7 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Get or set the product's id
         /// </summary>
-        public Guid Id { get; set; }
+        public Guid Id { get; protected set; }
 
         #region Protected fields
         /// <summary>
