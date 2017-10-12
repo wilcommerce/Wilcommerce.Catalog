@@ -5,9 +5,9 @@ namespace Wilcommerce.Catalog.Events.CustomAttribute
 {
     public class CustomAttributeValueRemovedEvent : DomainEvent
     {
-        public Guid AttributeId { get; }
+        public Guid AttributeId { get; private set; }
 
-        public object Value { get; }
+        public object Value { get; private set; }
 
         public CustomAttributeValueRemovedEvent(Guid attributeId, object value)
             : base(attributeId, typeof(Models.CustomAttribute))

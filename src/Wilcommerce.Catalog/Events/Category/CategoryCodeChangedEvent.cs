@@ -5,9 +5,9 @@ namespace Wilcommerce.Catalog.Events.Category
 {
     public class CategoryCodeChangedEvent : DomainEvent
     {
-        public Guid CategoryId { get; }
+        public Guid CategoryId { get; private set; }
 
-        public string Code { get; }
+        public string Code { get; private set; }
 
         public CategoryCodeChangedEvent(Guid categoryId, string code)
             : base(categoryId, typeof(Models.Category))

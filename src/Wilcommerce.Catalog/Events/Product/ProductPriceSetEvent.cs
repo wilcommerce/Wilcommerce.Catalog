@@ -6,9 +6,9 @@ namespace Wilcommerce.Catalog.Events.Product
 {
     public class ProductPriceSetEvent : DomainEvent
     {
-        public Guid ProductId { get; }
+        public Guid ProductId { get; private set; }
 
-        public Currency Price { get; }
+        public Currency Price { get; private set; }
 
         public ProductPriceSetEvent(Guid productId, Currency price)
             : base(productId, typeof(Models.Product))

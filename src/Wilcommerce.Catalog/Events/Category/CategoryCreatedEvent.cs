@@ -5,11 +5,11 @@ namespace Wilcommerce.Catalog.Events.Category
 {
     public class CategoryCreatedEvent : DomainEvent
     {
-        public Guid CategoryId { get; }
+        public Guid CategoryId { get; private set; }
 
-        public string Name { get; }
+        public string Name { get; private set; }
 
-        public string Code { get; }
+        public string Code { get; private set; }
 
         public CategoryCreatedEvent(Guid categoryId, string name, string code)
             : base(categoryId, typeof(Models.Category))

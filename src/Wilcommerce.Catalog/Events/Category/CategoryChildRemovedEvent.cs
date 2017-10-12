@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Wilcommerce.Core.Infrastructure;
 
 namespace Wilcommerce.Catalog.Events.Category
 {
     public class CategoryChildRemovedEvent : DomainEvent
     {
-        public Guid CategoryId { get; }
+        public Guid CategoryId { get; private set; }
 
-        public Guid ChildId { get; }
+        public Guid ChildId { get; private set; }
 
         public CategoryChildRemovedEvent(Guid categoryId, Guid childId)
             : base(categoryId, typeof(Models.Category))

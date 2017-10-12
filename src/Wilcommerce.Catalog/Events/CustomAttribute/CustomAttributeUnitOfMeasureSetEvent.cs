@@ -5,9 +5,9 @@ namespace Wilcommerce.Catalog.Events.CustomAttribute
 {
     public class CustomAttributeUnitOfMeasureSetEvent : DomainEvent
     {
-        public Guid AttributeId { get; }
+        public Guid AttributeId { get; private set; }
 
-        public string UnitOfMeasure { get; }
+        public string UnitOfMeasure { get; private set; }
 
         public CustomAttributeUnitOfMeasureSetEvent(Guid attributeId, string unitOfMeasure)
             : base(attributeId, typeof(Models.CustomAttribute))

@@ -5,7 +5,7 @@ namespace Wilcommerce.Catalog.Events.Brand
 {
     public class BrandRestoredEvent : DomainEvent
     {
-        public Guid BrandId { get; }
+        public Guid BrandId { get; private set; }
 
         public BrandRestoredEvent(Guid brandId)
             : base(brandId, typeof(Models.Brand))

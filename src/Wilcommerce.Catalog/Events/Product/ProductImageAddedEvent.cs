@@ -5,11 +5,11 @@ namespace Wilcommerce.Catalog.Events.Product
 {
     public class ProductImageAddedEvent : DomainEvent
     {
-        public Guid ProductId { get; }
+        public Guid ProductId { get; private set; }
 
-        public string Name { get; }
+        public string Name { get; private set; }
 
-        public string OriginalName { get; }
+        public string OriginalName { get; private set; }
 
         public ProductImageAddedEvent(Guid productId, string name, string originalName)
             : base(productId, typeof(Models.Product))

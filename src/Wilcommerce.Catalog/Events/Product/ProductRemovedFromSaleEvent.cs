@@ -5,7 +5,7 @@ namespace Wilcommerce.Catalog.Events.Product
 {
     public class ProductRemovedFromSaleEvent : DomainEvent
     {
-        public Guid ProductId { get; }
+        public Guid ProductId { get; private set; }
 
         public ProductRemovedFromSaleEvent(Guid productId)
             : base(productId, typeof(Models.Product))
