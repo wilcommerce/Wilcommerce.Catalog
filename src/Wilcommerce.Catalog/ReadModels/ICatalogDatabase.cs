@@ -21,6 +21,8 @@ namespace Wilcommerce.Catalog.ReadModels
 
         IQueryable<TierPrice> TierPrices { get; }
 
+        IQueryable<ProductCategory> ProductCategories { get; }
+
         IQueryable<CatalogSettings> Settings { get; }
     }
 }
