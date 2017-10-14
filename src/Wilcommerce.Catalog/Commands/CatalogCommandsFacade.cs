@@ -12,12 +12,24 @@ using Wilcommerce.Catalog.Events.Product;
 
 namespace Wilcommerce.Catalog.Commands
 {
+    /// <see cref="ICatalogCommandsFacade"/>
     public class CatalogCommandsFacade : ICatalogCommandsFacade
     {
+        /// <summary>
+        /// Get the repository
+        /// </summary>
         public Repository.IRepository Repository { get; }
 
+        /// <summary>
+        /// Get the event bus
+        /// </summary>
         public IEventBus EventBus { get; }
 
+        /// <summary>
+        /// Construct the command facade
+        /// </summary>
+        /// <param name="repository">The repository</param>
+        /// <param name="eventBus">The event bus</param>
         public CatalogCommandsFacade(Repository.IRepository repository, IEventBus eventBus)
         {
             Repository = repository;
@@ -25,6 +37,7 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         #region Brand Commands
+        /// <see cref="ICatalogCommandsFacade.ChangeBrandDescription(Guid, string)"/>
         public async Task ChangeBrandDescription(Guid brandId, string description)
         {
             try
@@ -43,6 +56,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.ChangeBrandName(Guid, string)"/>
         public async Task ChangeBrandName(Guid brandId, string name)
         {
             try
@@ -61,6 +75,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.ChangeBrandUrl(Guid, string)"/>
         public async Task ChangeBrandUrl(Guid brandId, string url)
         {
             try
@@ -79,6 +94,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.CreateNewBrand(string, string, string, Image)"/>
         public async Task<Guid> CreateNewBrand(string name, string url, string description, Image logo)
         {
             try
@@ -108,6 +124,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.DeleteBrand(Guid)"/>
         public async Task DeleteBrand(Guid brandId)
         {
             try
@@ -126,6 +143,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.RestoreBrand(Guid)"/>
         public async Task RestoreBrand(Guid brandId)
         {
             try
@@ -144,6 +162,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.SetBrandLogo(Guid, Image)"/>
         public async Task SetBrandLogo(Guid brandId, Image logo)
         {
             try
@@ -159,6 +178,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.SetBrandSeoData(Guid, SeoData)"/>
         public async Task SetBrandSeoData(Guid brandId, SeoData seo)
         {
             try
@@ -177,6 +197,7 @@ namespace Wilcommerce.Catalog.Commands
         #endregion
 
         #region Category Commands
+        /// <see cref="ICatalogCommandsFacade.CreateNewCategory(string, string, string, string, bool, DateTime?, DateTime?)"/>
         public async Task<Guid> CreateNewCategory(string code, string name, string url, string description, bool isVisible, DateTime? visibleFrom, DateTime? visibleTo)
         {
             try
@@ -217,6 +238,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.SetCategoryAsVisible(Guid, DateTime?, DateTime?)"/>
         public async Task SetCategoryAsVisible(Guid categoryId, DateTime? from, DateTime? to)
         {
             try
@@ -243,11 +265,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
-        /// <summary>
-        /// Hide the category
-        /// </summary>
-        /// <param name="categoryId">The category id</param>
-        /// <returns></returns>
+        /// <see cref="ICatalogCommandsFacade.HideCategory(Guid)"/>
         public async Task HideCategory(Guid categoryId)
         {
             try
@@ -263,6 +281,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.AddCategoryChild(Guid, Guid)"/>
         public async Task AddCategoryChild(Guid categoryId, Guid childId)
         {
             try
@@ -282,6 +301,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.ChangeCategoryName(Guid, string)"/>
         public async Task ChangeCategoryName(Guid categoryId, string name)
         {
             try
@@ -300,6 +320,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.ChangeCategoryCode(Guid, string)"/>
         public async Task ChangeCategoryCode(Guid categoryId, string code)
         {
             try
@@ -318,6 +339,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.ChangeCategoryDescription(Guid, string)"/>
         public async Task ChangeCategoryDescription(Guid categoryId, string description)
         {
             try
@@ -336,6 +358,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.ChangeCategoryUrl(Guid, string)"/>
         public async Task ChangeCategoryUrl(Guid categoryId, string url)
         {
             try
@@ -354,6 +377,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.SetParentForCategory(Guid, Guid)"/>
         public async Task SetParentForCategory(Guid categoryId, Guid parentId)
         {
             try
@@ -373,6 +397,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.DeleteCategory(Guid)"/>
         public async Task DeleteCategory(Guid categoryId)
         {
             try
@@ -391,6 +416,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.RestoreCategory(Guid)"/>
         public async Task RestoreCategory(Guid categoryId)
         {
             try
@@ -409,6 +435,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.RemoveChildForCategory(Guid, Guid)"/>
         public async Task RemoveChildForCategory(Guid categoryId, Guid childId)
         {
             try
@@ -427,6 +454,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.RemoveParentForCategory(Guid)"/>
         public async Task RemoveParentForCategory(Guid categoryId)
         {
             try
@@ -450,6 +478,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.SetCategorySeoData(Guid, SeoData)"/>
         public async Task SetCategorySeoData(Guid categoryId, SeoData seo)
         {
             try
@@ -467,6 +496,7 @@ namespace Wilcommerce.Catalog.Commands
         #endregion
 
         #region CustomAttribute Commands
+        /// <see cref="ICatalogCommandsFacade.CreateNewCustomAttribute(string, string, string, string, IEnumerable{object})"/>
         public async Task<Guid> CreateNewCustomAttribute(string name, string type, string description, string unitOfMeasure, IEnumerable<object> values)
         {
             try
@@ -501,6 +531,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.AddValueForAttribute(Guid, object)"/>
         public async Task AddValueForAttribute(Guid attributeId, object value)
         {
             try
@@ -519,6 +550,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.RemoveValueFromAttribute(Guid, object)"/>
         public async Task RemoveValueFromAttribute(Guid attributeId, object value)
         {
             try
@@ -537,6 +569,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.ChangeAttributeName(Guid, string)"/>
         public async Task ChangeAttributeName(Guid attributeId, string name)
         {
             try
@@ -555,6 +588,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.ChangeAttributeDescription(Guid, string)"/>
         public async Task ChangeAttributeDescription(Guid attributeId, string description)
         {
             try
@@ -573,6 +607,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.SetAttributeUnitOfMeasure(Guid, string)"/>
         public async Task SetAttributeUnitOfMeasure(Guid attributeId, string unitOfMeasure)
         {
             try
@@ -591,6 +626,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.ChangeAttributeDataType(Guid, string)"/>
         public async Task ChangeAttributeDataType(Guid attributeId, string dataType)
         {
             try
@@ -609,6 +645,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.DeleteCustomAttribute(Guid)"/>
         public async Task DeleteCustomAttribute(Guid attributeId)
         {
             try
@@ -627,6 +664,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.RestoreCustomAttribute(Guid)"/>
         public async Task RestoreCustomAttribute(Guid attributeId)
         {
             try
@@ -647,6 +685,7 @@ namespace Wilcommerce.Catalog.Commands
         #endregion
 
         #region Product Commands
+        /// <see cref="ICatalogCommandsFacade.CreateNewProduct(string, string, string, string, Currency, string, int, bool, DateTime?, DateTime?)"/>
         public async Task<Guid> CreateNewProduct(string ean, string sku, string name, string url, Currency price, string description, int unitInStock, bool isOnSale, DateTime? onSaleFrom, DateTime? onSaleTo)
         {
             try
@@ -697,6 +736,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.DeleteProduct(Guid)"/>
         public async Task DeleteProduct(Guid productId)
         {
             try
@@ -715,6 +755,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.RestoreProduct(Guid)"/>
         public async Task RestoreProduct(Guid productId)
         {
             try
@@ -733,6 +774,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.SetUnitInStockForProduct(Guid, int)"/>
         public async Task SetUnitInStockForProduct(Guid productId, int unitInStock)
         {
             try
@@ -751,6 +793,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.AddUnitInStockToProduct(Guid, int)"/>
         public async Task AddUnitInStockToProduct(Guid productId, int unitToAdd)
         {
             try
@@ -769,6 +812,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.RemoveUnitInStockFromProduct(Guid, int)"/>
         public async Task RemoveUnitInStockFromProduct(Guid productId, int unitToRemove)
         {
             try
@@ -787,6 +831,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.ChangeProductEanCode(Guid, string)"/>
         public async Task ChangeProductEanCode(Guid productId, string ean)
         {
             try
@@ -805,6 +850,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.ChangeProductSku(Guid, string)"/>
         public async Task ChangeProductSku(Guid productId, string sku)
         {
             try
@@ -823,6 +869,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.ChangeProductName(Guid, string)"/>
         public async Task ChangeProductName(Guid productId, string name)
         {
             try
@@ -841,6 +888,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.ChangeProductDescription(Guid, string)"/>
         public async Task ChangeProductDescription(Guid productId, string description)
         {
             try
@@ -859,6 +907,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.ChangeProductUrl(Guid, string)"/>
         public async Task ChangeProductUrl(Guid productId, string url)
         {
             try
@@ -877,6 +926,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.SetProductPrice(Guid, Currency)"/>
         public async Task SetProductPrice(Guid productId, Currency price)
         {
             try
@@ -895,6 +945,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.SetProductOnSale(Guid, DateTime?, DateTime?)"/>
         public async Task SetProductOnSale(Guid productId, DateTime? from, DateTime? to)
         {
             try
@@ -924,6 +975,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.RemoveProductFromSale(Guid)"/>
         public async Task RemoveProductFromSale(Guid productId)
         {
             try
@@ -942,6 +994,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.SetProductVendor(Guid, Guid)"/>
         public async Task SetProductVendor(Guid productId, Guid brandId)
         {
             try
@@ -962,6 +1015,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.AddCategoryToProduct(Guid, Guid)"/>
         public async Task AddCategoryToProduct(Guid productId, Guid categoryId)
         {
             try
@@ -982,6 +1036,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.AddMainCategoryToProduct(Guid, Guid)"/>
         public async Task AddMainCategoryToProduct(Guid productId, Guid categoryId)
         {
             try
@@ -1002,6 +1057,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.AddProductVariant(Guid, string, string, string, Currency)"/>
         public async Task AddProductVariant(Guid productId, string name, string ean, string sku, Currency price)
         {
             try
@@ -1020,6 +1076,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.RemoveProductVariant(Guid, Guid)"/>
         public async Task RemoveProductVariant(Guid productId, Guid variantId)
         {
             try
@@ -1038,6 +1095,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.AddAttributeToProduct(Guid, Guid, object)"/>
         public async Task AddAttributeToProduct(Guid productId, Guid attributeId, object value)
         {
             try
@@ -1058,6 +1116,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.RemoveProductAttribute(Guid, Guid)"/>
         public async Task RemoveProductAttribute(Guid productId, Guid attributeId)
         {
             try
@@ -1076,6 +1135,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.AddProductTierPrice(Guid, int, int, Currency)"/>
         public async Task AddProductTierPrice(Guid productId, int fromQuantity, int toQuantity, Currency price)
         {
             try
@@ -1099,6 +1159,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.RemoveTierPriceFromProduct(Guid, Guid)"/>
         public async Task RemoveTierPriceFromProduct(Guid productId, Guid tierPriceId)
         {
             try
@@ -1117,6 +1178,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.AddProductReview(Guid, string, int, string)"/>
         public async Task AddProductReview(Guid productId, string name, int rating, string comment)
         {
             try
@@ -1135,6 +1197,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.ApproveProductReview(Guid, Guid)"/>
         public async Task ApproveProductReview(Guid productId, Guid reviewId)
         {
             try
@@ -1153,6 +1216,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.RemoveProductReview(Guid, Guid)"/>
         public async Task RemoveProductReview(Guid productId, Guid reviewId)
         {
             try
@@ -1172,6 +1236,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.AddProductImage(Guid, string, string, string, bool, DateTime)"/>
         public async Task AddProductImage(Guid productId, string path, string name, string originalName, bool isMain, DateTime uploadedOn)
         {
             try
@@ -1190,6 +1255,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.RemoveProductImage(Guid, Guid)"/>
         public async Task RemoveProductImage(Guid productId, Guid imageId)
         {
             try
@@ -1208,6 +1274,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.SetProductSeo(Guid, SeoData)"/>
         public async Task SetProductSeo(Guid productId, SeoData seo)
         {
             try
@@ -1223,6 +1290,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.ChangeProductTierPrice(Guid, Guid, int, int, Currency)"/>
         public async Task ChangeProductTierPrice(Guid productId, Guid tierPriceId, int fromQuantity, int toQuantity, Currency price)
         {
             try
@@ -1244,7 +1312,7 @@ namespace Wilcommerce.Catalog.Commands
         #endregion
 
         #region CatalogSettings Commands
-
+        /// <see cref="ICatalogCommandsFacade.CreateCatalogSettings(int, int, CatalogSettings.ViewType, CatalogSettings.ViewType, bool, bool, int)"/>
         public async Task<Guid> CreateCatalogSettings(int categoriesPerPage, int productsPerPage, CatalogSettings.ViewType categoriesViewType, CatalogSettings.ViewType productsViewType, bool showPrices, bool allowReviews, int reviewsPerPage)
         {
             try
@@ -1269,6 +1337,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.ShowPrices(Guid, bool)"/>
         public async Task ShowPrices(Guid settingsId, bool showPrices)
         {
             try
@@ -1284,6 +1353,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.AllowProductReviews(Guid, bool)"/>
         public async Task AllowProductReviews(Guid settingsId, bool allowReviews)
         {
             try
@@ -1299,6 +1369,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.SetProductReviewsPerPage(Guid, int)"/>
         public async Task SetProductReviewsPerPage(Guid settingsId, int reviewsPerPage)
         {
             try
@@ -1314,6 +1385,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.SetCategoriesView(Guid, CatalogSettings.ViewType, int)"/>
         public async Task SetCategoriesView(Guid settingsId, CatalogSettings.ViewType viewType, int categoriesPerPage)
         {
             try
@@ -1330,6 +1402,7 @@ namespace Wilcommerce.Catalog.Commands
             }
         }
 
+        /// <see cref="ICatalogCommandsFacade.SetProductsView(Guid, CatalogSettings.ViewType, int)"/>
         public async Task SetProductsView(Guid settingsId, CatalogSettings.ViewType viewType, int productsPerPage)
         {
             try
