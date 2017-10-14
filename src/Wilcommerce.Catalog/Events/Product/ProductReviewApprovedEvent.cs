@@ -5,9 +5,9 @@ namespace Wilcommerce.Catalog.Events.Product
 {
     public class ProductReviewApprovedEvent : DomainEvent
     {
-        public Guid ProductId { get; }
+        public Guid ProductId { get; private set; }
 
-        public Guid ReviewId { get; }
+        public Guid ReviewId { get; private set; }
 
         public ProductReviewApprovedEvent(Guid productId, Guid reviewId)
             : base(productId, typeof(Models.Product))

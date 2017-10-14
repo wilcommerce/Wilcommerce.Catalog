@@ -5,9 +5,9 @@ namespace Wilcommerce.Catalog.Events.Brand
 {
     public class BrandCreatedEvent : DomainEvent
     {
-        public Guid BrandId { get; }
+        public Guid BrandId { get; private set; }
 
-        public string Name { get; }
+        public string Name { get; private set; }
 
         public BrandCreatedEvent(Guid brandId, string name)
             : base(brandId, typeof(Models.Brand))

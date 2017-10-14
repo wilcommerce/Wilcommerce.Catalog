@@ -11,7 +11,7 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Get or set the settings id
         /// </summary>
-        public Guid Id { get; set; }
+        public Guid Id { get; protected set; }
 
         #region Constructor
         protected CatalogSettings() { }

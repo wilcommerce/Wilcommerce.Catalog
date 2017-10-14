@@ -13,13 +13,6 @@ namespace Wilcommerce.Catalog.ReadModels
                    select p;
         }
 
-        public static IQueryable<Product> ByCategory(this IQueryable<Product> products, Guid categoryId)
-        {
-            return from p in products
-                   where p.Categories.Any(c => c.Id == categoryId) || (p.MainCategory != null && p.MainCategory.Id == categoryId)
-                   select p;
-        }
-
         public static IQueryable<Product> MainProducts(this IQueryable<Product> products)
         {
             return from p in products

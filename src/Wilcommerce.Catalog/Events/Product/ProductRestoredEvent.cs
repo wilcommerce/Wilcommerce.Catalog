@@ -5,7 +5,7 @@ namespace Wilcommerce.Catalog.Events.Product
 {
     public class ProductRestoredEvent : DomainEvent
     {
-        public Guid ProductId { get; }
+        public Guid ProductId { get; private set; }
 
         public ProductRestoredEvent(Guid productId)
             : base(productId, typeof(Models.Product))

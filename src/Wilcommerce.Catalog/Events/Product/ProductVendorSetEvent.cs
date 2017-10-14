@@ -5,9 +5,9 @@ namespace Wilcommerce.Catalog.Events.Product
 {
     public class ProductVendorSetEvent : DomainEvent
     {
-        public Guid ProductId { get; }
+        public Guid ProductId { get; private set; }
 
-        public Guid VendorId { get; }
+        public Guid VendorId { get; private set; }
 
         public ProductVendorSetEvent(Guid productId, Guid vendorId)
             : base(productId, typeof(Models.Product))

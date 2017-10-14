@@ -5,9 +5,9 @@ namespace Wilcommerce.Catalog.Events.Product
 {
     public class ProductUnitInStockChangedEvent : DomainEvent
     {
-        public Guid ProductId { get; }
+        public Guid ProductId { get; private set; }
 
-        public int UnitInStock { get; }
+        public int UnitInStock { get; private set; }
 
         public ProductUnitInStockChangedEvent(Guid productId, int unitInStock)
             : base(productId, typeof(Models.Product))

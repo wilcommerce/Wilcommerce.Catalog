@@ -13,7 +13,7 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Get or set the Custom attribute id
         /// </summary>
-        public Guid Id { get; set; }
+        public Guid Id { get; protected set; }
 
         #region Constructor
         protected CustomAttribute() { }

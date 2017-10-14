@@ -5,13 +5,13 @@ namespace Wilcommerce.Catalog.Events.Product
 {
     public class ProductCreatedEvent : DomainEvent
     {
-        public Guid ProductId { get; }
+        public Guid ProductId { get; private set; }
 
-        public string EanCode { get; }
+        public string EanCode { get; private set; }
 
-        public string Sku { get; }
+        public string Sku { get; private set; }
 
-        public string Name { get; }
+        public string Name { get; private set; }
 
         public ProductCreatedEvent(Guid productId, string ean, string sku, string name)
             : base(productId, typeof(Models.Product))

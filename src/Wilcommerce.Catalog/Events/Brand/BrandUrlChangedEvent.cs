@@ -5,9 +5,9 @@ namespace Wilcommerce.Catalog.Events.Brand
 {
     public class BrandUrlChangedEvent : DomainEvent
     {
-        public Guid BrandId { get; }
+        public Guid BrandId { get; private set; }
 
-        public string Url { get; }
+        public string Url { get; private set; }
 
         public BrandUrlChangedEvent(Guid brandId, string url)
             : base(brandId, typeof(Models.Brand))

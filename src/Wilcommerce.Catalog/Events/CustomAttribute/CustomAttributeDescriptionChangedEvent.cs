@@ -5,9 +5,9 @@ namespace Wilcommerce.Catalog.Events.CustomAttribute
 {
     public class CustomAttributeDescriptionChangedEvent : DomainEvent
     {
-        public Guid AttributeId { get; }
+        public Guid AttributeId { get; private set; }
 
-        public string Description { get; }
+        public string Description { get; private set; }
 
         public CustomAttributeDescriptionChangedEvent(Guid attributeId, string description)
             : base(attributeId, typeof(Models.CustomAttribute))

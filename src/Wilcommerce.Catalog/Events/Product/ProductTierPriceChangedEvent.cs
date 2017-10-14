@@ -6,15 +6,15 @@ namespace Wilcommerce.Catalog.Events.Product
 {
     public class ProductTierPriceChangedEvent : DomainEvent
     {
-        public Guid ProductId { get; }
+        public Guid ProductId { get; private set; }
 
-        public Guid TierPriceId { get; }
+        public Guid TierPriceId { get; private set; }
 
-        public int FromQuantity { get; }
+        public int FromQuantity { get; private set; }
 
-        public int ToQuantity { get; }
+        public int ToQuantity { get; private set; }
 
-        public Currency Price { get; }
+        public Currency Price { get; private set; }
 
         public ProductTierPriceChangedEvent(Guid productId, Guid tierPriceId, int fromQuantity, int toQuantity, Currency price)
             : base(productId, typeof(Models.Product))

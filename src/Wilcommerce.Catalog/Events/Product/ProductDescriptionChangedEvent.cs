@@ -5,9 +5,9 @@ namespace Wilcommerce.Catalog.Events.Product
 {
     public class ProductDescriptionChangedEvent : DomainEvent
     {
-        public Guid ProductId { get; }
+        public Guid ProductId { get; private set; }
 
-        public string Description { get; }
+        public string Description { get; private set; }
 
         public ProductDescriptionChangedEvent(Guid productId, string description)
             : base(productId, typeof(Models.Product))
