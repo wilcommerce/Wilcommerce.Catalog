@@ -14,7 +14,7 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Get or set the category id
         /// </summary>
-        public Guid Id { get; set; }
+        public Guid Id { get; protected set; }
 
         #region Protected fields
         /// <summary>
@@ -29,6 +29,9 @@ namespace Wilcommerce.Catalog.Models
         #endregion
 
         #region Constructor
+        /// <summary>
+        /// Construct the category
+        /// </summary>
         protected Category()
         {
             _children = new HashSet<Category>();
@@ -135,6 +138,9 @@ namespace Wilcommerce.Catalog.Models
             VisibleTo = to;
         }
 
+        /// <summary>
+        /// Hide the category
+        /// </summary>
         public virtual void Hide()
         {
             if (!IsVisible)

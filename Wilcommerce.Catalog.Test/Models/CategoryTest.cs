@@ -62,7 +62,7 @@ namespace Wilcommerce.Catalog.Test.Models
 
             category.SetAsVisible(today);
 
-            Assert.Equal(true, category.IsVisible);
+            Assert.True(category.IsVisible);
             Assert.Equal(today, category.VisibleFrom);
         }
 
@@ -279,7 +279,7 @@ namespace Wilcommerce.Catalog.Test.Models
             category.SetAsVisible();
             category.Hide();
 
-            Assert.Equal(false, category.IsVisible);
+            Assert.False(category.IsVisible);
             Assert.Equal(DateTime.Now.ToString("yyyy-MM-dd"), category.VisibleTo?.ToString("yyyy-MM-dd"));
         }
     }

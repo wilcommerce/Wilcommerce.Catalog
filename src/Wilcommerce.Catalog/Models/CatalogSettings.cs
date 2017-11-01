@@ -11,9 +11,12 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Get or set the settings id
         /// </summary>
-        public Guid Id { get; set; }
+        public Guid Id { get; protected set; }
 
         #region Constructor
+        /// <summary>
+        /// Construct the catalog settings
+        /// </summary>
         protected CatalogSettings() { }
         #endregion
 
@@ -180,7 +183,13 @@ namespace Wilcommerce.Catalog.Models
         /// </summary>
         public enum ViewType
         {
+            /// <summary>
+            /// View as list
+            /// </summary>
             LIST,
+            /// <summary>
+            /// View as Mansory
+            /// </summary>
             MANSORY
         }
         #endregion

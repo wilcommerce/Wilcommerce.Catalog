@@ -1,21 +1,23 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{17D0648C-C73C-45B9-9F18-09F2EC133F6D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{92656DEA-8893-44A4-8B61-2B3C9A32967F}"
 	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
+		.gitignore = .gitignore
+		CONTRIBUTING.md = CONTRIBUTING.md
+		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{E9262FCE-9E56-4E6E-9CA7-90BC9639AE84}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Wilcommerce.Catalog", "src\Wilcommerce.Catalog\Wilcommerce.Catalog.xproj", "{F7052383-5A0C-4CEB-B9E7-4C7EB2C3C6EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wilcommerce.Catalog", "src\Wilcommerce.Catalog\Wilcommerce.Catalog.csproj", "{F7052383-5A0C-4CEB-B9E7-4C7EB2C3C6EB}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Wilcommerce.Catalog.Test", "Wilcommerce.Catalog.Test\Wilcommerce.Catalog.Test.xproj", "{93EC4EBB-F671-4D6B-8A63-2D912E796DED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wilcommerce.Catalog.Test", "Wilcommerce.Catalog.Test\Wilcommerce.Catalog.Test.csproj", "{93EC4EBB-F671-4D6B-8A63-2D912E796DED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,5 +40,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{F7052383-5A0C-4CEB-B9E7-4C7EB2C3C6EB} = {17D0648C-C73C-45B9-9F18-09F2EC133F6D}
 		{93EC4EBB-F671-4D6B-8A63-2D912E796DED} = {E9262FCE-9E56-4E6E-9CA7-90BC9639AE84}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0BDAED63-DC5E-4FC5-8BDC-94BD12A98405}
 	EndGlobalSection
 EndGlobal

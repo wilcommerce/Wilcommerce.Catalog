@@ -2,7 +2,7 @@
 Wilcommerce Catalog contains all the components to build a catalog system.
 
 ## Installation
-Nuget package available here https://www.nuget.org/packages/Wilcommerce.Catalog/1.0.0-beta4
+Nuget package available here [https://www.nuget.org/packages/Wilcommerce.Catalog/1.0.0-rc1](https://www.nuget.org/packages/Wilcommerce.Catalog/1.0.0-rc1)
 
 ## Models
 The **Models** namespace contains all the classes representing the components useful for building a catalog (i.e. Category, Product, Brand, etc.).
@@ -17,3 +17,6 @@ Using this command component you can manage the persistence of all the catalog e
 
 ## Events
 In the **Events** namespace there are all the events that could happen after an action made on a catalog component.
+
+# Contributing
+If you want to contribute to Wilcommerce please, check the [CONTRIBUTING](CONTRIBUTING.md) file.

@@ -3,12 +3,26 @@ using Wilcommerce.Core.Infrastructure;
 
 namespace Wilcommerce.Catalog.Events.Category
 {
+    /// <summary>
+    /// Category code changed
+    /// </summary>
     public class CategoryCodeChangedEvent : DomainEvent
     {
-        public Guid CategoryId { get; }
+        /// <summary>
+        /// Get the category id
+        /// </summary>
+        public Guid CategoryId { get; private set; }
 
-        public string Code { get; }
+        /// <summary>
+        /// Get the category code
+        /// </summary>
+        public string Code { get; private set; }
 
+        /// <summary>
+        /// Construct the event
+        /// </summary>
+        /// <param name="categoryId">The category id</param>
+        /// <param name="code">The category code</param>
         public CategoryCodeChangedEvent(Guid categoryId, string code)
             : base(categoryId, typeof(Models.Category))
         {
@@ -16,6 +30,10 @@ namespace Wilcommerce.Catalog.Events.Category
             Code = code;
         }
 
+        /// <summary>
+        /// Convert the event to string
+        /// </summary>
+        /// <returns>The converted string</returns>
         public override string ToString()
         {
             return $"[{FiredOn.ToString()}] Category {CategoryId} code changed to {Code}";
