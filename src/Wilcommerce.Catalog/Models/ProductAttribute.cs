@@ -2,6 +2,9 @@
 
 namespace Wilcommerce.Catalog.Models
 {
+    /// <summary>
+    /// Represent a product custom attribute
+    /// </summary>
     public class ProductAttribute
     {
         /// <summary>

@@ -49,6 +49,9 @@ namespace Wilcommerce.Catalog.Models
         #endregion
 
         #region Constructor
+        /// <summary>
+        /// Construct the product
+        /// </summary>
         protected Product()
         {
             _variants = new HashSet<Product>();
@@ -797,6 +800,13 @@ namespace Wilcommerce.Catalog.Models
             Seo = seo;
         }
 
+        /// <summary>
+        /// Change the tier price values
+        /// </summary>
+        /// <param name="tierPriceId">The tier price id</param>
+        /// <param name="fromQuantity">The start quantity</param>
+        /// <param name="toQuantity">The end quantity</param>
+        /// <param name="price">The price amount</param>
         public virtual void ChangeTierPrice(Guid tierPriceId, int fromQuantity, int toQuantity, Currency price)
         {
             if (!TierPriceEnabled)
