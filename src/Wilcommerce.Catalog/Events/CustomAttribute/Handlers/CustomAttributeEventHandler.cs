@@ -2,6 +2,9 @@
 
 namespace Wilcommerce.Catalog.Events.CustomAttribute.Handlers
 {
+    /// <summary>
+    /// Handles the events related to Custom attributes
+    /// </summary>
     public class CustomAttributeEventHandler :
         IHandleEvent<CustomAttributeCreatedEvent>,
         IHandleEvent<CustomAttributeValueAddedEvent>,
@@ -13,13 +16,21 @@ namespace Wilcommerce.Catalog.Events.CustomAttribute.Handlers
         IHandleEvent<CustomAttributeDeletedEvent>,
         IHandleEvent<CustomAttributeRestoredEvent>
     {
+        /// <summary>
+        /// Get the event store
+        /// </summary>
         public IEventStore EventStore { get; }
 
+        /// <summary>
+        /// Construct the event handler
+        /// </summary>
+        /// <param name="eventStore">The event store</param>
         public CustomAttributeEventHandler(IEventStore eventStore)
         {
             EventStore = eventStore;
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(CustomAttributeCreatedEvent @event)
         {
             try
@@ -32,6 +43,7 @@ namespace Wilcommerce.Catalog.Events.CustomAttribute.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(CustomAttributeValueAddedEvent @event)
         {
             try
@@ -44,6 +56,7 @@ namespace Wilcommerce.Catalog.Events.CustomAttribute.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(CustomAttributeValueRemovedEvent @event)
         {
             try
@@ -56,6 +69,7 @@ namespace Wilcommerce.Catalog.Events.CustomAttribute.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(CustomAttributeNameChangedEvent @event)
         {
             try
@@ -68,6 +82,7 @@ namespace Wilcommerce.Catalog.Events.CustomAttribute.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(CustomAttributeDescriptionChangedEvent @event)
         {
             try
@@ -80,6 +95,7 @@ namespace Wilcommerce.Catalog.Events.CustomAttribute.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(CustomAttributeUnitOfMeasureSetEvent @event)
         {
             try
@@ -92,6 +108,7 @@ namespace Wilcommerce.Catalog.Events.CustomAttribute.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(CustomAttributeDataTypeChangedEvent @event)
         {
             try
@@ -104,6 +121,7 @@ namespace Wilcommerce.Catalog.Events.CustomAttribute.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(CustomAttributeDeletedEvent @event)
         {
             try
@@ -116,6 +134,7 @@ namespace Wilcommerce.Catalog.Events.CustomAttribute.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(CustomAttributeRestoredEvent @event)
         {
             try

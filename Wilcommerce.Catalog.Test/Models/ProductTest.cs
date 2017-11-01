@@ -301,7 +301,7 @@ namespace Wilcommerce.Catalog.Test.Models
 
             product.SetOnSale(onSaleFrom, onSaleTo);
 
-            Assert.Equal(true, product.IsOnSale);
+            Assert.True(product.IsOnSale);
             Assert.Equal(onSaleFrom, product.OnSaleFrom);
             Assert.Equal(onSaleTo, product.OnSaleTo);
         }
@@ -320,7 +320,7 @@ namespace Wilcommerce.Catalog.Test.Models
 
             product.RemoveFromSale(endSale);
 
-            Assert.Equal(false, product.IsOnSale);
+            Assert.False(product.IsOnSale);
             Assert.Equal(endSale, product.OnSaleTo);
         }
 
@@ -701,7 +701,7 @@ namespace Wilcommerce.Catalog.Test.Models
             product.ApproveReview(review.Id);
 
             var rev = product.Reviews.First(r => r.Id == review.Id);
-            Assert.Equal(true, rev.Approved);
+            Assert.True(rev.Approved);
         }
 
         [Fact]
@@ -734,7 +734,7 @@ namespace Wilcommerce.Catalog.Test.Models
             product.RemoveReviewApproval(review.Id);
 
             var rev = product.Reviews.First(r => r.Id == review.Id);
-            Assert.Equal(false, rev.Approved);
+            Assert.False(rev.Approved);
         }
 
         [Fact]

@@ -1,8 +1,10 @@
-﻿using System;
-using Wilcommerce.Core.Infrastructure;
+﻿using Wilcommerce.Core.Infrastructure;
 
 namespace Wilcommerce.Catalog.Events.Product.Handlers
 {
+    /// <summary>
+    /// Handles the events related to Product
+    /// </summary>
     public class ProductEventHandler :
         IHandleEvent<ProductCreatedEvent>,
         IHandleEvent<ProductDeletedEvent>,
@@ -31,13 +33,21 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
         IHandleEvent<ProductImageRemovedEvent>,
         IHandleEvent<ProductTierPriceChangedEvent>
     {
+        /// <summary>
+        /// Get the event store
+        /// </summary>
         public IEventStore EventStore { get; }
 
+        /// <summary>
+        /// Construct the event handler
+        /// </summary>
+        /// <param name="eventStore">The event store</param>
         public ProductEventHandler(IEventStore eventStore)
         {
             EventStore = eventStore;
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(ProductCreatedEvent @event)
         {
             try
@@ -50,6 +60,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(ProductDeletedEvent @event)
         {
             try
@@ -62,6 +73,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(ProductRestoredEvent @event)
         {
             try
@@ -74,6 +86,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(ProductUnitInStockChangedEvent @event)
         {
             try
@@ -86,6 +99,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(ProductEanCodeChangedEvent @event)
         {
             try
@@ -98,6 +112,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(ProductSkuChangedEvent @event)
         {
             try
@@ -110,6 +125,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(ProductNameChangedEvent @event)
         {
             try
@@ -122,6 +138,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(ProductDescriptionChangedEvent @event)
         {
             try
@@ -134,6 +151,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(ProductUrlChangedEvent @event)
         {
             try
@@ -146,6 +164,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(ProductPriceSetEvent @event)
         {
             try
@@ -158,6 +177,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(ProductSetOnSaleEvent @event)
         {
             try
@@ -170,6 +190,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(ProductRemovedFromSaleEvent @event)
         {
             try
@@ -182,6 +203,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(ProductVendorSetEvent @event)
         {
             try
@@ -194,6 +216,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(ProductCategoryAddedEvent @event)
         {
             try
@@ -206,6 +229,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(ProductVariantAddedEvent @event)
         {
             try
@@ -218,6 +242,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(ProductVariantRemovedEvent @event)
         {
             try
@@ -230,6 +255,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(ProductAttributeAddedEvent @event)
         {
             try
@@ -242,6 +268,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(ProductAttributeRemovedEvent @event)
         {
             try
@@ -254,6 +281,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(ProductTierPriceAddedEvent @event)
         {
             try
@@ -266,6 +294,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(ProductTierPriceRemovedEvent @event)
         {
             try
@@ -278,6 +307,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(ProductReviewAddedEvent @event)
         {
             try
@@ -290,6 +320,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(ProductReviewApprovedEvent @event)
         {
             try
@@ -302,6 +333,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(ProductReviewRemovedEvent @event)
         {
             try
@@ -314,6 +346,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(ProductImageAddedEvent @event)
         {
             try
@@ -326,6 +359,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(ProductImageRemovedEvent @event)
         {
             try
@@ -338,6 +372,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(ProductTierPriceChangedEvent @event)
         {
             try

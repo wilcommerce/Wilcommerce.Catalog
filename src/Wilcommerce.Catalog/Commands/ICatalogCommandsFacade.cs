@@ -6,6 +6,9 @@ using Wilcommerce.Core.Common.Domain.Models;
 
 namespace Wilcommerce.Catalog.Commands
 {
+    /// <summary>
+    /// Defines all the available action of this package
+    /// </summary>
     public interface ICatalogCommandsFacade
     {
         #region Brand Commands

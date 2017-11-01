@@ -2,6 +2,9 @@
 
 namespace Wilcommerce.Catalog.Events.Brand.Handlers
 {
+    /// <summary>
+    /// Handles the events related to Brand
+    /// </summary>
     public class BrandEventHandler : 
         IHandleEvent<BrandCreatedEvent>,
         IHandleEvent<BrandNameChangedEvent>,
@@ -10,13 +13,21 @@ namespace Wilcommerce.Catalog.Events.Brand.Handlers
         IHandleEvent<BrandDeletedEvent>,
         IHandleEvent<BrandRestoredEvent>
     {
+        /// <summary>
+        /// Get the event store
+        /// </summary>
         public IEventStore EventStore { get; }
 
+        /// <summary>
+        /// Construct the event handler
+        /// </summary>
+        /// <param name="eventStore">The event store</param>
         public BrandEventHandler(IEventStore eventStore)
         {
             EventStore = eventStore;
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(BrandCreatedEvent @event)
         {
             try
@@ -29,6 +40,7 @@ namespace Wilcommerce.Catalog.Events.Brand.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(BrandNameChangedEvent @event)
         {
             try
@@ -41,6 +53,7 @@ namespace Wilcommerce.Catalog.Events.Brand.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(BrandUrlChangedEvent @event)
         {
             try
@@ -53,6 +66,7 @@ namespace Wilcommerce.Catalog.Events.Brand.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(BrandDescriptionChangedEvent @event)
         {
             try
@@ -65,6 +79,7 @@ namespace Wilcommerce.Catalog.Events.Brand.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(BrandDeletedEvent @event)
         {
             try
@@ -77,6 +92,7 @@ namespace Wilcommerce.Catalog.Events.Brand.Handlers
             }
         }
 
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         public void Handle(BrandRestoredEvent @event)
         {
             try

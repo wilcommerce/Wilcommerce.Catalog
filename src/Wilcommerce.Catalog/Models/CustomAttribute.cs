@@ -16,6 +16,9 @@ namespace Wilcommerce.Catalog.Models
         public Guid Id { get; protected set; }
 
         #region Constructor
+        /// <summary>
+        /// Construct the custom attribute
+        /// </summary>
         protected CustomAttribute() { }
         #endregion
 
