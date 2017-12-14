@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace Wilcommerce.Catalog.Models
 {
@@ -13,9 +14,21 @@ namespace Wilcommerce.Catalog.Models
         public Guid Id { get; set; }
 
         /// <summary>
+        /// Get the serialized value
+        /// </summary>
+        public string _Value { get; protected set; }
+
+        /// <summary>
         /// Get or set the attribute's value
         /// </summary>
-        public object Value { get; set; }
+        public object Value
+        {
+            get => JsonConvert.DeserializeObject<object>(_Value);
+            set
+            {
+                _Value = JsonConvert.SerializeObject(value);
+            }
+        }
 
         /// <summary>
         /// Get or set the attribute's product reference

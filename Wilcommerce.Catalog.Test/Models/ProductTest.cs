@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Linq;
 using Wilcommerce.Catalog.Models;
 using Wilcommerce.Core.Common.Domain.Models;
@@ -946,6 +947,44 @@ namespace Wilcommerce.Catalog.Test.Models
 
             var ex = Assert.Throws<InvalidOperationException>(() => product.ChangeTierPrice(Guid.NewGuid(), 1, 15, new Currency { Code = "EUR", Amount = 20 }));
             Assert.Equal("Tier price not found", ex.Message);
+        }
+
+        [Fact]
+        public void AddAttribute_Should_Serialize_Value()
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            var value = DateTime.Now;
+            product.AddAttribute(CustomAttribute.Create("attribute", "datetime"), value);
+
+            var attribute = product.Attributes.FirstOrDefault(a => a.Attribute.DataType == "datetime");
+            Assert.NotNull(attribute);
+
+            Assert.Equal(JsonConvert.SerializeObject(value), attribute._Value);
+        }
+
+        [Fact]
+        public void AddAttribute_Should_Get_Deserialized_Value()
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            var value = DateTime.Now;
+            product.AddAttribute(CustomAttribute.Create("attribute", "datetime"), value);
+
+            var attribute = product.Attributes.FirstOrDefault(a => a.Attribute.DataType == "datetime");
+            Assert.NotNull(attribute);
+
+            Assert.Equal(value, attribute.Value);
         }
     }
 }
