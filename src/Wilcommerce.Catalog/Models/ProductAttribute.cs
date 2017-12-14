@@ -23,7 +23,7 @@ namespace Wilcommerce.Catalog.Models
         /// </summary>
         public object Value
         {
-            get => JsonConvert.DeserializeObject<object>(_Value);
+            get => JsonConvert.DeserializeObject(_Value);
             set
             {
                 _Value = JsonConvert.SerializeObject(value);
