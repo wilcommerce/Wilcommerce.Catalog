@@ -19,17 +19,7 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Construct the brand
         /// </summary>
-        protected Brand()
-        {
-            _products = new HashSet<Product>();
-        }
-        #endregion
-
-        #region Protected fields
-        /// <summary>
-        /// The list of associated products
-        /// </summary>
-        protected ICollection<Product> _products;
+        protected Brand() { }
         #endregion
 
         #region Properties
@@ -62,11 +52,6 @@ namespace Wilcommerce.Catalog.Models
         /// Get or set the seo data for the brand
         /// </summary>
         public virtual SeoData Seo { get; protected set; }
-
-        /// <summary>
-        /// Get the list of products associated to the brand
-        /// </summary>
-        public IEnumerable<Product> Products => _products;
 
         #endregion
 

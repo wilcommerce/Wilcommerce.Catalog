@@ -572,12 +572,12 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="value">The attribute's value</param>
         public virtual void AddAttribute(CustomAttribute attribute, object value)
         {
-            if(attribute == null)
+            if (attribute == null)
             {
                 throw new ArgumentNullException("attribute");
             }
 
-            if(_attributes.Any(a => a.Attribute == attribute))
+            if (_attributes.Any(a => a.Attribute == attribute))
             {
                 throw new ArgumentException("The attribute is already in collection");
             }

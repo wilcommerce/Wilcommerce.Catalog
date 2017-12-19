@@ -27,7 +27,7 @@ namespace Wilcommerce.Catalog.ReadModels
         /// Get the products
         /// </summary>
         IQueryable<Product> Products { get; }
-        
+
         /// <summary>
         /// Get the product attributes
         /// </summary>
