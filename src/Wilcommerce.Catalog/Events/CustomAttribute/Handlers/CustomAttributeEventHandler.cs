@@ -37,7 +37,7 @@ namespace Wilcommerce.Catalog.Events.CustomAttribute.Handlers
             {
                 EventStore.Save(@event);
             }
-            catch 
+            catch
             {
                 throw;
             }

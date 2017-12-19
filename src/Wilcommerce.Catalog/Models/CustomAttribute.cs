@@ -66,7 +66,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="value">The value to add</param>
         public virtual void AddValue(object value)
         {
-            if(value == null)
+            if (value == null)
             {
                 throw new ArgumentNullException("value");
             }

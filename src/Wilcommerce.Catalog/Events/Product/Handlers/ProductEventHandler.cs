@@ -54,7 +54,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             {
                 EventStore.Save(@event);
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -106,7 +106,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             {
                 EventStore.Save(@event);
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -314,7 +314,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             {
                 EventStore.Save(@event);
             }
-            catch 
+            catch
             {
                 throw;
             }

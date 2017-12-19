@@ -50,7 +50,7 @@ namespace Wilcommerce.Catalog.Commands
                 var @event = new BrandDescriptionChangedEvent(brandId, description);
                 EventBus.RaiseEvent(@event);
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -69,7 +69,7 @@ namespace Wilcommerce.Catalog.Commands
                 var @event = new BrandNameChangedEvent(brandId, name);
                 EventBus.RaiseEvent(@event);
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -88,7 +88,7 @@ namespace Wilcommerce.Catalog.Commands
                 var @event = new BrandUrlChangedEvent(brandId, url);
                 EventBus.RaiseEvent(@event);
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -118,7 +118,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 return brand.Id;
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -137,7 +137,7 @@ namespace Wilcommerce.Catalog.Commands
                 var @event = new BrandDeletedEvent(brandId);
                 EventBus.RaiseEvent(@event);
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -172,7 +172,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -188,7 +188,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -232,7 +232,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 return category.Id;
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -259,7 +259,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -275,7 +275,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -295,7 +295,7 @@ namespace Wilcommerce.Catalog.Commands
                 var @event = new CategoryChildAddedEvent(categoryId, childId);
                 EventBus.RaiseEvent(@event);
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -314,7 +314,7 @@ namespace Wilcommerce.Catalog.Commands
                 var @event = new CategoryNameChangedEvent(categoryId, name);
                 EventBus.RaiseEvent(@event);
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -488,7 +488,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -512,7 +512,7 @@ namespace Wilcommerce.Catalog.Commands
                     attribute.SetUnitOfMeasure(unitOfMeasure);
                 }
 
-                if(values != null && values.Count() > 0)
+                if (values != null && values.Count() > 0)
                 {
                     values.ToList().ForEach(v => attribute.AddValue(v));
                 }
@@ -525,7 +525,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 return attribute.Id;
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -544,7 +544,7 @@ namespace Wilcommerce.Catalog.Commands
                 var @event = new CustomAttributeValueAddedEvent(attributeId, value);
                 EventBus.RaiseEvent(@event);
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -730,7 +730,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 return product.Id;
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -749,7 +749,7 @@ namespace Wilcommerce.Catalog.Commands
                 var @event = new ProductDeletedEvent(productId);
                 EventBus.RaiseEvent(@event);
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -1284,7 +1284,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -1303,7 +1303,7 @@ namespace Wilcommerce.Catalog.Commands
                 var @event = new ProductTierPriceChangedEvent(productId, tierPriceId, fromQuantity, toQuantity, price);
                 EventBus.RaiseEvent(@event);
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -1331,7 +1331,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 return settings.Id;
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -1347,7 +1347,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -1363,7 +1363,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -1379,7 +1379,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -1396,7 +1396,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
             }
-            catch 
+            catch
             {
                 throw;
             }
