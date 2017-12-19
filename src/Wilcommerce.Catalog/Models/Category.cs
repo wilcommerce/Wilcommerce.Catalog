@@ -158,7 +158,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="child">The category children</param>
         public virtual void AddChild(Category child)
         {
-            if(child == null)
+            if (child == null)
             {
                 throw new ArgumentNullException("children");
             }

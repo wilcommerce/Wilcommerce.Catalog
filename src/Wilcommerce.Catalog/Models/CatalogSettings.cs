@@ -111,7 +111,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="reviewsPerPage">The number of product reviews per page</param>
         public virtual void SetProductReviewsPerPage(int reviewsPerPage)
         {
-            if (reviewsPerPage <  0)
+            if (reviewsPerPage < 0)
             {
                 throw new ArgumentException("reviews per page cannot be less than zero");
             }

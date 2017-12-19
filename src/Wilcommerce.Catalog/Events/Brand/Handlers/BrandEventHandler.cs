@@ -5,7 +5,7 @@ namespace Wilcommerce.Catalog.Events.Brand.Handlers
     /// <summary>
     /// Handles the events related to Brand
     /// </summary>
-    public class BrandEventHandler : 
+    public class BrandEventHandler :
         IHandleEvent<BrandCreatedEvent>,
         IHandleEvent<BrandNameChangedEvent>,
         IHandleEvent<BrandUrlChangedEvent>,
@@ -34,7 +34,7 @@ namespace Wilcommerce.Catalog.Events.Brand.Handlers
             {
                 EventStore.Save(@event);
             }
-            catch 
+            catch
             {
                 throw;
             }

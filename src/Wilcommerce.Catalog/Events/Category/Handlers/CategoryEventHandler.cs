@@ -38,7 +38,7 @@ namespace Wilcommerce.Catalog.Events.Category.Handlers
             {
                 EventStore.Save(@event);
             }
-            catch 
+            catch
             {
                 throw;
             }
