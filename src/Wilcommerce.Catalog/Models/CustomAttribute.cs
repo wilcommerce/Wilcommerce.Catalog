@@ -57,6 +57,11 @@ namespace Wilcommerce.Catalog.Models
         /// Get the list of available values for the attribute
         /// </summary>
         public IEnumerable<object> Values => _Values?.Split(",".ToCharArray()).AsEnumerable<object>();
+
+        /// <summary>
+        /// Get the creation date
+        /// </summary>
+        public DateTime CreationDate { get; protected set; }
         #endregion
 
         #region Behaviors
@@ -218,7 +223,8 @@ namespace Wilcommerce.Catalog.Models
             {
                 Id = Guid.NewGuid(),
                 Name = name,
-                DataType = type
+                DataType = type,
+                CreationDate = DateTime.Now
             };
 
             return attribute;

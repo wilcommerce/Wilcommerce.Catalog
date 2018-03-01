@@ -38,6 +38,11 @@ namespace Wilcommerce.Catalog.Models
         public DateTime? ApprovedOn { get; set; }
 
         /// <summary>
+        /// Get or the creation date
+        /// </summary>
+        public DateTime CreationDate { get; set; }
+
+        /// <summary>
         /// Get the related product
         /// </summary>
         public virtual Product Product { get; protected set; }
