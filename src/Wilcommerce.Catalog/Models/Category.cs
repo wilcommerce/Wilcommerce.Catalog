@@ -100,6 +100,10 @@ namespace Wilcommerce.Catalog.Models
         /// </summary>
         public SeoData Seo { get; protected set; }
 
+        /// <summary>
+        /// Get the creation date
+        /// </summary>
+        public DateTime CreationDate { get; protected set; }
         #endregion
 
         #region Behaviors
@@ -339,7 +343,8 @@ namespace Wilcommerce.Catalog.Models
                 Id = Guid.NewGuid(),
                 Code = code,
                 Name = name,
-                Url = url
+                Url = url,
+                CreationDate = DateTime.Now
             };
 
             return category;

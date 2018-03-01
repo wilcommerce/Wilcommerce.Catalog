@@ -53,6 +53,10 @@ namespace Wilcommerce.Catalog.Models
         /// </summary>
         public virtual SeoData Seo { get; protected set; }
 
+        /// <summary>
+        /// Get the creation date
+        /// </summary>
+        public DateTime CreationDate { get; protected set; }
         #endregion
 
         #region Behaviors
@@ -176,7 +180,8 @@ namespace Wilcommerce.Catalog.Models
             {
                 Id = Guid.NewGuid(),
                 Name = name,
-                Url = url
+                Url = url,
+                CreationDate = DateTime.Now
             };
 
             return brand;

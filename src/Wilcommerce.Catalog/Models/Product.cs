@@ -179,6 +179,10 @@ namespace Wilcommerce.Catalog.Models
         /// </summary>
         public SeoData Seo { get; protected set; }
 
+        /// <summary>
+        /// Get the creation date
+        /// </summary>
+        public DateTime CreationDate { get; protected set; }
         #endregion
 
         #region Behaviors
@@ -624,7 +628,8 @@ namespace Wilcommerce.Catalog.Models
                 Name = name,
                 Rating = rating,
                 Comment = comment,
-                Approved = false
+                Approved = false,
+                CreationDate = DateTime.Now
             });
         }
 
@@ -876,7 +881,8 @@ namespace Wilcommerce.Catalog.Models
                 Sku = sku,
                 Name = name,
                 Url = url,
-                Deleted = false
+                Deleted = false,
+                CreationDate = DateTime.Now
             };
 
             return product;
