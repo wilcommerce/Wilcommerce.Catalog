@@ -60,6 +60,8 @@ namespace Wilcommerce.Catalog.Models
             _attributes = new HashSet<ProductAttribute>();
             _reviews = new HashSet<ProductReview>();
             _images = new HashSet<ProductImage>();
+            Price = new Currency();
+            Seo = new SeoData();
         }
         #endregion
 
@@ -797,12 +799,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="seo">The SEO information</param>
         public virtual void SetSeoData(SeoData seo)
         {
-            if (seo == null)
-            {
-                throw new ArgumentNullException("seo");
-            }
-
-            Seo = seo;
+            Seo = seo ?? throw new ArgumentNullException("seo");
         }
 
         /// <summary>
