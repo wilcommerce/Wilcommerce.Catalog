@@ -60,6 +60,8 @@ namespace Wilcommerce.Catalog.Models
             _attributes = new HashSet<ProductAttribute>();
             _reviews = new HashSet<ProductReview>();
             _images = new HashSet<ProductImage>();
+            Price = new Currency();
+            Seo = new SeoData();
         }
         #endregion
 
@@ -220,7 +222,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (unitInStock < 0)
             {
-                throw new ArgumentException("Stock unit cannot be less than zero");
+                throw new ArgumentException("Stock unit cannot be less than zero", nameof(unitInStock));
             }
 
             UnitInStock = unitInStock;
@@ -234,7 +236,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (unit < 0)
             {
-                throw new ArgumentException("Stock unit cannot be less than zero");
+                throw new ArgumentException("Stock unit cannot be less than zero", nameof(unit));
             }
 
             SetUnitInStock(UnitInStock + unit);
@@ -248,7 +250,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (unit < 0)
             {
-                throw new ArgumentException("Stock unit cannot be less than zero");
+                throw new ArgumentException("Stock unit cannot be less than zero", nameof(unit));
             }
 
             int newUnitInStock = UnitInStock - unit;
@@ -268,7 +270,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrEmpty(ean))
             {
-                throw new ArgumentNullException("ean");
+                throw new ArgumentNullException(nameof(ean));
             }
 
             EanCode = ean;
@@ -282,7 +284,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrEmpty(sku))
             {
-                throw new ArgumentNullException("sku");
+                throw new ArgumentNullException(nameof(sku));
             }
 
             Sku = sku;
@@ -296,7 +298,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrEmpty(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
             }
 
             Name = name;
@@ -310,7 +312,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrEmpty(description))
             {
-                throw new ArgumentNullException("description");
+                throw new ArgumentNullException(nameof(description));
             }
 
             Description = description;
@@ -324,7 +326,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrEmpty(url))
             {
-                throw new ArgumentNullException("url");
+                throw new ArgumentNullException(nameof(url));
             }
 
             Url = url;
@@ -338,12 +340,12 @@ namespace Wilcommerce.Catalog.Models
         {
             if (price == null)
             {
-                throw new ArgumentNullException("price");
+                throw new ArgumentNullException(nameof(price));
             }
 
             if (price.Amount < 0)
             {
-                throw new ArgumentException("Price amount cannot be less than zero");
+                throw new ArgumentException("Price amount cannot be less than zero", nameof(price));
             }
 
             Price = price;
@@ -381,12 +383,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="vendor">The product's vendor</param>
         public virtual void SetVendor(Brand vendor)
         {
-            if (vendor == null)
-            {
-                throw new ArgumentNullException("vendor");
-            }
-
-            Vendor = vendor;
+            Vendor = vendor ?? throw new ArgumentNullException(nameof(vendor));
         }
 
         /// <summary>
@@ -459,17 +456,17 @@ namespace Wilcommerce.Catalog.Models
         {
             if (category == null)
             {
-                throw new ArgumentNullException("category");
+                throw new ArgumentNullException(nameof(category));
             }
 
             if (_categories.Any(c => c.CategoryId == category.Id))
             {
-                throw new ArgumentException("The category is already in collection");
+                throw new ArgumentException("The category is already in collection", nameof(category));
             }
 
             if (isMain && _categories.Any(c => c.IsMain))
             {
-                throw new ArgumentException("There's already a main category");
+                throw new ArgumentException("There's already a main category", nameof(category));
             }
 
             _categories.Add(new ProductCategory
@@ -499,27 +496,27 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrEmpty(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
             }
 
             if (string.IsNullOrEmpty(ean))
             {
-                throw new ArgumentNullException("ean");
+                throw new ArgumentNullException(nameof(ean));
             }
 
             if (string.IsNullOrEmpty(sku))
             {
-                throw new ArgumentNullException("sku");
+                throw new ArgumentNullException(nameof(sku));
             }
 
             if (price == null)
             {
-                throw new ArgumentNullException("price");
+                throw new ArgumentNullException(nameof(price));
             }
 
             if (price.Amount < 0)
             {
-                throw new ArgumentException("Price amount cannot be less than zero");
+                throw new ArgumentException("Price amount cannot be less than zero", nameof(price));
             }
 
             if (_variants.Any(v => v.Name == name && v.EanCode == ean && v.Sku == sku))
@@ -552,7 +549,7 @@ namespace Wilcommerce.Catalog.Models
 
             if (price == null)
             {
-                throw new ArgumentNullException("price");
+                throw new ArgumentNullException(nameof(price));
             }
 
             if (_tierPrices.Any(t => t.FromQuantity == fromQuantity && t.ToQuantity == toQuantity))
@@ -578,12 +575,12 @@ namespace Wilcommerce.Catalog.Models
         {
             if (attribute == null)
             {
-                throw new ArgumentNullException("attribute");
+                throw new ArgumentNullException(nameof(attribute));
             }
 
             if (_attributes.Any(a => a.Attribute == attribute))
             {
-                throw new ArgumentException("The attribute is already in collection");
+                throw new ArgumentException("The attribute is already in collection", nameof(attribute));
             }
 
             _attributes.Add(new ProductAttribute
@@ -614,12 +611,12 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrEmpty(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
             }
 
             if (rating < 0)
             {
-                throw new ArgumentException("rating could not be less than zero", "rating");
+                throw new ArgumentException("rating could not be less than zero", nameof(rating));
             }
 
             _reviews.Add(new ProductReview
@@ -645,17 +642,17 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrEmpty(path))
             {
-                throw new ArgumentNullException("path");
+                throw new ArgumentNullException(nameof(path));
             }
 
             if (string.IsNullOrEmpty(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
             }
 
             if (string.IsNullOrEmpty(originalName))
             {
-                throw new ArgumentNullException("originalName");
+                throw new ArgumentNullException(nameof(originalName));
             }
 
             _images.Add(new ProductImage
@@ -797,12 +794,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="seo">The SEO information</param>
         public virtual void SetSeoData(SeoData seo)
         {
-            if (seo == null)
-            {
-                throw new ArgumentNullException("seo");
-            }
-
-            Seo = seo;
+            Seo = seo ?? throw new ArgumentNullException(nameof(seo));
         }
 
         /// <summary>
@@ -856,22 +848,22 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrEmpty(ean))
             {
-                throw new ArgumentNullException("ean");
+                throw new ArgumentNullException(nameof(ean));
             }
 
             if (string.IsNullOrEmpty(sku))
             {
-                throw new ArgumentNullException("sku");
+                throw new ArgumentNullException(nameof(sku));
             }
 
             if (string.IsNullOrEmpty(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
             }
 
             if (string.IsNullOrEmpty(url))
             {
-                throw new ArgumentNullException("url");
+                throw new ArgumentNullException(nameof(url));
             }
 
             var product = new Product

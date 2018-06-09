@@ -19,7 +19,11 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Construct the brand
         /// </summary>
-        protected Brand() { }
+        protected Brand()
+        {
+            Logo = new Image();
+            Seo = new SeoData();
+        }
         #endregion
 
         #region Properties
@@ -68,7 +72,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrEmpty(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
             }
 
             Name = name;
@@ -82,7 +86,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrEmpty(description))
             {
-                throw new ArgumentNullException("description");
+                throw new ArgumentNullException(nameof(description));
             }
 
             Description = description;
@@ -96,7 +100,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrEmpty(url))
             {
-                throw new ArgumentNullException("url");
+                throw new ArgumentNullException(nameof(url));
             }
 
             Url = url;
@@ -108,12 +112,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="logo">The logo image</param>
         public virtual void SetLogo(Image logo)
         {
-            if (logo == null)
-            {
-                throw new ArgumentNullException("logo");
-            }
-
-            Logo = logo;
+            Logo = logo ?? throw new ArgumentNullException(nameof(logo));
         }
 
         /// <summary>
@@ -122,12 +121,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="seo">The seo data</param>
         public virtual void SetSeoData(SeoData seo)
         {
-            if (seo == null)
-            {
-                throw new ArgumentNullException("seo");
-            }
-
-            Seo = seo;
+            Seo = seo ?? throw new ArgumentNullException(nameof(seo));
         }
 
         /// <summary>
@@ -168,12 +162,12 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrEmpty(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
             }
 
             if (string.IsNullOrEmpty(url))
             {
-                throw new ArgumentNullException("url");
+                throw new ArgumentNullException(nameof(url));
             }
 
             var brand = new Brand
