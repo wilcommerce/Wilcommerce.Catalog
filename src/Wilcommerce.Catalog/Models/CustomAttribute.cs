@@ -73,13 +73,13 @@ namespace Wilcommerce.Catalog.Models
         {
             if (value == null)
             {
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException(nameof(value));
             }
 
             var valueList = string.IsNullOrEmpty(_Values) ? (new List<object>()) : _Values.Split(",".ToCharArray()).ToList<object>();
             if (valueList.Contains(value))
             {
-                throw new ArgumentException("The value list contains the value", "value");
+                throw new ArgumentException("The value list contains the value", nameof(value));
             }
 
             valueList.Add(value);
@@ -94,7 +94,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (value == null)
             {
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException(nameof(value));
             }
 
             if (string.IsNullOrEmpty(_Values))
@@ -105,7 +105,7 @@ namespace Wilcommerce.Catalog.Models
             var valueList = _Values.Split(",".ToCharArray()).ToList<object>();
             if (!valueList.Contains(value))
             {
-                throw new ArgumentException("The value list does not contains the value", "value");
+                throw new ArgumentException("The value list does not contains the value", nameof(value));
             }
 
             if (!valueList.Remove(value))
@@ -124,7 +124,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrEmpty(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
             }
 
             Name = name;
@@ -138,7 +138,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrEmpty(description))
             {
-                throw new ArgumentNullException("description");
+                throw new ArgumentNullException(nameof(description));
             }
 
             Description = description;
@@ -152,7 +152,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrEmpty(unitOfMeasure))
             {
-                throw new ArgumentNullException("unitOfMeasure");
+                throw new ArgumentNullException(nameof(unitOfMeasure));
             }
 
             UnitOfMeasure = unitOfMeasure;
@@ -166,7 +166,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrEmpty(dataType))
             {
-                throw new ArgumentNullException("dataType");
+                throw new ArgumentNullException(nameof(dataType));
             }
 
             DataType = dataType;
@@ -211,12 +211,12 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrEmpty(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
             }
 
             if (string.IsNullOrEmpty(type))
             {
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
             }
 
             var attribute = new CustomAttribute

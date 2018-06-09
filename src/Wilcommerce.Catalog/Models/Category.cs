@@ -165,7 +165,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (child == null)
             {
-                throw new ArgumentNullException("children");
+                throw new ArgumentNullException(nameof(child));
             }
 
             if (_children.Contains(child))
@@ -184,7 +184,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrEmpty(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
             }
 
             Name = name;
@@ -198,7 +198,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrEmpty(code))
             {
-                throw new ArgumentNullException("code");
+                throw new ArgumentNullException(nameof(code));
             }
 
             Code = code;
@@ -212,7 +212,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrEmpty(description))
             {
-                throw new ArgumentNullException("description");
+                throw new ArgumentNullException(nameof(description));
             }
 
             Description = description;
@@ -226,7 +226,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrEmpty(url))
             {
-                throw new ArgumentNullException("url");
+                throw new ArgumentNullException(nameof(url));
             }
 
             Url = url;
@@ -238,12 +238,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="parent">The parent category</param>
         public virtual void SetParentCategory(Category parent)
         {
-            if (parent == null)
-            {
-                throw new ArgumentNullException("parent");
-            }
-
-            Parent = parent;
+            Parent = parent ?? throw new ArgumentNullException(nameof(parent));
         }
 
         /// <summary>
@@ -304,7 +299,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="seo">The seo information</param>
         public virtual void SetSeoData(SeoData seo)
         {
-            Seo = seo ?? throw new ArgumentNullException("seo");
+            Seo = seo ?? throw new ArgumentNullException(nameof(seo));
         }
 
         #endregion
@@ -321,17 +316,17 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrEmpty(code))
             {
-                throw new ArgumentNullException("code");
+                throw new ArgumentNullException(nameof(code));
             }
 
             if (string.IsNullOrEmpty(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
             }
 
             if (string.IsNullOrEmpty(url))
             {
-                throw new ArgumentNullException("url");
+                throw new ArgumentNullException(nameof(url));
             }
 
             var category = new Category

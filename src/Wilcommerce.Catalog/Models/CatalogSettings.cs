@@ -85,7 +85,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (categoriesPerPage < 0)
             {
-                throw new ArgumentException("category per page cannot be less than zero");
+                throw new ArgumentException("category per page cannot be less than zero", nameof(categoriesPerPage));
             }
 
             CategoriesPerPage = categoriesPerPage;
@@ -99,7 +99,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (productsPerPage < 0)
             {
-                throw new ArgumentException("products per page cannot be less than zero");
+                throw new ArgumentException("products per page cannot be less than zero", nameof(productsPerPage));
             }
 
             ProductsPerPage = productsPerPage;
@@ -113,7 +113,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (reviewsPerPage < 0)
             {
-                throw new ArgumentException("reviews per page cannot be less than zero");
+                throw new ArgumentException("reviews per page cannot be less than zero", nameof(reviewsPerPage));
             }
 
             if (!ProductReviewsAllowed)
@@ -157,12 +157,12 @@ namespace Wilcommerce.Catalog.Models
         {
             if (categoriesPerPage < 0)
             {
-                throw new ArgumentException("category per page cannot be less than zero");
+                throw new ArgumentException("category per page cannot be less than zero", nameof(categoriesPerPage));
             }
 
             if (productsPerPage < 0)
             {
-                throw new ArgumentException("products per page cannot be less than zero");
+                throw new ArgumentException("products per page cannot be less than zero", nameof(productsPerPage));
             }
 
             return new CatalogSettings
