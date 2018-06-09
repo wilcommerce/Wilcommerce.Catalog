@@ -16,7 +16,7 @@ namespace Wilcommerce.Catalog.Test.Models
                 CatalogSettings.ViewType.LIST
                 ));
 
-            Assert.Equal("category per page cannot be less than zero", ex.Message);
+            Assert.Equal("categoriesPerPage", ex.ParamName);
         }
 
         [Fact]
@@ -29,7 +29,7 @@ namespace Wilcommerce.Catalog.Test.Models
                 CatalogSettings.ViewType.LIST
                 ));
 
-            Assert.Equal("products per page cannot be less than zero", ex.Message);
+            Assert.Equal("productsPerPage", ex.ParamName);
         }
 
         [Fact]
@@ -43,7 +43,7 @@ namespace Wilcommerce.Catalog.Test.Models
                 );
 
             var ex = Assert.Throws<ArgumentException>(() => settings.SetCategoriesPerPage(-1));
-            Assert.Equal("category per page cannot be less than zero", ex.Message);
+            Assert.Equal("categoriesPerPage", ex.ParamName);
         }
 
         [Fact]
@@ -57,7 +57,7 @@ namespace Wilcommerce.Catalog.Test.Models
                 );
 
             var ex = Assert.Throws<ArgumentException>(() => settings.SetProductsPerPage(-1));
-            Assert.Equal("products per page cannot be less than zero", ex.Message);
+            Assert.Equal("productsPerPage", ex.ParamName);
         }
 
         [Fact]
@@ -73,7 +73,7 @@ namespace Wilcommerce.Catalog.Test.Models
             settings.AllowProductReviews(true);
 
             var ex = Assert.Throws<ArgumentException>(() => settings.SetProductReviewsPerPage(-1));
-            Assert.Equal("reviews per page cannot be less than zero", ex.Message);
+            Assert.Equal("reviewsPerPage", ex.ParamName);
         }
 
         [Fact]

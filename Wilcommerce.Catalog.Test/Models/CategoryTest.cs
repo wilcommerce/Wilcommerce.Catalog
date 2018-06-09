@@ -84,7 +84,7 @@ namespace Wilcommerce.Catalog.Test.Models
         }
 
         [Fact]
-        public void Category_AddChildren_Should_Fail_If_Children_IsNull()
+        public void Category_AddChild_Should_Fail_If_Children_IsNull()
         {
             var category = Category.Create(
                 "TEST1",
@@ -94,11 +94,11 @@ namespace Wilcommerce.Catalog.Test.Models
 
             var ex = Assert.Throws<ArgumentNullException>(() => category.AddChild(null));
 
-            Assert.Equal("children", ex.ParamName);
+            Assert.Equal("child", ex.ParamName);
         }
 
         [Fact]
-        public void Category_AddChildren_Should_Fail_If_Children_Is_Already_InCollection()
+        public void Category_AddChild_Should_Fail_If_Children_Is_Already_InCollection()
         {
             var category = Category.Create(
                 "TEST1",
@@ -106,20 +106,20 @@ namespace Wilcommerce.Catalog.Test.Models
                 "test-category"
                 );
 
-            var children = Category.Create(
+            var child = Category.Create(
                 "TEST2",
                 "Children Category",
                 "children-category"
                 );
 
-            category.AddChild(children);
+            category.AddChild(child);
 
-            var ex = Assert.Throws<ArgumentException>(() => category.AddChild(children));
+            var ex = Assert.Throws<ArgumentException>(() => category.AddChild(child));
             Assert.Equal("The category contains the children yet", ex.Message);
         }
 
         [Fact]
-        public void Category_AddChildren_Should_Increment_ChildrenNumber()
+        public void Category_AddChild_Should_Increment_ChildrenNumber()
         {
             var category = Category.Create(
                 "TEST1",
@@ -129,13 +129,13 @@ namespace Wilcommerce.Catalog.Test.Models
 
             int childrenCount = category.Children.Count();
 
-            var children = Category.Create(
+            var child = Category.Create(
                 "TEST2",
                 "Children Category",
                 "children-category"
                 );
 
-            category.AddChild(children);
+            category.AddChild(child);
 
             Assert.Equal(childrenCount + 1, category.Children.Count());
         }

@@ -110,7 +110,7 @@ namespace Wilcommerce.Catalog.Test.Models
                 );
 
             var ex = Assert.Throws<ArgumentException>(() => product.SetUnitInStock(-1));
-            Assert.Equal("Stock unit cannot be less than zero", ex.Message);
+            Assert.Equal("unitInStock", ex.ParamName);
         }
 
         [Theory]
@@ -224,7 +224,7 @@ namespace Wilcommerce.Catalog.Test.Models
             };
 
             var ex = Assert.Throws<ArgumentException>(() => product.SetPrice(price));
-            Assert.Equal("Price amount cannot be less than zero", ex.Message);
+            Assert.Equal(nameof(price), ex.ParamName);
         }
 
         [Fact]
@@ -353,7 +353,7 @@ namespace Wilcommerce.Catalog.Test.Models
             product.AddCategory(category);
 
             var ex = Assert.Throws<ArgumentException>(() => product.AddCategory(category));
-            Assert.Equal("The category is already in collection", ex.Message);
+            Assert.Equal(nameof(category), ex.ParamName);
         }
 
         [Fact]
@@ -455,7 +455,7 @@ namespace Wilcommerce.Catalog.Test.Models
             var price = new Currency { Code = "EUR", Amount = -10 };
             var ex = Assert.Throws<ArgumentException>(() => product.AddVariant("name", "ean", "sku", price));
 
-            Assert.Equal("Price amount cannot be less than zero", ex.Message);
+            Assert.Equal(nameof(price), ex.ParamName);
         }
 
         [Fact]
