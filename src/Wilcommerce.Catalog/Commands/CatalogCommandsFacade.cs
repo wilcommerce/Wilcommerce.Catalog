@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Wilcommerce.Core.Common.Domain.Models;
+using Wilcommerce.Core.Common.Models;
 using Wilcommerce.Catalog.Models;
 using System.Collections.Generic;
 using System.Linq;
