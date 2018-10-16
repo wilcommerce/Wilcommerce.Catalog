@@ -27,6 +27,23 @@ namespace Wilcommerce.Catalog.Commands
         Task<Guid> CreateNewProduct(string ean, string sku, string name, string url, Currency price, string description, int unitInStock, bool isOnSale, DateTime? onSaleFrom, DateTime? onSaleTo);
 
         /// <summary>
+        /// Update the product general info
+        /// </summary>
+        /// <param name="productId">The product id</param>
+        /// <param name="ean">The EAN code</param>
+        /// <param name="sku">The SKU code</param>
+        /// <param name="name">The product's name</param>
+        /// <param name="url">The product's url</param>
+        /// <param name="price">The product's price</param>
+        /// <param name="description">The product's description</param>
+        /// <param name="unitInStock">The product's unit in stock</param>
+        /// <param name="isOnSale">Whether the product is on sale</param>
+        /// <param name="onSaleFrom">The date and time of when the product starts to be on sale</param>
+        /// <param name="onSaleTo">The date and time till when the product is on sale</param>
+        /// <returns></returns>
+        Task UpdateProductInfo(Guid productId, string ean, string sku, string name, string url, Currency price, string description, int unitInStock, bool isOnSale, DateTime? onSaleFrom, DateTime? onSaleTo);
+
+        /// <summary>
         /// Delete the product
         /// </summary>
         /// <param name="productId">The product id</param>
@@ -39,94 +56,6 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="productId">The product id</param>
         /// <returns></returns>
         Task RestoreProduct(Guid productId);
-
-        /// <summary>
-        /// Set the unit in stock number for the product
-        /// </summary>
-        /// <param name="productId">The product id</param>
-        /// <param name="unitInStock">The number of unit in stock</param>
-        /// <returns></returns>
-        Task SetUnitInStockForProduct(Guid productId, int unitInStock);
-
-        /// <summary>
-        /// Add the number of unit in stock to the product
-        /// </summary>
-        /// <param name="productId">The product id</param>
-        /// <param name="unitToAdd">The number of unit to add</param>
-        /// <returns></returns>
-        Task AddUnitInStockToProduct(Guid productId, int unitToAdd);
-
-        /// <summary>
-        /// Remove the number of unit in stock from the product
-        /// </summary>
-        /// <param name="productId">The product id</param>
-        /// <param name="unitToRemove">The number of unit to remove</param>
-        /// <returns></returns>
-        Task RemoveUnitInStockFromProduct(Guid productId, int unitToRemove);
-
-        /// <summary>
-        /// Change the product EAN code
-        /// </summary>
-        /// <param name="productId">The product id</param>
-        /// <param name="ean">The new EAN code</param>
-        /// <returns></returns>
-        Task ChangeProductEanCode(Guid productId, string ean);
-
-        /// <summary>
-        /// Change the product SKU
-        /// </summary>
-        /// <param name="productId">The product id</param>
-        /// <param name="sku">The new SKU</param>
-        /// <returns></returns>
-        Task ChangeProductSku(Guid productId, string sku);
-
-        /// <summary>
-        /// Change the product name
-        /// </summary>
-        /// <param name="productId">The product id</param>
-        /// <param name="name">The new product name</param>
-        /// <returns></returns>
-        Task ChangeProductName(Guid productId, string name);
-
-        /// <summary>
-        /// Change the product description
-        /// </summary>
-        /// <param name="productId">The product id</param>
-        /// <param name="description">The new product description</param>
-        /// <returns></returns>
-        Task ChangeProductDescription(Guid productId, string description);
-
-        /// <summary>
-        /// Change the product url
-        /// </summary>
-        /// <param name="productId">The product id</param>
-        /// <param name="url">The new product url</param>
-        /// <returns></returns>
-        Task ChangeProductUrl(Guid productId, string url);
-
-        /// <summary>
-        /// Set the product price
-        /// </summary>
-        /// <param name="productId">The product id</param>
-        /// <param name="price">The product price</param>
-        /// <returns></returns>
-        Task SetProductPrice(Guid productId, Currency price);
-
-        /// <summary>
-        /// Set the product as on sale
-        /// </summary>
-        /// <param name="productId">The product id</param>
-        /// <param name="from">The date and time from when the product will be on sale</param>
-        /// <param name="to">The date and time till when the product will be on sale</param>
-        /// <returns></returns>
-        Task SetProductOnSale(Guid productId, DateTime? from, DateTime? to);
-
-        /// <summary>
-        /// Remove the product from sale
-        /// </summary>
-        /// <param name="productId">The product id</param>
-        /// <returns></returns>
-        Task RemoveProductFromSale(Guid productId);
 
         /// <summary>
         /// Set the product vendor
@@ -199,6 +128,17 @@ namespace Wilcommerce.Catalog.Commands
         Task AddProductTierPrice(Guid productId, int fromQuantity, int toQuantity, Currency price);
 
         /// <summary>
+        /// Change the tier price for the product
+        /// </summary>
+        /// <param name="productId">The product id</param>
+        /// <param name="tierPriceId">The tier price id</param>
+        /// <param name="fromQuantity">The new starting quantity</param>
+        /// <param name="toQuantity">The new ending quantity</param>
+        /// <param name="price">The new price</param>
+        /// <returns></returns>
+        Task ChangeProductTierPrice(Guid productId, Guid tierPriceId, int fromQuantity, int toQuantity, Currency price);
+
+        /// <summary>
         /// Remove the tier price from the product
         /// </summary>
         /// <param name="productId">The product id</param>
@@ -253,23 +193,12 @@ namespace Wilcommerce.Catalog.Commands
         Task RemoveProductImage(Guid productId, Guid imageId);
 
         /// <summary>
-        /// Set the SEO information for the procut
+        /// Set the SEO information for the product
         /// </summary>
         /// <param name="productId">The product id</param>
         /// <param name="seo">The SEO information</param>
         /// <returns></returns>
         Task SetProductSeo(Guid productId, SeoData seo);
-
-        /// <summary>
-        /// Change the tier price for the product
-        /// </summary>
-        /// <param name="productId">The product id</param>
-        /// <param name="tierPriceId">The tier price id</param>
-        /// <param name="fromQuantity">The new starting quantity</param>
-        /// <param name="toQuantity">The new ending quantity</param>
-        /// <param name="price">The new price</param>
-        /// <returns></returns>
-        Task ChangeProductTierPrice(Guid productId, Guid tierPriceId, int fromQuantity, int toQuantity, Currency price);
         #endregion
     }
 }
