@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using Wilcommerce.Core.Common.Domain.Models;
+using Wilcommerce.Core.Common.Models;
 using Wilcommerce.Core.Infrastructure;
 
 namespace Wilcommerce.Catalog.Models

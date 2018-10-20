@@ -1,5 +1,5 @@
 ﻿using System;
-using Wilcommerce.Core.Common.Domain.Models;
+using Wilcommerce.Core.Common.Models;
 
 namespace Wilcommerce.Catalog.Models
 {

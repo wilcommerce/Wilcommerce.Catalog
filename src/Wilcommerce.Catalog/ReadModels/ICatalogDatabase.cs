@@ -52,10 +52,5 @@ namespace Wilcommerce.Catalog.ReadModels
         /// Get the product categories
         /// </summary>
         IQueryable<ProductCategory> ProductCategories { get; }
-
-        /// <summary>
-        /// Get the catalog settings
-        /// </summary>
-        IQueryable<CatalogSettings> Settings { get; }
     }
 }
