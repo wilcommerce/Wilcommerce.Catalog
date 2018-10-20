@@ -31,24 +31,11 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="name">The category name</param>
         /// <param name="url">The category url</param>
         /// <param name="description">The category description</param>
+        /// <param name="isVisible">Whether the category is visible</param>
+        /// <param name="visibleFrom">The date and time from when the category is visible</param>
+        /// <param name="visibleTo">The date and time till when the category is visible</param>
         /// <returns></returns>
-        Task UpdateCategoryInfo(Guid categoryId, string code, string name, string url, string description);
-
-        /// <summary>
-        /// Set the category as visible
-        /// </summary>
-        /// <param name="categoryId">The category id</param>
-        /// <param name="from">The date and time of when the category starts to be visible</param>
-        /// <param name="to">The date and time till when the category is visible</param>
-        /// <returns></returns>
-        Task SetCategoryAsVisible(Guid categoryId, DateTime? from, DateTime? to);
-
-        /// <summary>
-        /// Hide the category
-        /// </summary>
-        /// <param name="categoryId">The category id</param>
-        /// <returns></returns>
-        Task HideCategory(Guid categoryId);
+        Task UpdateCategoryInfo(Guid categoryId, string code, string name, string url, string description, bool isVisible, DateTime? visibleFrom, DateTime? visibleTo);
 
         /// <summary>
         /// Add a child to the category

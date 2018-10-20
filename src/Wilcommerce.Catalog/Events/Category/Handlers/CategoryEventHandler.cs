@@ -8,11 +8,8 @@ namespace Wilcommerce.Catalog.Events.Category.Handlers
     /// </summary>
     public class CategoryEventHandler :
         IHandleEvent<CategoryCreatedEvent>,
+        IHandleEvent<CategoryInfoUpdatedEvent>,
         IHandleEvent<CategoryChildAddedEvent>,
-        IHandleEvent<CategoryNameChangedEvent>,
-        IHandleEvent<CategoryCodeChangedEvent>,
-        IHandleEvent<CategoryDescriptionChangedEvent>,
-        IHandleEvent<CategoryUrlChangedEvent>,
         IHandleEvent<CategoryDeletedEvent>,
         IHandleEvent<CategoryRestoredEvent>,
         IHandleEvent<CategoryChildRemovedEvent>
@@ -28,10 +25,13 @@ namespace Wilcommerce.Catalog.Events.Category.Handlers
         /// <param name="eventStore">The event store</param>
         public CategoryEventHandler(IEventStore eventStore)
         {
-            EventStore = eventStore;
+            EventStore = eventStore ?? throw new ArgumentNullException(nameof(eventStore));
         }
 
+        /// <summary>
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
         public void Handle(CategoryCreatedEvent @event)
         {
             try
@@ -44,7 +44,26 @@ namespace Wilcommerce.Catalog.Events.Category.Handlers
             }
         }
 
+        /// <summary>
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
+        public void Handle(CategoryInfoUpdatedEvent @event)
+        {
+            try
+            {
+                EventStore.Save(@event);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
         public void Handle(CategoryChildAddedEvent @event)
         {
             try
@@ -57,59 +76,10 @@ namespace Wilcommerce.Catalog.Events.Category.Handlers
             }
         }
 
+        /// <summary>
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
-        public void Handle(CategoryNameChangedEvent @event)
-        {
-            try
-            {
-                EventStore.Save(@event);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
-        public void Handle(CategoryCodeChangedEvent @event)
-        {
-            try
-            {
-                EventStore.Save(@event);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
-        public void Handle(CategoryDescriptionChangedEvent @event)
-        {
-            try
-            {
-                EventStore.Save(@event);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
-        public void Handle(CategoryUrlChangedEvent @event)
-        {
-            try
-            {
-                EventStore.Save(@event);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
         public void Handle(CategoryDeletedEvent @event)
         {
             try
@@ -122,7 +92,10 @@ namespace Wilcommerce.Catalog.Events.Category.Handlers
             }
         }
 
+        /// <summary>
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
         public void Handle(CategoryRestoredEvent @event)
         {
             try
@@ -135,7 +108,10 @@ namespace Wilcommerce.Catalog.Events.Category.Handlers
             }
         }
 
+        /// <summary>
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
         public void Handle(CategoryChildRemovedEvent @event)
         {
             try

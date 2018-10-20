@@ -42,7 +42,7 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="description">The brand's description</param>
         /// <param name="logo">The brand's logo</param>
         /// <returns>The brand id</returns>
-        public async Task<Guid> CreateNewBrand(string name, string url, string description, Image logo)
+        public virtual async Task<Guid> CreateNewBrand(string name, string url, string description, Image logo)
         {
             try
             {
@@ -80,7 +80,7 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="description">The brand's new description</param>
         /// <param name="logo">The brand's new logo</param>
         /// <returns></returns>
-        public async Task UpdateBrandInfo(Guid brandId, string name, string url, string description, Image logo)
+        public virtual async Task UpdateBrandInfo(Guid brandId, string name, string url, string description, Image logo)
         {
             try
             {
@@ -104,6 +104,11 @@ namespace Wilcommerce.Catalog.Commands
                 {
                     brand.SetLogo(logo);
                 }
+
+                await Repository.SaveChangesAsync();
+
+                var @event = new BrandInfoUpdatedEvent(brandId, name, url, description, logo);
+                EventBus.RaiseEvent(@event);
             }
             catch 
             {
@@ -117,7 +122,7 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="brandId">The brand's id</param>
         /// <param name="seo">The seo data</param>
         /// <returns></returns>
-        public async Task SetBrandSeoData(Guid brandId, SeoData seo)
+        public virtual async Task SetBrandSeoData(Guid brandId, SeoData seo)
         {
             try
             {
@@ -137,7 +142,7 @@ namespace Wilcommerce.Catalog.Commands
         /// </summary>
         /// <param name="brandId">The brand's id</param>
         /// <returns></returns>
-        public async Task DeleteBrand(Guid brandId)
+        public virtual async Task DeleteBrand(Guid brandId)
         {
             try
             {
@@ -160,7 +165,7 @@ namespace Wilcommerce.Catalog.Commands
         /// </summary>
         /// <param name="brandId">The brand's id</param>
         /// <returns></returns>
-        public async Task RestoreBrand(Guid brandId)
+        public virtual async Task RestoreBrand(Guid brandId)
         {
             try
             {

@@ -1,4 +1,5 @@
-﻿using Wilcommerce.Core.Infrastructure;
+﻿using System;
+using Wilcommerce.Core.Infrastructure;
 
 namespace Wilcommerce.Catalog.Events.Product.Handlers
 {
@@ -7,6 +8,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
     /// </summary>
     public class ProductEventHandler :
         IHandleEvent<ProductCreatedEvent>,
+        IHandleEvent<ProductInfoUpdateEvent>,
         IHandleEvent<ProductDeletedEvent>,
         IHandleEvent<ProductRestoredEvent>,
         IHandleEvent<ProductVendorSetEvent>,
@@ -35,7 +37,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
         /// <param name="eventStore">The event store</param>
         public ProductEventHandler(IEventStore eventStore)
         {
-            EventStore = eventStore;
+            EventStore = eventStore ?? throw new ArgumentNullException(nameof(eventStore));
         }
 
         /// <summary>
@@ -49,6 +51,22 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
                 EventStore.Save(@event);
             }
             catch
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
+        public void Handle(ProductInfoUpdateEvent @event)
+        {
+            try
+            {
+                EventStore.Save(@event);
+            }
+            catch 
             {
                 throw;
             }

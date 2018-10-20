@@ -50,7 +50,7 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="onSaleFrom">The date and time of when the product starts to be on sale</param>
         /// <param name="onSaleTo">The date and time till when the product is on sale</param>
         /// <returns>The product id</returns>
-        public async Task<Guid> CreateNewProduct(string ean, string sku, string name, string url, Currency price, string description, int unitInStock, bool isOnSale, DateTime? onSaleFrom, DateTime? onSaleTo)
+        public virtual async Task<Guid> CreateNewProduct(string ean, string sku, string name, string url, Currency price, string description, int unitInStock, bool isOnSale, DateTime? onSaleFrom, DateTime? onSaleTo)
         {
             try
             {
@@ -115,7 +115,7 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="onSaleFrom">The date and time of when the product starts to be on sale</param>
         /// <param name="onSaleTo">The date and time till when the product is on sale</param>
         /// <returns></returns>
-        public async Task UpdateProductInfo(Guid productId, string ean, string sku, string name, string url, Currency price, string description, int unitInStock, bool isOnSale, DateTime? onSaleFrom, DateTime? onSaleTo)
+        public virtual async Task UpdateProductInfo(Guid productId, string ean, string sku, string name, string url, Currency price, string description, int unitInStock, bool isOnSale, DateTime? onSaleFrom, DateTime? onSaleTo)
         {
             try
             {
@@ -159,7 +159,18 @@ namespace Wilcommerce.Catalog.Commands
                 {
                     if (isOnSale)
                     {
-                        product.SetOnSale(onSaleFrom.Value, onSaleTo.Value);
+                        if (onSaleFrom == null)
+                        {
+                            product.SetOnSale();
+                        }
+                        else if (onSaleTo == null)
+                        {
+                            product.SetOnSale((DateTime)onSaleFrom);
+                        }
+                        else
+                        {
+                            product.SetOnSale((DateTime)onSaleFrom, (DateTime)onSaleTo);
+                        }
                     }
                     else
                     {
@@ -168,6 +179,9 @@ namespace Wilcommerce.Catalog.Commands
                 }
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new ProductInfoUpdateEvent(productId, ean, sku, name, url, price, description, unitInStock, isOnSale, onSaleFrom, onSaleTo);
+                EventBus.RaiseEvent(@event);
             }
             catch 
             {
@@ -180,7 +194,7 @@ namespace Wilcommerce.Catalog.Commands
         /// </summary>
         /// <param name="productId">The product id</param>
         /// <returns></returns>
-        public async Task DeleteProduct(Guid productId)
+        public virtual async Task DeleteProduct(Guid productId)
         {
             try
             {
@@ -203,7 +217,7 @@ namespace Wilcommerce.Catalog.Commands
         /// </summary>
         /// <param name="productId">The product id</param>
         /// <returns></returns>
-        public async Task RestoreProduct(Guid productId)
+        public virtual async Task RestoreProduct(Guid productId)
         {
             try
             {
@@ -227,7 +241,7 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="productId">The product id</param>
         /// <param name="brandId">The vendor id</param>
         /// <returns></returns>
-        public async Task SetProductVendor(Guid productId, Guid brandId)
+        public virtual async Task SetProductVendor(Guid productId, Guid brandId)
         {
             try
             {
@@ -253,7 +267,7 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="productId">The product id</param>
         /// <param name="categoryId">The category id</param>
         /// <returns></returns>
-        public async Task AddCategoryToProduct(Guid productId, Guid categoryId)
+        public virtual async Task AddCategoryToProduct(Guid productId, Guid categoryId)
         {
             try
             {
@@ -279,7 +293,7 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="productId">The product id</param>
         /// <param name="categoryId">The category id</param>
         /// <returns></returns>
-        public async Task AddMainCategoryToProduct(Guid productId, Guid categoryId)
+        public virtual async Task AddMainCategoryToProduct(Guid productId, Guid categoryId)
         {
             try
             {
@@ -308,7 +322,7 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="sku">The variant SKU code</param>
         /// <param name="price">The variant price</param>
         /// <returns></returns>
-        public async Task AddProductVariant(Guid productId, string name, string ean, string sku, Currency price)
+        public virtual async Task AddProductVariant(Guid productId, string name, string ean, string sku, Currency price)
         {
             try
             {
@@ -332,7 +346,7 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="productId">The product id</param>
         /// <param name="variantId">The variant id</param>
         /// <returns></returns>
-        public async Task RemoveProductVariant(Guid productId, Guid variantId)
+        public virtual async Task RemoveProductVariant(Guid productId, Guid variantId)
         {
             try
             {
@@ -357,7 +371,7 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="attributeId">The attribute id</param>
         /// <param name="value">The attribute value</param>
         /// <returns></returns>
-        public async Task AddAttributeToProduct(Guid productId, Guid attributeId, object value)
+        public virtual async Task AddAttributeToProduct(Guid productId, Guid attributeId, object value)
         {
             try
             {
@@ -383,7 +397,7 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="productId">The product id</param>
         /// <param name="attributeId">The attribute id</param>
         /// <returns></returns>
-        public async Task RemoveProductAttribute(Guid productId, Guid attributeId)
+        public virtual async Task RemoveProductAttribute(Guid productId, Guid attributeId)
         {
             try
             {
@@ -409,7 +423,7 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="toQuantity">The end quantity</param>
         /// <param name="price">The price value</param>
         /// <returns></returns>
-        public async Task AddProductTierPrice(Guid productId, int fromQuantity, int toQuantity, Currency price)
+        public virtual async Task AddProductTierPrice(Guid productId, int fromQuantity, int toQuantity, Currency price)
         {
             try
             {
@@ -441,7 +455,7 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="toQuantity">The new ending quantity</param>
         /// <param name="price">The new price</param>
         /// <returns></returns>
-        public async Task ChangeProductTierPrice(Guid productId, Guid tierPriceId, int fromQuantity, int toQuantity, Currency price)
+        public virtual async Task ChangeProductTierPrice(Guid productId, Guid tierPriceId, int fromQuantity, int toQuantity, Currency price)
         {
             try
             {
@@ -465,7 +479,7 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="productId">The product id</param>
         /// <param name="tierPriceId">The tier price id</param>
         /// <returns></returns>
-        public async Task RemoveTierPriceFromProduct(Guid productId, Guid tierPriceId)
+        public virtual async Task RemoveTierPriceFromProduct(Guid productId, Guid tierPriceId)
         {
             try
             {
@@ -491,7 +505,7 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="rating">The rate given</param>
         /// <param name="comment">The comment given</param>
         /// <returns></returns>
-        public async Task AddProductReview(Guid productId, string name, int rating, string comment)
+        public virtual async Task AddProductReview(Guid productId, string name, int rating, string comment)
         {
             try
             {
@@ -515,7 +529,7 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="productId">The product id</param>
         /// <param name="reviewId">The review id</param>
         /// <returns></returns>
-        public async Task ApproveProductReview(Guid productId, Guid reviewId)
+        public virtual async Task ApproveProductReview(Guid productId, Guid reviewId)
         {
             try
             {
@@ -539,7 +553,7 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="productId">The product id</param>
         /// <param name="reviewId">The review id</param>
         /// <returns></returns>
-        public async Task RemoveProductReview(Guid productId, Guid reviewId)
+        public virtual async Task RemoveProductReview(Guid productId, Guid reviewId)
         {
             try
             {
@@ -568,7 +582,7 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="isMain">Whether is the main image for the product</param>
         /// <param name="uploadedOn">The date and time of when the image is uploaded</param>
         /// <returns></returns>
-        public async Task AddProductImage(Guid productId, string path, string name, string originalName, bool isMain, DateTime uploadedOn)
+        public virtual async Task AddProductImage(Guid productId, string path, string name, string originalName, bool isMain, DateTime uploadedOn)
         {
             try
             {
@@ -592,7 +606,7 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="productId">The product id</param>
         /// <param name="imageId">The image id</param>
         /// <returns></returns>
-        public async Task RemoveProductImage(Guid productId, Guid imageId)
+        public virtual async Task RemoveProductImage(Guid productId, Guid imageId)
         {
             try
             {
@@ -616,7 +630,7 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="productId">The product id</param>
         /// <param name="seo">The SEO information</param>
         /// <returns></returns>
-        public async Task SetProductSeo(Guid productId, SeoData seo)
+        public virtual async Task SetProductSeo(Guid productId, SeoData seo)
         {
             try
             {
