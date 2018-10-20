@@ -24,6 +24,11 @@ namespace Wilcommerce.Catalog.Commands
         /// </summary>
         public IEventBus EventBus { get; }
 
+        /// <summary>
+        /// Construct the product commands
+        /// </summary>
+        /// <param name="repository">The repository</param>
+        /// <param name="eventBus">The event bus</param>
         public ProductCommands(Repository.IRepository repository, IEventBus eventBus)
         {
             Repository = repository ?? throw new ArgumentNullException(nameof(repository));
@@ -110,9 +115,64 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="onSaleFrom">The date and time of when the product starts to be on sale</param>
         /// <param name="onSaleTo">The date and time till when the product is on sale</param>
         /// <returns></returns>
-        public Task UpdateProductInfo(Guid productId, string ean, string sku, string name, string url, Currency price, string description, int unitInStock, bool isOnSale, DateTime? onSaleFrom, DateTime? onSaleTo)
+        public async Task UpdateProductInfo(Guid productId, string ean, string sku, string name, string url, Currency price, string description, int unitInStock, bool isOnSale, DateTime? onSaleFrom, DateTime? onSaleTo)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                if (product.EanCode != ean)
+                {
+                    product.ChangeEanCode(ean);
+                }
+
+                if (product.Sku != sku)
+                {
+                    product.ChangeSku(sku);
+                }
+
+                if (product.Name != name)
+                {
+                    product.ChangeName(name);
+                }
+
+                if (product.Url != url)
+                {
+                    product.ChangeUrl(url);
+                }
+
+                if (product.Price != price)
+                {
+                    product.SetPrice(price);
+                }
+
+                if (product.Description != description)
+                {
+                    product.ChangeDescription(description);
+                }
+
+                if (product.UnitInStock != unitInStock)
+                {
+                    product.SetUnitInStock(unitInStock);
+                }
+
+                if (product.IsOnSale != isOnSale)
+                {
+                    if (isOnSale)
+                    {
+                        product.SetOnSale(onSaleFrom.Value, onSaleTo.Value);
+                    }
+                    else
+                    {
+                        product.RemoveFromSale();
+                    }
+                }
+
+                await Repository.SaveChangesAsync();
+            }
+            catch 
+            {
+                throw;
+            }
         }
 
         /// <summary>
