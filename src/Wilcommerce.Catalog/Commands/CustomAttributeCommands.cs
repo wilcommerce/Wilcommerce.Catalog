@@ -116,6 +116,9 @@ namespace Wilcommerce.Catalog.Commands
                 UpdateCustomAttributeValues(attribute, values);
 
                 await Repository.SaveChangesAsync();
+
+                var @event = new CustomAttributeUpdatedEvent(attributeId, name, type, description, unitOfMeasure, values);
+                EventBus.RaiseEvent(@event);
             }
             catch 
             {
