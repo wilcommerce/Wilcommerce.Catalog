@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 using Wilcommerce.Catalog.Models;
-using Wilcommerce.Core.Common.Domain.Models;
+using Wilcommerce.Core.Common.Models;
 using Xunit;
 
 namespace Wilcommerce.Catalog.Test.Models

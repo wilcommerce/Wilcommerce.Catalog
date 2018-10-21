@@ -1,4 +1,5 @@
-﻿using Wilcommerce.Core.Infrastructure;
+﻿using System;
+using Wilcommerce.Core.Infrastructure;
 
 namespace Wilcommerce.Catalog.Events.Product.Handlers
 {
@@ -7,17 +8,9 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
     /// </summary>
     public class ProductEventHandler :
         IHandleEvent<ProductCreatedEvent>,
+        IHandleEvent<ProductInfoUpdateEvent>,
         IHandleEvent<ProductDeletedEvent>,
         IHandleEvent<ProductRestoredEvent>,
-        IHandleEvent<ProductUnitInStockChangedEvent>,
-        IHandleEvent<ProductEanCodeChangedEvent>,
-        IHandleEvent<ProductSkuChangedEvent>,
-        IHandleEvent<ProductNameChangedEvent>,
-        IHandleEvent<ProductDescriptionChangedEvent>,
-        IHandleEvent<ProductUrlChangedEvent>,
-        IHandleEvent<ProductPriceSetEvent>,
-        IHandleEvent<ProductSetOnSaleEvent>,
-        IHandleEvent<ProductRemovedFromSaleEvent>,
         IHandleEvent<ProductVendorSetEvent>,
         IHandleEvent<ProductCategoryAddedEvent>,
         IHandleEvent<ProductVariantAddedEvent>,
@@ -25,13 +18,13 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
         IHandleEvent<ProductAttributeAddedEvent>,
         IHandleEvent<ProductAttributeRemovedEvent>,
         IHandleEvent<ProductTierPriceAddedEvent>,
+        IHandleEvent<ProductTierPriceChangedEvent>,
         IHandleEvent<ProductTierPriceRemovedEvent>,
         IHandleEvent<ProductReviewAddedEvent>,
         IHandleEvent<ProductReviewApprovedEvent>,
         IHandleEvent<ProductReviewRemovedEvent>,
         IHandleEvent<ProductImageAddedEvent>,
-        IHandleEvent<ProductImageRemovedEvent>,
-        IHandleEvent<ProductTierPriceChangedEvent>
+        IHandleEvent<ProductImageRemovedEvent>
     {
         /// <summary>
         /// Get the event store
@@ -44,10 +37,13 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
         /// <param name="eventStore">The event store</param>
         public ProductEventHandler(IEventStore eventStore)
         {
-            EventStore = eventStore;
+            EventStore = eventStore ?? throw new ArgumentNullException(nameof(eventStore));
         }
 
+        /// <summary>
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
         public void Handle(ProductCreatedEvent @event)
         {
             try
@@ -60,7 +56,26 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <summary>
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
+        public void Handle(ProductInfoUpdateEvent @event)
+        {
+            try
+            {
+                EventStore.Save(@event);
+            }
+            catch 
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
         public void Handle(ProductDeletedEvent @event)
         {
             try
@@ -73,7 +88,10 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <summary>
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
         public void Handle(ProductRestoredEvent @event)
         {
             try
@@ -86,124 +104,10 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <summary>
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
-        public void Handle(ProductUnitInStockChangedEvent @event)
-        {
-            try
-            {
-                EventStore.Save(@event);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
-        public void Handle(ProductEanCodeChangedEvent @event)
-        {
-            try
-            {
-                EventStore.Save(@event);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
-        public void Handle(ProductSkuChangedEvent @event)
-        {
-            try
-            {
-                EventStore.Save(@event);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
-        public void Handle(ProductNameChangedEvent @event)
-        {
-            try
-            {
-                EventStore.Save(@event);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
-        public void Handle(ProductDescriptionChangedEvent @event)
-        {
-            try
-            {
-                EventStore.Save(@event);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
-        public void Handle(ProductUrlChangedEvent @event)
-        {
-            try
-            {
-                EventStore.Save(@event);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
-        public void Handle(ProductPriceSetEvent @event)
-        {
-            try
-            {
-                EventStore.Save(@event);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
-        public void Handle(ProductSetOnSaleEvent @event)
-        {
-            try
-            {
-                EventStore.Save(@event);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
-        public void Handle(ProductRemovedFromSaleEvent @event)
-        {
-            try
-            {
-                EventStore.Save(@event);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
         public void Handle(ProductVendorSetEvent @event)
         {
             try
@@ -216,7 +120,10 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <summary>
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
         public void Handle(ProductCategoryAddedEvent @event)
         {
             try
@@ -229,7 +136,10 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <summary>
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
         public void Handle(ProductVariantAddedEvent @event)
         {
             try
@@ -242,7 +152,10 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <summary>
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
         public void Handle(ProductVariantRemovedEvent @event)
         {
             try
@@ -255,7 +168,10 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <summary>
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
         public void Handle(ProductAttributeAddedEvent @event)
         {
             try
@@ -268,7 +184,10 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <summary>
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
         public void Handle(ProductAttributeRemovedEvent @event)
         {
             try
@@ -281,7 +200,10 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <summary>
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
         public void Handle(ProductTierPriceAddedEvent @event)
         {
             try
@@ -294,7 +216,26 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <summary>
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
+        public void Handle(ProductTierPriceChangedEvent @event)
+        {
+            try
+            {
+                EventStore.Save(@event);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
         public void Handle(ProductTierPriceRemovedEvent @event)
         {
             try
@@ -307,7 +248,10 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <summary>
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
         public void Handle(ProductReviewAddedEvent @event)
         {
             try
@@ -320,7 +264,10 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <summary>
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
         public void Handle(ProductReviewApprovedEvent @event)
         {
             try
@@ -333,7 +280,10 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <summary>
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
         public void Handle(ProductReviewRemovedEvent @event)
         {
             try
@@ -346,7 +296,10 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <summary>
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
         public void Handle(ProductImageAddedEvent @event)
         {
             try
@@ -359,21 +312,11 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
             }
         }
 
+        /// <summary>
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
         public void Handle(ProductImageRemovedEvent @event)
-        {
-            try
-            {
-                EventStore.Save(@event);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
-        public void Handle(ProductTierPriceChangedEvent @event)
         {
             try
             {

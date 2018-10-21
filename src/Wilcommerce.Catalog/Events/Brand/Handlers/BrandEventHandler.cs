@@ -1,4 +1,5 @@
-﻿using Wilcommerce.Core.Infrastructure;
+﻿using System;
+using Wilcommerce.Core.Infrastructure;
 
 namespace Wilcommerce.Catalog.Events.Brand.Handlers
 {
@@ -7,9 +8,7 @@ namespace Wilcommerce.Catalog.Events.Brand.Handlers
     /// </summary>
     public class BrandEventHandler :
         IHandleEvent<BrandCreatedEvent>,
-        IHandleEvent<BrandNameChangedEvent>,
-        IHandleEvent<BrandUrlChangedEvent>,
-        IHandleEvent<BrandDescriptionChangedEvent>,
+        IHandleEvent<BrandInfoUpdatedEvent>,
         IHandleEvent<BrandDeletedEvent>,
         IHandleEvent<BrandRestoredEvent>
     {
@@ -24,10 +23,13 @@ namespace Wilcommerce.Catalog.Events.Brand.Handlers
         /// <param name="eventStore">The event store</param>
         public BrandEventHandler(IEventStore eventStore)
         {
-            EventStore = eventStore;
+            EventStore = eventStore ?? throw new ArgumentNullException(nameof(eventStore));
         }
 
+        /// <summary>
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
         public void Handle(BrandCreatedEvent @event)
         {
             try
@@ -40,8 +42,11 @@ namespace Wilcommerce.Catalog.Events.Brand.Handlers
             }
         }
 
+        /// <summary>
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
-        public void Handle(BrandNameChangedEvent @event)
+        /// </summary>
+        /// <param name="event"></param>
+        public void Handle(BrandInfoUpdatedEvent @event)
         {
             try
             {
@@ -53,33 +58,10 @@ namespace Wilcommerce.Catalog.Events.Brand.Handlers
             }
         }
 
+        /// <summary>
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
-        public void Handle(BrandUrlChangedEvent @event)
-        {
-            try
-            {
-                EventStore.Save(@event);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
-        public void Handle(BrandDescriptionChangedEvent @event)
-        {
-            try
-            {
-                EventStore.Save(@event);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
         public void Handle(BrandDeletedEvent @event)
         {
             try
@@ -92,7 +74,10 @@ namespace Wilcommerce.Catalog.Events.Brand.Handlers
             }
         }
 
+        /// <summary>
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
         public void Handle(BrandRestoredEvent @event)
         {
             try

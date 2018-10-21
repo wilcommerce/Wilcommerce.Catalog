@@ -1,4 +1,5 @@
-﻿using Wilcommerce.Core.Infrastructure;
+﻿using System;
+using Wilcommerce.Core.Infrastructure;
 
 namespace Wilcommerce.Catalog.Events.CustomAttribute.Handlers
 {
@@ -7,12 +8,7 @@ namespace Wilcommerce.Catalog.Events.CustomAttribute.Handlers
     /// </summary>
     public class CustomAttributeEventHandler :
         IHandleEvent<CustomAttributeCreatedEvent>,
-        IHandleEvent<CustomAttributeValueAddedEvent>,
-        IHandleEvent<CustomAttributeValueRemovedEvent>,
-        IHandleEvent<CustomAttributeNameChangedEvent>,
-        IHandleEvent<CustomAttributeDescriptionChangedEvent>,
-        IHandleEvent<CustomAttributeUnitOfMeasureSetEvent>,
-        IHandleEvent<CustomAttributeDataTypeChangedEvent>,
+        IHandleEvent<CustomAttributeUpdatedEvent>,
         IHandleEvent<CustomAttributeDeletedEvent>,
         IHandleEvent<CustomAttributeRestoredEvent>
     {
@@ -27,10 +23,13 @@ namespace Wilcommerce.Catalog.Events.CustomAttribute.Handlers
         /// <param name="eventStore">The event store</param>
         public CustomAttributeEventHandler(IEventStore eventStore)
         {
-            EventStore = eventStore;
+            EventStore = eventStore ?? throw new ArgumentNullException(nameof(eventStore));
         }
 
+        /// <summary>
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
         public void Handle(CustomAttributeCreatedEvent @event)
         {
             try
@@ -43,8 +42,11 @@ namespace Wilcommerce.Catalog.Events.CustomAttribute.Handlers
             }
         }
 
+        /// <summary>
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
-        public void Handle(CustomAttributeValueAddedEvent @event)
+        /// </summary>
+        /// <param name="event"></param>
+        public void Handle(CustomAttributeUpdatedEvent @event)
         {
             try
             {
@@ -56,72 +58,10 @@ namespace Wilcommerce.Catalog.Events.CustomAttribute.Handlers
             }
         }
 
+        /// <summary>
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
-        public void Handle(CustomAttributeValueRemovedEvent @event)
-        {
-            try
-            {
-                EventStore.Save(@event);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
-        public void Handle(CustomAttributeNameChangedEvent @event)
-        {
-            try
-            {
-                EventStore.Save(@event);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
-        public void Handle(CustomAttributeDescriptionChangedEvent @event)
-        {
-            try
-            {
-                EventStore.Save(@event);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
-        public void Handle(CustomAttributeUnitOfMeasureSetEvent @event)
-        {
-            try
-            {
-                EventStore.Save(@event);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
-        public void Handle(CustomAttributeDataTypeChangedEvent @event)
-        {
-            try
-            {
-                EventStore.Save(@event);
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
         public void Handle(CustomAttributeDeletedEvent @event)
         {
             try
@@ -134,7 +74,10 @@ namespace Wilcommerce.Catalog.Events.CustomAttribute.Handlers
             }
         }
 
+        /// <summary>
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
         public void Handle(CustomAttributeRestoredEvent @event)
         {
             try
