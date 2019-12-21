@@ -182,7 +182,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="name">The category name</param>
         public virtual void ChangeName(string name)
         {
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentNullException(nameof(name));
             }
@@ -196,7 +196,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="code">The category code</param>
         public virtual void ChangeCode(string code)
         {
-            if (string.IsNullOrEmpty(code))
+            if (string.IsNullOrWhiteSpace(code))
             {
                 throw new ArgumentNullException(nameof(code));
             }
@@ -210,11 +210,6 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="description">The category description</param>
         public virtual void ChangeDescription(string description)
         {
-            if (string.IsNullOrEmpty(description))
-            {
-                throw new ArgumentNullException(nameof(description));
-            }
-
             Description = description;
         }
 
@@ -224,7 +219,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="url">The category url</param>
         public virtual void ChangeUrl(string url)
         {
-            if (string.IsNullOrEmpty(url))
+            if (string.IsNullOrWhiteSpace(url))
             {
                 throw new ArgumentNullException(nameof(url));
             }
@@ -314,17 +309,17 @@ namespace Wilcommerce.Catalog.Models
         /// <returns>The category created</returns>
         public static Category Create(string code, string name, string url)
         {
-            if (string.IsNullOrEmpty(code))
+            if (string.IsNullOrWhiteSpace(code))
             {
                 throw new ArgumentNullException(nameof(code));
             }
 
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentNullException(nameof(name));
             }
 
-            if (string.IsNullOrEmpty(url))
+            if (string.IsNullOrWhiteSpace(url))
             {
                 throw new ArgumentNullException(nameof(url));
             }

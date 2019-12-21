@@ -268,7 +268,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="ean">The product's ean code</param>
         public virtual void ChangeEanCode(string ean)
         {
-            if (string.IsNullOrEmpty(ean))
+            if (string.IsNullOrWhiteSpace(ean))
             {
                 throw new ArgumentNullException(nameof(ean));
             }
@@ -282,7 +282,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="sku">The product's sku</param>
         public virtual void ChangeSku(string sku)
         {
-            if (string.IsNullOrEmpty(sku))
+            if (string.IsNullOrWhiteSpace(sku))
             {
                 throw new ArgumentNullException(nameof(sku));
             }
@@ -296,7 +296,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="name">The product's name</param>
         public virtual void ChangeName(string name)
         {
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentNullException(nameof(name));
             }
@@ -310,11 +310,6 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="description">The product's description</param>
         public virtual void ChangeDescription(string description)
         {
-            if (string.IsNullOrEmpty(description))
-            {
-                throw new ArgumentNullException(nameof(description));
-            }
-
             Description = description;
         }
 
@@ -324,7 +319,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="url">The product's url</param>
         public virtual void ChangeUrl(string url)
         {
-            if (string.IsNullOrEmpty(url))
+            if (string.IsNullOrWhiteSpace(url))
             {
                 throw new ArgumentNullException(nameof(url));
             }
@@ -494,17 +489,17 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="price">The variant price</param>
         public virtual void AddVariant(string name, string ean, string sku, Currency price)
         {
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentNullException(nameof(name));
             }
 
-            if (string.IsNullOrEmpty(ean))
+            if (string.IsNullOrWhiteSpace(ean))
             {
                 throw new ArgumentNullException(nameof(ean));
             }
 
-            if (string.IsNullOrEmpty(sku))
+            if (string.IsNullOrWhiteSpace(sku))
             {
                 throw new ArgumentNullException(nameof(sku));
             }
@@ -609,7 +604,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="comment">The comment given to the product</param>
         public virtual void AddReview(string name, int rating, string comment)
         {
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentNullException(nameof(name));
             }
@@ -640,17 +635,17 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="uploadedOn">The date and time of when the image is uploaded</param>
         public virtual void AddImage(string path, string name, string originalName, bool isMain, DateTime uploadedOn)
         {
-            if (string.IsNullOrEmpty(path))
+            if (string.IsNullOrWhiteSpace(path))
             {
                 throw new ArgumentNullException(nameof(path));
             }
 
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentNullException(nameof(name));
             }
 
-            if (string.IsNullOrEmpty(originalName))
+            if (string.IsNullOrWhiteSpace(originalName))
             {
                 throw new ArgumentNullException(nameof(originalName));
             }
@@ -846,22 +841,22 @@ namespace Wilcommerce.Catalog.Models
         /// <returns>The created product</returns>
         public static Product Create(string ean, string sku, string name, string url)
         {
-            if (string.IsNullOrEmpty(ean))
+            if (string.IsNullOrWhiteSpace(ean))
             {
                 throw new ArgumentNullException(nameof(ean));
             }
 
-            if (string.IsNullOrEmpty(sku))
+            if (string.IsNullOrWhiteSpace(sku))
             {
                 throw new ArgumentNullException(nameof(sku));
             }
 
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentNullException(nameof(name));
             }
 
-            if (string.IsNullOrEmpty(url))
+            if (string.IsNullOrWhiteSpace(url))
             {
                 throw new ArgumentNullException(nameof(url));
             }

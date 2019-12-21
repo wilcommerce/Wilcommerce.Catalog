@@ -12,6 +12,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData("")]
         [InlineData(null)]
+        [InlineData(" ")]
         public void ProductFactory_Should_Throw_ArgumentNullException_If_Ean_IsEmpty(string value)
         {
             var ex = Assert.Throws<ArgumentNullException>(() => Product.Create(
@@ -27,6 +28,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData("")]
         [InlineData(null)]
+        [InlineData(" ")]
         public void ProductFactory_Should_Throw_ArgumentNullException_If_Sku_IsEmpty(string value)
         {
             var ex = Assert.Throws<ArgumentNullException>(() => Product.Create(
@@ -42,6 +44,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData("")]
         [InlineData(null)]
+        [InlineData(" ")]
         public void ProductFactory_Should_Throw_ArgumentNullException_If_Name_IsEmpty(string value)
         {
             var ex = Assert.Throws<ArgumentNullException>(() => Product.Create(
@@ -57,6 +60,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData("")]
         [InlineData(null)]
+        [InlineData(" ")]
         public void ProductFactory_Should_Throw_ArgumentNullException_If_Url_IsEmpty(string value)
         {
             var ex = Assert.Throws<ArgumentNullException>(() => Product.Create(
@@ -116,6 +120,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData(null)]
         [InlineData("")]
+        [InlineData(" ")]
         public void ChangeEanCode_Should_Throw_ArgumentNullException_If_EanCode_IsEmpty(string value)
         {
             var product = Product.Create(
@@ -132,6 +137,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData(null)]
         [InlineData("")]
+        [InlineData(" ")]
         public void ChangeSku_Should_Throw_ArgumentNullException_If_Sku_IsEmpty(string value)
         {
             var product = Product.Create(
@@ -148,6 +154,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData(null)]
         [InlineData("")]
+        [InlineData(" ")]
         public void ChangeName_Should_Throw_ArgumentNullException_If_Name_IsEmpty(string value)
         {
             var product = Product.Create(
@@ -164,7 +171,8 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData(null)]
         [InlineData("")]
-        public void ChangeDescription_Should_Throw_ArgumentNullException_If_Description_IsEmpty(string value)
+        [InlineData(" ")]
+        public void ChangeDescription_Should_Clear_If_Description_IsEmpty(string value)
         {
             var product = Product.Create(
                 "ean",
@@ -173,13 +181,15 @@ namespace Wilcommerce.Catalog.Test.Models
                 "my-product"
                 );
 
-            var ex = Assert.Throws<ArgumentNullException>(() => product.ChangeDescription(value));
-            Assert.Equal("description", ex.ParamName);
+            product.ChangeDescription(value);
+
+            Assert.True(string.IsNullOrWhiteSpace(product.Description));
         }
 
         [Theory]
         [InlineData(null)]
         [InlineData("")]
+        [InlineData(" ")]
         public void ChangeUrl_Should_Throw_ArgumentNullException_If_Url_IsEmpty(string value)
         {
             var product = Product.Create(
@@ -377,6 +387,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData("")]
         [InlineData(null)]
+        [InlineData(" ")]
         public void Product_AddVariant_Should_Throw_ArgumentNullException_If_Name_IsEmpty(string value)
         {
             var product = Product.Create(
@@ -395,6 +406,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData("")]
         [InlineData(null)]
+        [InlineData(" ")]
         public void Product_AddVariant_Should_Throw_ArgumentNullException_If_Ean_IsEmpty(string value)
         {
             var product = Product.Create(
@@ -413,6 +425,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData("")]
         [InlineData(null)]
+        [InlineData(" ")]
         public void Product_AddVariant_Should_Throw_ArgumentNullException_If_Sku_IsEmpty(string value)
         {
             var product = Product.Create(
@@ -565,6 +578,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData("")]
         [InlineData(null)]
+        [InlineData(" ")]
         public void Product_AddReview_Should_Throw_ArgumentNullException_If_Name_IsEmpty(string value)
         {
             var product = Product.Create(
@@ -611,6 +625,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData(null)]
         [InlineData("")]
+        [InlineData(" ")]
         public void Product_AddImage_Should_Throw_ArgumentNullException_If_Path_IsEmpty(string value)
         {
             var product = Product.Create(
@@ -627,6 +642,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData(null)]
         [InlineData("")]
+        [InlineData(" ")]
         public void Product_AddImage_Should_Throw_ArgumentNullException_If_Name_IsEmpty(string value)
         {
             var product = Product.Create(
@@ -643,6 +659,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData(null)]
         [InlineData("")]
+        [InlineData(" ")]
         public void Product_AddImage_Should_Throw_ArgumentNullException_If_OriginalName_IsEmpty(string value)
         {
             var product = Product.Create(

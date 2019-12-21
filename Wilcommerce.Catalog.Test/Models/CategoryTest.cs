@@ -10,6 +10,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData(null)]
         [InlineData("")]
+        [InlineData(" ")]
         public void CategoryFactory_Should_Throw_ArgumentNullException_If_Code_IsEmpty(string value)
         {
             var ex = Assert.Throws<ArgumentNullException>(() => Category.Create(
@@ -24,6 +25,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData(null)]
         [InlineData("")]
+        [InlineData(" ")]
         public void CategoryFactory_Should_Throw_ArgumentNullException_If_Name_IsEmpty(string value)
         {
             var ex = Assert.Throws<ArgumentNullException>(() => Category.Create(
@@ -38,6 +40,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData(null)]
         [InlineData("")]
+        [InlineData(" ")]
         public void CategoryFactory_Should_Throw_ArgumentNullException_If_Url_IsEmpty(string value)
         {
             var ex = Assert.Throws<ArgumentNullException>(() => Category.Create(
@@ -143,6 +146,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData(null)]
         [InlineData("")]
+        [InlineData(" ")]
         public void ChangeName_Should_Throw_ArgumentNullException_If_Name_IsEmpty(string value)
         {
             var category = Category.Create(
@@ -158,6 +162,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData(null)]
         [InlineData("")]
+        [InlineData(" ")]
         public void ChangeCode_Should_Throw_ArgumentNullException_If_Code_IsEmpty(string value)
         {
             var category = Category.Create(
@@ -173,7 +178,8 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData(null)]
         [InlineData("")]
-        public void ChangeDescription_Should_Throw_ArgumentNullException_If_Description_IsEmpty(string value)
+        [InlineData(" ")]
+        public void ChangeDescription_Should_Clear_If_Description_IsEmpty(string value)
         {
             var category = Category.Create(
                 "TEST1",
@@ -181,13 +187,15 @@ namespace Wilcommerce.Catalog.Test.Models
                 "test-category"
                 );
 
-            var ex = Assert.Throws<ArgumentNullException>(() => category.ChangeDescription(value));
-            Assert.Equal("description", ex.ParamName);
+            category.ChangeDescription(value);
+
+            Assert.True(string.IsNullOrWhiteSpace(category.Description));
         }
 
         [Theory]
         [InlineData(null)]
         [InlineData("")]
+        [InlineData(" ")]
         public void ChangeUrl_Should_Throw_ArgumentNullException_If_Url_IsEmpty(string value)
         {
             var category = Category.Create(

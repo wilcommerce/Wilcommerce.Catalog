@@ -10,6 +10,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData(null)]
         [InlineData("")]
+        [InlineData(" ")]
         public void CustomAttributeFactory_Should_Throw_ArgumentNullException_If_Name_IsEmpty(string value)
         {
             var ex = Assert.Throws<ArgumentNullException>(() => CustomAttribute.Create(
@@ -23,6 +24,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData(null)]
         [InlineData("")]
+        [InlineData(" ")]
         public void CustomAttributeFactory_Should_Throw_ArgumentNullException_If_Type_IsEmpty(string value)
         {
             var ex = Assert.Throws<ArgumentNullException>(() => CustomAttribute.Create(
@@ -138,6 +140,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData(null)]
         [InlineData("")]
+        [InlineData(" ")]
         public void ChangeName_Should_Throw_ArgumentNullException_If_Name_IsEmpty(string value)
         {
             var attribute = CustomAttribute.Create(
@@ -152,20 +155,23 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData(null)]
         [InlineData("")]
-        public void ChangeDescription_Should_Throw_ArgumentNullException_If_Description_IsEmpty(string value)
+        [InlineData(" ")]
+        public void ChangeDescription_Should_Clear_If_Description_IsEmpty(string value)
         {
             var attribute = CustomAttribute.Create(
                 "Attribute",
                 "string"
                 );
 
-            var ex = Assert.Throws<ArgumentNullException>(() => attribute.ChangeDescription(value));
-            Assert.Equal("description", ex.ParamName);
+            attribute.ChangeDescription(value);
+
+            Assert.True(string.IsNullOrWhiteSpace(attribute.Description));
         }
 
         [Theory]
         [InlineData(null)]
         [InlineData("")]
+        [InlineData(" ")]
         public void SetUnitOfMeasure_Should_Throw_ArgumentNullException_If_UnitOfMeasure_IsEmpty(string value)
         {
             var attribute = CustomAttribute.Create(
@@ -180,6 +186,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData(null)]
         [InlineData("")]
+        [InlineData(" ")]
         public void ChangeDataType_Should_Throw_ArgumentNullException_If_DataType_IsEmpty(string value)
         {
             var attribute = CustomAttribute.Create(

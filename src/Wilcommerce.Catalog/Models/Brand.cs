@@ -69,7 +69,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="name">The new brand name</param>
         public virtual void ChangeName(string name)
         {
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentNullException(nameof(name));
             }
@@ -83,11 +83,6 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="description">The brand description</param>
         public virtual void ChangeDescription(string description)
         {
-            if (string.IsNullOrEmpty(description))
-            {
-                throw new ArgumentNullException(nameof(description));
-            }
-
             Description = description;
         }
 
@@ -97,7 +92,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="url">The new brand url</param>
         public virtual void ChangeUrl(string url)
         {
-            if (string.IsNullOrEmpty(url))
+            if (string.IsNullOrWhiteSpace(url))
             {
                 throw new ArgumentNullException(nameof(url));
             }
@@ -159,12 +154,12 @@ namespace Wilcommerce.Catalog.Models
         /// <returns>The brand created</returns>
         public static Brand Create(string name, string url)
         {
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentNullException(nameof(name));
             }
 
-            if (string.IsNullOrEmpty(url))
+            if (string.IsNullOrWhiteSpace(url))
             {
                 throw new ArgumentNullException(nameof(url));
             }
