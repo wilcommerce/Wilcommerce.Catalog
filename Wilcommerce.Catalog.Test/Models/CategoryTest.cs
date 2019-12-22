@@ -63,7 +63,7 @@ namespace Wilcommerce.Catalog.Test.Models
                 "test-category"
                 );
 
-            category.SetAsVisible(today);
+            category.SetAsVisible(today, null);
 
             Assert.True(category.IsVisible);
             Assert.Equal(today, category.VisibleFrom);

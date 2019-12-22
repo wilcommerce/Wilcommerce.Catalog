@@ -57,17 +57,13 @@ namespace Wilcommerce.Catalog.Commands
 
                 if (isVisible)
                 {
-                    if (visibleFrom == null)
+                    if (!visibleFrom.HasValue && !visibleTo.HasValue)
                     {
                         category.SetAsVisible();
                     }
-                    else if (visibleTo == null)
-                    {
-                        category.SetAsVisible((DateTime)visibleFrom);
-                    }
                     else
                     {
-                        category.SetAsVisible((DateTime)visibleFrom, (DateTime)visibleTo);
+                        category.SetAsVisible(visibleFrom, visibleTo);
                     }
                 }
 
@@ -126,17 +122,13 @@ namespace Wilcommerce.Catalog.Commands
                 {
                     if (isVisible)
                     {
-                        if (visibleFrom == null)
+                        if (!visibleFrom.HasValue && !visibleTo.HasValue)
                         {
                             category.SetAsVisible();
                         }
-                        else if (visibleTo == null)
-                        {
-                            category.SetAsVisible((DateTime)visibleFrom);
-                        }
                         else
                         {
-                            category.SetAsVisible((DateTime)visibleFrom, (DateTime)visibleTo);
+                            category.SetAsVisible(visibleFrom, visibleTo);
                         }
                     }
                     else

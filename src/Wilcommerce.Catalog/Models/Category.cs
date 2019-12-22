@@ -114,17 +114,7 @@ namespace Wilcommerce.Catalog.Models
         /// </summary>
         public virtual void SetAsVisible()
         {
-            SetAsVisible(DateTime.Now);
-        }
-
-        /// <summary>
-        /// Set the category as visible
-        /// </summary>
-        /// <param name="from">The date and time from which the category is visible</param>
-        public virtual void SetAsVisible(DateTime from)
-        {
-            IsVisible = true;
-            VisibleFrom = from;
+            SetAsVisible(DateTime.Now, null);
         }
 
         /// <summary>
@@ -132,14 +122,15 @@ namespace Wilcommerce.Catalog.Models
         /// </summary>
         /// <param name="from">The date and time from which the category is visible</param>
         /// <param name="to">The date and time till which the category is visible</param>
-        public virtual void SetAsVisible(DateTime from, DateTime to)
+        public virtual void SetAsVisible(DateTime? from, DateTime? to)
         {
             if (from >= to)
             {
                 throw new ArgumentException("the from date should be previous to the end date");
             }
 
-            SetAsVisible(from);
+            IsVisible = true;
+            VisibleFrom = from ?? DateTime.Now;
             VisibleTo = to;
         }
 
