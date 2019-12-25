@@ -51,5 +51,14 @@ namespace Wilcommerce.Catalog.Events.Brand
             Description = description;
             Logo = logo;
         }
+
+        /// <summary>
+        /// Convert the event to string
+        /// </summary>
+        /// <returns>The converted string</returns>
+        public override string ToString()
+        {
+            return $"Brand {BrandId} updated. Name: {Name}, Url: {Url}, Description: {Description}";
+        }
     }
 }

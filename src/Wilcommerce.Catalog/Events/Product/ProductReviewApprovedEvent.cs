@@ -36,7 +36,7 @@ namespace Wilcommerce.Catalog.Events.Product
         /// <returns>The converted string</returns>
         public override string ToString()
         {
-            return $"[{FiredOn.ToString()}] Review {ReviewId} approved for product {ProductId}";
+            return $"Review {ReviewId} approved for product {ProductId}";
         }
     }
 }

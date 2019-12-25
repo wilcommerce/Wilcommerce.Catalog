@@ -58,7 +58,7 @@ namespace Wilcommerce.Catalog.Events.Product
         /// <returns>The converted string</returns>
         public override string ToString()
         {
-            return $"[{FiredOn.ToString()}] Tier price {TierPriceId} changed to {FromQuantity} - {ToQuantity} ({Price.Code} {Price.Amount}) for product {ProductId}";
+            return $"Tier price {TierPriceId} changed to {FromQuantity} - {ToQuantity} ({Price.Code} {Price.Amount}) for product {ProductId}";
         }
     }
 }

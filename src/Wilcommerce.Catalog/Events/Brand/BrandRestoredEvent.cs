@@ -29,7 +29,7 @@ namespace Wilcommerce.Catalog.Events.Brand
         /// <returns>The converted string</returns>
         public override string ToString()
         {
-            return $"[{FiredOn.ToString()}] Brand {BrandId} restored successfully";
+            return $"Brand {BrandId} restored successfully";
         }
     }
 }

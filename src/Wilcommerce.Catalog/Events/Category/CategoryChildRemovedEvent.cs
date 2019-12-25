@@ -36,7 +36,7 @@ namespace Wilcommerce.Catalog.Events.Category
         /// <returns>The converted string</returns>
         public override string ToString()
         {
-            return $"[{FiredOn.ToString()}] Child {ChildId} removed from category {CategoryId}";
+            return $"Child {ChildId} removed from category {CategoryId}";
         }
     }
 }

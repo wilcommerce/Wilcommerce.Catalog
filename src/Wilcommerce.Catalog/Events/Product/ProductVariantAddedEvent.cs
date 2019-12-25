@@ -50,7 +50,7 @@ namespace Wilcommerce.Catalog.Events.Product
         /// <returns>The converted string</returns>
         public override string ToString()
         {
-            return $"[{FiredOn.ToString()}] Variant {VariantName} (EAN: {EanCode} - SKU: {Sku}) added to product {ProductId}";
+            return $"Variant {VariantName} (EAN: {EanCode} - SKU: {Sku}) added to product {ProductId}";
         }
     }
 }

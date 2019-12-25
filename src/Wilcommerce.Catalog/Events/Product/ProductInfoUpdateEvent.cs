@@ -93,5 +93,14 @@ namespace Wilcommerce.Catalog.Events.Product
             OnSaleFrom = onSaleFrom;
             OnSaleTo = onSaleTo;
         }
+
+        /// <summary>
+        /// Convert the event to string
+        /// </summary>
+        /// <returns>The converted string</returns>
+        public override string ToString()
+        {
+            return $"Product {ProductId} updated. EAN: {EanCode}, SKU: {Sku}, Name: {Name}, Url: {Url}, Price: {Price.ToString()}, Description: {Description}, Unit in stock: {UnitInStock}";
+        }
     }
 }
