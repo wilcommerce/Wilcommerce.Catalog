@@ -255,7 +255,9 @@ namespace Wilcommerce.Catalog.Commands
             try
             {
                 var category = await Repository.GetByKeyAsync<Category>(categoryId);
-                category.RemoveChild(childId);
+                var child = await Repository.GetByKeyAsync<Category>(childId);
+
+                category.RemoveChild(child);
 
                 await Repository.SaveChangesAsync();
 
@@ -269,23 +271,24 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="ICategoryCommands.RemoveParentForCategory(Guid)"/>
+        /// Implementation of <see cref="ICategoryCommands.RemoveParentForCategory(Guid, Guid)"/>
         /// </summary>
         /// <param name="categoryId">The category id</param>
+        /// <param name="parentId">The category parent id</param>
         /// <returns></returns>
-        public virtual async Task RemoveParentForCategory(Guid categoryId)
+        public virtual async Task RemoveParentForCategory(Guid categoryId, Guid parentId)
         {
             try
             {
                 var category = await Repository.GetByKeyAsync<Category>(categoryId);
-                var parentId = category.Parent?.Id;
                 
-                if (parentId != null)
+                if (parentId != Guid.Empty)
                 {
-                    category.RemoveParent();
+                    var parent = await Repository.GetByKeyAsync<Category>(parentId);
+                    category.RemoveParent(parent);
                     await Repository.SaveChangesAsync();
 
-                    var @event = new CategoryChildRemovedEvent((Guid)parentId, categoryId);
+                    var @event = new CategoryChildRemovedEvent(parentId, categoryId);
                     EventBus.RaiseEvent(@event);
                 }
             }

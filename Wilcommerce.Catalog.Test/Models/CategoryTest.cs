@@ -290,5 +290,109 @@ namespace Wilcommerce.Catalog.Test.Models
             Assert.False(category.IsVisible);
             Assert.Equal(DateTime.Now.ToString("yyyy-MM-dd"), category.VisibleTo?.ToString("yyyy-MM-dd"));
         }
+
+        [Fact]
+        public void RemoveChild_Should_Remove_The_Specified_Category()
+        {
+            var category = Category.Create(
+                "TEST1",
+                "Test Category",
+                "test-category"
+                );
+
+            var child = Category.Create(
+                "TEST1.1",
+                "Child category",
+                "child-category");
+
+            category.AddChild(child);
+            category.RemoveChild(child);
+
+            Assert.Empty(category.Children);
+        }
+
+        [Fact]
+        public void RemoveChild_Should_Throw_InvalidOperationException_If_Child_Cannot_Be_Removed()
+        {
+            var category = Category.Create(
+                "TEST1",
+                "Test Category",
+                "test-category"
+                );
+
+            var child = Category.Create(
+                "TEST1.1",
+                "Child category",
+                "child-category");
+
+            var ex = Assert.Throws<InvalidOperationException>(() => category.RemoveChild(child));
+
+            Assert.Equal($"Cannot remove child {child.Id}", ex.Message);
+        }
+
+        [Fact]
+        public void RemoveParent_Should_Throw_ArgumentNullException_If_Parent_Is_Null()
+        {
+            var category = Category.Create(
+                "TEST1",
+                "Test Category",
+                "test-category"
+                );
+
+            Category parent = null;
+
+            var ex = Assert.Throws<ArgumentNullException>(() => category.RemoveParent(parent));
+            Assert.Equal(nameof(parent), ex.ParamName);
+        }
+
+        [Fact]
+        public void RemoveParent_Should_Throw_ArgumentException_If_Specified_Parent_Is_Different_From_Current_Category_Parent()
+        {
+            var category = Category.Create(
+                "TEST1",
+                "Test Category",
+                "test-category"
+                );
+
+            var parent = Category.Create("PARENT1", "Parent", "parent");
+            category.SetParentCategory(parent);
+
+            parent = Category.Create("WRONG", "Wrong parent", "wrong-parent");
+
+            var ex = Assert.Throws<ArgumentException>(() => category.RemoveParent(parent));
+            Assert.Equal(nameof(parent), ex.ParamName);
+        }
+
+        [Fact]
+        public void RemoveParent_Should_Throw_InvalidOperationException_If_Current_Parent_Is_Already_Empty()
+        {
+            var category = Category.Create(
+                "TEST1",
+                "Test Category",
+                "test-category"
+                );
+
+            var parent = Category.Create("PARENT1", "Parent", "parent");
+
+            var ex = Assert.Throws<InvalidOperationException>(() => category.RemoveParent(parent));
+            Assert.Equal("Parent already empty", ex.Message);
+        }
+
+        [Fact]
+        public void RemoveParent_Should_Set_Parent_To_Null()
+        {
+            var category = Category.Create(
+                "TEST1",
+                "Test Category",
+                "test-category"
+                );
+
+            var parent = Category.Create("PARENT1", "Parent", "parent");
+
+            category.SetParentCategory(parent);
+            category.RemoveParent(parent);
+
+            Assert.Null(category.Parent);
+        }
     }
 }
