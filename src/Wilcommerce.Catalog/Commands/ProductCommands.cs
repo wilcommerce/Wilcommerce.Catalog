@@ -72,17 +72,13 @@ namespace Wilcommerce.Catalog.Commands
 
                 if (isOnSale)
                 {
-                    if (onSaleFrom == null)
+                    if (!onSaleFrom.HasValue && !onSaleTo.HasValue)
                     {
                         product.SetOnSale();
                     }
-                    else if (onSaleTo == null)
-                    {
-                        product.SetOnSale((DateTime)onSaleFrom);
-                    }
                     else
                     {
-                        product.SetOnSale((DateTime)onSaleFrom, (DateTime)onSaleTo);
+                        product.SetOnSale(onSaleFrom, onSaleTo);
                     }
                 }
 
@@ -159,17 +155,13 @@ namespace Wilcommerce.Catalog.Commands
                 {
                     if (isOnSale)
                     {
-                        if (onSaleFrom == null)
+                        if (!onSaleFrom.HasValue && !onSaleTo.HasValue)
                         {
                             product.SetOnSale();
                         }
-                        else if (onSaleTo == null)
-                        {
-                            product.SetOnSale((DateTime)onSaleFrom);
-                        }
                         else
                         {
-                            product.SetOnSale((DateTime)onSaleFrom, (DateTime)onSaleTo);
+                            product.SetOnSale(onSaleFrom, onSaleTo);
                         }
                     }
                     else
