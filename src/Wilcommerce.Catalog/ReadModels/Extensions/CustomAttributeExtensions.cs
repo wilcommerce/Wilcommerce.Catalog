@@ -15,6 +15,11 @@ namespace Wilcommerce.Catalog.ReadModels
         /// <returns>A list of custom attributes</returns>
         public static IQueryable<CustomAttribute> Active(this IQueryable<CustomAttribute> attributes)
         {
+            if (attributes == null)
+            {
+                throw new System.ArgumentNullException(nameof(attributes));
+            }
+
             return from a in attributes
                    where !a.Deleted
                    select a;

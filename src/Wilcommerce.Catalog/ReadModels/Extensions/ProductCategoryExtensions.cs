@@ -2,7 +2,7 @@
 using System.Linq;
 using Wilcommerce.Catalog.Models;
 
-namespace Wilcommerce.Catalog.ReadModels.Extensions
+namespace Wilcommerce.Catalog.ReadModels
 {
     /// <summary>
     /// Defines the extension methods for the product category read model
@@ -17,6 +17,16 @@ namespace Wilcommerce.Catalog.ReadModels.Extensions
         /// <returns>A list of products</returns>
         public static IQueryable<Product> ProductsByCategory(this IQueryable<ProductCategory> productCategories, Guid categoryId)
         {
+            if (productCategories == null)
+            {
+                throw new ArgumentNullException(nameof(productCategories));
+            }
+
+            if (categoryId == Guid.Empty)
+            {
+                throw new ArgumentException("value cannot be empty", nameof(categoryId));
+            }
+
             return from c in productCategories
                    where c.CategoryId == categoryId
                    select c.Product;
@@ -29,6 +39,10 @@ namespace Wilcommerce.Catalog.ReadModels.Extensions
         /// <returns>A list of product categories</returns>
         public static IQueryable<ProductCategory> Mains(this IQueryable<ProductCategory> productCategories)
         {
+            if (productCategories == null)
+            {
+                throw new ArgumentNullException(nameof(productCategories));
+            }
 
             return from c in productCategories
                    where c.IsMain

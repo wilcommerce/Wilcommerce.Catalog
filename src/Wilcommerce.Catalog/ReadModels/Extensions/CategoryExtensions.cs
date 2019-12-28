@@ -16,6 +16,11 @@ namespace Wilcommerce.Catalog.ReadModels
         /// <returns>A list of categories</returns>
         public static IQueryable<Category> Active(this IQueryable<Category> categories)
         {
+            if (categories == null)
+            {
+                throw new ArgumentNullException(nameof(categories));
+            }
+
             return from c in categories
                    where !c.Deleted
                    select c;
@@ -29,8 +34,18 @@ namespace Wilcommerce.Catalog.ReadModels
         /// <returns>A list of categories</returns>
         public static IQueryable<Category> ByParent(this IQueryable<Category> categories, Guid parentId)
         {
+            if (categories == null)
+            {
+                throw new ArgumentNullException(nameof(categories));
+            }
+
+            if (parentId == Guid.Empty)
+            {
+                throw new ArgumentException("Value cannot be empty", nameof(parentId));
+            }
+
             return from c in categories
-                   where c.Parent.Id == parentId
+                   where c.Parent != null && c.Parent.Id == parentId
                    select c;
         }
 
@@ -42,6 +57,11 @@ namespace Wilcommerce.Catalog.ReadModels
         /// <returns>A list of categories</returns>
         public static IQueryable<Category> VisibleFrom(this IQueryable<Category> categories, DateTime fromDate)
         {
+            if (categories == null)
+            {
+                throw new ArgumentNullException(nameof(categories));
+            }
+
             return from c in categories
                    where c.IsVisible && c.VisibleFrom >= fromDate
                    select c;
@@ -55,6 +75,11 @@ namespace Wilcommerce.Catalog.ReadModels
         /// <returns>A list of categories</returns>
         public static IQueryable<Category> VisibleTill(this IQueryable<Category> categories, DateTime tillDate)
         {
+            if (categories == null)
+            {
+                throw new ArgumentNullException(nameof(categories));
+            }
+
             return from c in categories
                    where c.IsVisible && c.VisibleTo <= tillDate
                    select c;
@@ -67,6 +92,11 @@ namespace Wilcommerce.Catalog.ReadModels
         /// <returns>A list of categories</returns>
         public static IQueryable<Category> Visible(this IQueryable<Category> categories)
         {
+            if (categories == null)
+            {
+                throw new ArgumentNullException(nameof(categories));
+            }
+
             var today = DateTime.Now;
 
             return from c in categories
