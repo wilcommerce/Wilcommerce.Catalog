@@ -17,8 +17,18 @@ namespace Wilcommerce.Catalog.ReadModels
         /// <returns>A list of product reviews</returns>
         public static IQueryable<ProductReview> ByProduct(this IQueryable<ProductReview> reviews, Guid productId)
         {
+            if (reviews == null)
+            {
+                throw new ArgumentNullException(nameof(reviews));
+            }
+
+            if (productId == Guid.Empty)
+            {
+                throw new ArgumentException("value cannot be null", nameof(productId));
+            }
+
             return from r in reviews
-                   where r.Product.Id == productId
+                   where r.Product != null && r.Product.Id == productId
                    select r;
         }
 
@@ -29,6 +39,11 @@ namespace Wilcommerce.Catalog.ReadModels
         /// <returns>A list of product reviews</returns>
         public static IQueryable<ProductReview> Approved(this IQueryable<ProductReview> reviews)
         {
+            if (reviews == null)
+            {
+                throw new ArgumentNullException(nameof(reviews));
+            }
+
             return from r in reviews
                    where r.Approved
                    select r;
