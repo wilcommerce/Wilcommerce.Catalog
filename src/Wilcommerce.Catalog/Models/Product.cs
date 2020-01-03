@@ -855,6 +855,29 @@ namespace Wilcommerce.Catalog.Models
                 variant.Price = price;
             }
         }
+
+        /// <summary>
+        /// Remove a category
+        /// </summary>
+        /// <param name="category">The category to remove</param>
+        public virtual void RemoveCategory(Category category)
+        {
+            if (category == null)
+            {
+                throw new ArgumentNullException(nameof(category));
+            }
+
+            var categoryToRemove = this.ProductCategories.FirstOrDefault(c => c.CategoryId == category.Id);
+            if (categoryToRemove == null)
+            {
+                throw new InvalidOperationException("Category not found");
+            }
+
+            if (!this.ProductCategories.Remove(categoryToRemove))
+            {
+                throw new InvalidOperationException("Category not removed");
+            }
+        }
         #endregion
 
         #region Factory Methods

@@ -1198,5 +1198,55 @@ namespace Wilcommerce.Catalog.Test.Models
             Assert.Equal(sku, variant.Sku);
             Assert.Equal(price, variant.Price);
         }
+
+        [Fact]
+        public void RemoveCategory_Should_Throw_ArgumentNullException_If_Category_Is_Null()
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            Category category = null;
+
+            var ex = Assert.Throws<ArgumentNullException>(() => product.RemoveCategory(category));
+            Assert.Equal(nameof(category), ex.ParamName);
+        }
+
+        [Fact]
+        public void RemoveCategory_Should_Throw_InvalidOperationException_If_Category_Does_Not_Exist()
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            Category category = Category.Create("code", "category", "category");
+
+            var ex = Assert.Throws<InvalidOperationException>(() => product.RemoveCategory(category));
+            Assert.Equal("Category not found", ex.Message);
+        }
+
+        [Fact]
+        public void RemoveCategory_Should_Remove_Category_From_Product_Categories()
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            Category category = Category.Create("code", "category", "category");
+
+            product.AddCategory(category);
+            product.RemoveCategory(category);
+
+            Assert.True(product.ProductCategories.All(c => c.CategoryId != category.Id));
+        }
     }
 }

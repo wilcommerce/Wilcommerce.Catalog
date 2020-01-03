@@ -1096,6 +1096,93 @@ namespace Wilcommerce.Catalog.Test.Commands
             Assert.Equal(sku, variant.Sku);
             Assert.Equal(price, variant.Price);
         }
+
+        [Fact]
+        public async Task ChangeProductMainCategory_Should_Throw_ArgumentException_If_ProductId_Is_Empty()
+        {
+            Repository.IRepository repository = new Mock<Repository.IRepository>().Object;
+            Core.Infrastructure.IEventBus eventBus = new Mock<Core.Infrastructure.IEventBus>().Object;
+
+            Guid productId = Guid.Empty;
+            Guid categoryId = Guid.NewGuid();
+
+            var commands = new ProductCommands(repository, eventBus);
+
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.ChangeProductMainCategory(productId, categoryId));
+            Assert.Equal(nameof(productId), ex.ParamName);
+        }
+
+        [Fact]
+        public async Task ChangeProductMainCategory_Should_Throw_ArgumentException_If_CategoryId_Is_Empty()
+        {
+            Repository.IRepository repository = new Mock<Repository.IRepository>().Object;
+            Core.Infrastructure.IEventBus eventBus = new Mock<Core.Infrastructure.IEventBus>().Object;
+
+            Guid productId = Guid.NewGuid();
+            Guid categoryId = Guid.Empty;
+
+            var commands = new ProductCommands(repository, eventBus);
+
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.ChangeProductMainCategory(productId, categoryId));
+            Assert.Equal(nameof(categoryId), ex.ParamName);
+        }
+
+        [Fact]
+        public async Task RemoveProductCategory_Should_Throw_ArgumentException_If_ProductId_Is_Empty()
+        {
+            Repository.IRepository repository = new Mock<Repository.IRepository>().Object;
+            Core.Infrastructure.IEventBus eventBus = new Mock<Core.Infrastructure.IEventBus>().Object;
+
+            Guid productId = Guid.Empty;
+            Guid categoryId = Guid.NewGuid();
+
+            var commands = new ProductCommands(repository, eventBus);
+
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveProductCategory(productId, categoryId));
+            Assert.Equal(nameof(productId), ex.ParamName);
+        }
+
+        [Fact]
+        public async Task RemoveProductCategory_Should_Throw_ArgumentException_If_CategoryId_Is_Empty()
+        {
+            Repository.IRepository repository = new Mock<Repository.IRepository>().Object;
+            Core.Infrastructure.IEventBus eventBus = new Mock<Core.Infrastructure.IEventBus>().Object;
+
+            Guid productId = Guid.NewGuid();
+            Guid categoryId = Guid.Empty;
+
+            var commands = new ProductCommands(repository, eventBus);
+
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveProductCategory(productId, categoryId));
+            Assert.Equal(nameof(categoryId), ex.ParamName);
+        }
+
+        [Fact]
+        public async Task RemoveProductCategory_Should_Remove_Category_From_The_Product_Categories()
+        {
+            var product = Product.Create("ean", "sku", "name", "url");
+            var category = Category.Create("category", "category", "category");
+
+            product.AddCategory(category);
+
+            var repositoryMock = new Mock<Repository.IRepository>();
+            repositoryMock.Setup(r => r.GetByKeyAsync<Product>(It.IsAny<Guid>()))
+                .Returns(Task.FromResult(product));
+
+            repositoryMock.Setup(r => r.GetByKeyAsync<Category>(It.IsAny<Guid>()))
+                .Returns(Task.FromResult(category));
+
+            Repository.IRepository repository = repositoryMock.Object;
+            Core.Infrastructure.IEventBus eventBus = new Mock<Core.Infrastructure.IEventBus>().Object;
+
+            Guid productId = product.Id;
+            Guid categoryId = category.Id;
+
+            var commands = new ProductCommands(repository, eventBus);
+
+            await commands.RemoveProductCategory(productId, categoryId);
+            Assert.True(product.ProductCategories.All(c => c.CategoryId != category.Id));
+        }
         #endregion
     }
 }

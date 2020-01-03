@@ -817,6 +817,84 @@ namespace Wilcommerce.Catalog.Commands
 
             await Repository.SaveChangesAsync();
         }
+
+        /// <summary>
+        /// Implementation of <see cref="IProductCommands.ChangeProductMainCategory(Guid, Guid)"/>
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <param name="categoryId"></param>
+        /// <returns></returns>
+        public async Task ChangeProductMainCategory(Guid productId, Guid categoryId)
+        {
+            try
+            {
+                if (productId == Guid.Empty)
+                {
+                    throw new ArgumentException("value cannot be empty", nameof(productId));
+                }
+
+                if (categoryId == Guid.Empty)
+                {
+                    throw new ArgumentException("value cannot be empty", nameof(categoryId));
+                }
+
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                var category = await Repository.GetByKeyAsync<Category>(categoryId);
+
+                var currentMainCategory = product.MainCategory;
+                if (currentMainCategory != null)
+                {
+                    product.RemoveCategory(currentMainCategory);
+                }
+
+                product.AddMainCategory(category);
+
+                var @event = new ProductMainCategoryChangedEvent(productId, categoryId);
+                EventBus.RaiseEvent(@event);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch 
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Implementation of <see cref="IProductCommands.RemoveProductCategory(Guid, Guid)"/>
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <param name="categoryId"></param>
+        /// <returns></returns>
+        public async Task RemoveProductCategory(Guid productId, Guid categoryId)
+        {
+            try
+            {
+                if (productId == Guid.Empty)
+                {
+                    throw new ArgumentException("value cannot be empty", nameof(productId));
+                }
+
+                if (categoryId == Guid.Empty)
+                {
+                    throw new ArgumentException("value cannot be empty", nameof(categoryId));
+                }
+
+                var product = await Repository.GetByKeyAsync<Product>(productId);
+                var category = await Repository.GetByKeyAsync<Category>(categoryId);
+
+                product.RemoveCategory(category);
+
+                var @event = new ProductCategoryRemovedEvent(productId, categoryId);
+                EventBus.RaiseEvent(@event);
+
+                await Repository.SaveChangesAsync();
+            }
+            catch 
+            {
+                throw;
+            }
+        }
         #endregion
     }
 }
