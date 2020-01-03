@@ -16,6 +16,11 @@ namespace Wilcommerce.Catalog.ReadModels
         /// <returns>A list of products</returns>
         public static IQueryable<Product> Active(this IQueryable<Product> products)
         {
+            if (products == null)
+            {
+                throw new ArgumentNullException(nameof(products));
+            }
+
             return from p in products
                    where !p.Deleted
                    select p;
@@ -28,6 +33,11 @@ namespace Wilcommerce.Catalog.ReadModels
         /// <returns>A list of products</returns>
         public static IQueryable<Product> MainProducts(this IQueryable<Product> products)
         {
+            if (products == null)
+            {
+                throw new ArgumentNullException(nameof(products));
+            }
+
             return from p in products
                    where p.MainProduct == null
                    select p;
@@ -41,6 +51,16 @@ namespace Wilcommerce.Catalog.ReadModels
         /// <returns>A list of products</returns>
         public static IQueryable<Product> VariantsOf(this IQueryable<Product> products, Guid productId)
         {
+            if (products == null)
+            {
+                throw new ArgumentNullException(nameof(products));
+            }
+
+            if (productId == Guid.Empty)
+            {
+                throw new ArgumentException("value cannot be empty", nameof(productId));
+            }
+
             return from p in products
                    where p.MainProduct != null && p.MainProduct.Id == productId
                    select p;
@@ -53,6 +73,11 @@ namespace Wilcommerce.Catalog.ReadModels
         /// <returns>A list of products</returns>
         public static IQueryable<Product> WithUnitInStock(this IQueryable<Product> products)
         {
+            if (products == null)
+            {
+                throw new ArgumentNullException(nameof(products));
+            }
+
             return products.WithUnitInStock(0);
         }
 
@@ -64,6 +89,16 @@ namespace Wilcommerce.Catalog.ReadModels
         /// <returns>A list of products</returns>
         public static IQueryable<Product> WithUnitInStock(this IQueryable<Product> products, int unitInStock)
         {
+            if (products == null)
+            {
+                throw new ArgumentNullException(nameof(products));
+            }
+
+            if (unitInStock < 0)
+            {
+                throw new ArgumentException("value cannot be less than zero", nameof(unitInStock));
+            }
+
             return from p in products
                    where p.UnitInStock > unitInStock
                    select p;
@@ -76,6 +111,11 @@ namespace Wilcommerce.Catalog.ReadModels
         /// <returns>A list of products</returns>
         public static IQueryable<Product> OnSale(this IQueryable<Product> products)
         {
+            if (products == null)
+            {
+                throw new ArgumentNullException(nameof(products));
+            }
+
             var today = DateTime.Now;
 
             return from p in products
@@ -101,6 +141,11 @@ namespace Wilcommerce.Catalog.ReadModels
         /// <returns>A list of products</returns>
         public static IQueryable<Product> OnSaleFrom(this IQueryable<Product> products, DateTime fromDate)
         {
+            if (products == null)
+            {
+                throw new ArgumentNullException(nameof(products));
+            }
+
             return from p in products
                    where p.IsOnSale && p.OnSaleFrom >= fromDate
                    select p;
@@ -114,6 +159,11 @@ namespace Wilcommerce.Catalog.ReadModels
         /// <returns>A list of products</returns>
         public static IQueryable<Product> OnSaleTill(this IQueryable<Product> products, DateTime tillDate)
         {
+            if (products == null)
+            {
+                throw new ArgumentNullException(nameof(products));
+            }
+
             return from p in products
                    where p.IsOnSale && p.OnSaleTo <= tillDate
                    select p;
@@ -127,6 +177,16 @@ namespace Wilcommerce.Catalog.ReadModels
         /// <returns>A list of products</returns>
         public static IQueryable<Product> ByVendor(this IQueryable<Product> products, Guid vendorId)
         {
+            if (products == null)
+            {
+                throw new ArgumentNullException(nameof(products));
+            }
+
+            if (vendorId == Guid.Empty)
+            {
+                throw new ArgumentException("value cannot be empty", nameof(vendorId));
+            }
+
             return from p in products
                    where p.Vendor != null && p.Vendor.Id == vendorId
                    select p;

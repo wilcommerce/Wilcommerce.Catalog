@@ -43,7 +43,7 @@ namespace Wilcommerce.Catalog.Events.CustomAttribute
         /// <returns>The converted string</returns>
         public override string ToString()
         {
-            return $"[{FiredOn.ToString()}] Attribute {AttributeId} with name {Name} and type {Type} created";
+            return $"Attribute {AttributeId} with name {Name} and type {Type} created";
         }
     }
 }

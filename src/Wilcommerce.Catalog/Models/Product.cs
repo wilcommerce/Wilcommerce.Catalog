@@ -16,50 +16,18 @@ namespace Wilcommerce.Catalog.Models
         /// </summary>
         public Guid Id { get; protected set; }
 
-        #region Protected fields
-        /// <summary>
-        /// The product's variants
-        /// </summary>
-        protected ICollection<Product> _variants;
-
-        /// <summary>
-        /// The product's categories
-        /// </summary>
-        protected ICollection<ProductCategory> _categories;
-
-        /// <summary>
-        /// The product's tier prices
-        /// </summary>
-        protected ICollection<TierPrice> _tierPrices;
-
-        /// <summary>
-        /// The product's attributes
-        /// </summary>
-        protected ICollection<ProductAttribute> _attributes;
-
-        /// <summary>
-        /// The product's reviews
-        /// </summary>
-        protected ICollection<ProductReview> _reviews;
-
-        /// <summary>
-        /// The product's images
-        /// </summary>
-        protected ICollection<ProductImage> _images;
-        #endregion
-
         #region Constructor
         /// <summary>
         /// Construct the product
         /// </summary>
         protected Product()
         {
-            _variants = new HashSet<Product>();
-            _categories = new HashSet<ProductCategory>();
-            _tierPrices = new HashSet<TierPrice>();
-            _attributes = new HashSet<ProductAttribute>();
-            _reviews = new HashSet<ProductReview>();
-            _images = new HashSet<ProductImage>();
+            this.Variants = new HashSet<Product>();
+            this.ProductCategories = new HashSet<ProductCategory>();
+            this.TierPrices = new HashSet<TierPrice>();
+            this.Attributes = new HashSet<ProductAttribute>();
+            this.Reviews = new HashSet<ProductReview>();
+            this.Images = new HashSet<ProductImage>();
             Price = new Currency();
             Seo = new SeoData();
         }
@@ -119,7 +87,7 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Get the product's variants
         /// </summary>
-        public IEnumerable<Product> Variants => _variants;
+        public virtual ICollection<Product> Variants { get; protected set; }
 
         /// <summary>
         /// Get or set the main product
@@ -134,22 +102,22 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Get the associated category
         /// </summary>
-        public IEnumerable<ProductCategory> ProductCategories => _categories;
+        public virtual ICollection<ProductCategory> ProductCategories { get; protected set; }
 
         /// <summary>
         /// Get the product's category
         /// </summary>
-        public IEnumerable<Category> Categories => _categories.Select(c => c.Category);
+        public IEnumerable<Category> Categories => ProductCategories.Select(c => c.Category);
 
         /// <summary>
         /// Get the main category for the product
         /// </summary>
-        public Category MainCategory => _categories.FirstOrDefault(c => c.IsMain)?.Category;
+        public Category MainCategory => ProductCategories.FirstOrDefault(c => c.IsMain)?.Category;
 
         /// <summary>
         /// Get the product's custom attributes
         /// </summary>
-        public IEnumerable<ProductAttribute> Attributes => _attributes;
+        public virtual ICollection<ProductAttribute> Attributes { get; protected set; }
 
         /// <summary>
         /// Get or set whether the product is deleted
@@ -164,22 +132,22 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Get the product's tier prices
         /// </summary>
-        public IEnumerable<TierPrice> TierPrices => _tierPrices;
+        public virtual ICollection<TierPrice> TierPrices { get; protected set; }
 
         /// <summary>
         /// Get the product's reviews
         /// </summary>
-        public IEnumerable<ProductReview> Reviews => _reviews;
+        public virtual ICollection<ProductReview> Reviews { get; protected set; }
 
         /// <summary>
         /// Get the product's images
         /// </summary>
-        public IEnumerable<ProductImage> Images => _images;
+        public virtual ICollection<ProductImage> Images { get; protected set; }
 
         /// <summary>
         /// Get or set the SEO information for the product
         /// </summary>
-        public SeoData Seo { get; protected set; }
+        public virtual SeoData Seo { get; protected set; }
 
         /// <summary>
         /// Get the creation date
@@ -268,7 +236,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="ean">The product's ean code</param>
         public virtual void ChangeEanCode(string ean)
         {
-            if (string.IsNullOrEmpty(ean))
+            if (string.IsNullOrWhiteSpace(ean))
             {
                 throw new ArgumentNullException(nameof(ean));
             }
@@ -282,7 +250,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="sku">The product's sku</param>
         public virtual void ChangeSku(string sku)
         {
-            if (string.IsNullOrEmpty(sku))
+            if (string.IsNullOrWhiteSpace(sku))
             {
                 throw new ArgumentNullException(nameof(sku));
             }
@@ -296,7 +264,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="name">The product's name</param>
         public virtual void ChangeName(string name)
         {
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentNullException(nameof(name));
             }
@@ -310,11 +278,6 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="description">The product's description</param>
         public virtual void ChangeDescription(string description)
         {
-            if (string.IsNullOrEmpty(description))
-            {
-                throw new ArgumentNullException(nameof(description));
-            }
-
             Description = description;
         }
 
@@ -324,7 +287,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="url">The product's url</param>
         public virtual void ChangeUrl(string url)
         {
-            if (string.IsNullOrEmpty(url))
+            if (string.IsNullOrWhiteSpace(url))
             {
                 throw new ArgumentNullException(nameof(url));
             }
@@ -391,17 +354,7 @@ namespace Wilcommerce.Catalog.Models
         /// </summary>
         public virtual void SetOnSale()
         {
-            SetOnSale(DateTime.Now);
-        }
-
-        /// <summary>
-        /// Set the product on sale starting from the specified date and time
-        /// </summary>
-        /// <param name="onSaleFrom">The date and time from when the product will be on sale</param>
-        public virtual void SetOnSale(DateTime onSaleFrom)
-        {
-            IsOnSale = true;
-            OnSaleFrom = onSaleFrom;
+            SetOnSale(DateTime.Now, null);
         }
 
         /// <summary>
@@ -409,14 +362,15 @@ namespace Wilcommerce.Catalog.Models
         /// </summary>
         /// <param name="onSaleFrom">The date and time from when the product will be on sale</param>
         /// <param name="onSaleTo">The date and time till when the product will be on sale</param>
-        public virtual void SetOnSale(DateTime onSaleFrom, DateTime onSaleTo)
+        public virtual void SetOnSale(DateTime? onSaleFrom, DateTime? onSaleTo)
         {
             if (onSaleFrom >= onSaleTo)
             {
                 throw new ArgumentException("The sale's start date must be precedent to the end date");
             }
 
-            SetOnSale(onSaleFrom);
+            IsOnSale = true;
+            OnSaleFrom = onSaleFrom ?? DateTime.Now;
             OnSaleTo = onSaleTo;
         }
 
@@ -459,17 +413,17 @@ namespace Wilcommerce.Catalog.Models
                 throw new ArgumentNullException(nameof(category));
             }
 
-            if (_categories.Any(c => c.CategoryId == category.Id))
+            if (this.ProductCategories.Any(c => c.CategoryId == category.Id))
             {
                 throw new ArgumentException("The category is already in collection", nameof(category));
             }
 
-            if (isMain && _categories.Any(c => c.IsMain))
+            if (isMain && this.ProductCategories.Any(c => c.IsMain))
             {
                 throw new ArgumentException("There's already a main category", nameof(category));
             }
 
-            _categories.Add(new ProductCategory
+            this.ProductCategories.Add(new ProductCategory
             {
                 CategoryId = category.Id,
                 IsMain = isMain
@@ -494,17 +448,17 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="price">The variant price</param>
         public virtual void AddVariant(string name, string ean, string sku, Currency price)
         {
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentNullException(nameof(name));
             }
 
-            if (string.IsNullOrEmpty(ean))
+            if (string.IsNullOrWhiteSpace(ean))
             {
                 throw new ArgumentNullException(nameof(ean));
             }
 
-            if (string.IsNullOrEmpty(sku))
+            if (string.IsNullOrWhiteSpace(sku))
             {
                 throw new ArgumentNullException(nameof(sku));
             }
@@ -519,12 +473,12 @@ namespace Wilcommerce.Catalog.Models
                 throw new ArgumentException("Price amount cannot be less than zero", nameof(price));
             }
 
-            if (_variants.Any(v => v.Name == name && v.EanCode == ean && v.Sku == sku))
+            if (this.Variants.Any(v => v.Name == name && v.EanCode == ean && v.Sku == sku))
             {
                 throw new InvalidOperationException("The variant is already in collection");
             }
 
-            _variants.Add(new Product
+            this.Variants.Add(new Product
             {
                 Id = Guid.NewGuid(),
                 Name = name,
@@ -552,12 +506,12 @@ namespace Wilcommerce.Catalog.Models
                 throw new ArgumentNullException(nameof(price));
             }
 
-            if (_tierPrices.Any(t => t.FromQuantity == fromQuantity && t.ToQuantity == toQuantity))
+            if (this.TierPrices.Any(t => t.FromQuantity == fromQuantity && t.ToQuantity == toQuantity))
             {
                 throw new ArgumentException("The tier price is already in collection");
             }
 
-            _tierPrices.Add(new TierPrice
+            this.TierPrices.Add(new TierPrice
             {
                 Id = Guid.NewGuid(),
                 FromQuantity = fromQuantity,
@@ -578,12 +532,12 @@ namespace Wilcommerce.Catalog.Models
                 throw new ArgumentNullException(nameof(attribute));
             }
 
-            if (_attributes.Any(a => a.Attribute == attribute))
+            if (this.Attributes.Any(a => a.Attribute == attribute))
             {
                 throw new ArgumentException("The attribute is already in collection", nameof(attribute));
             }
 
-            _attributes.Add(new ProductAttribute
+            this.Attributes.Add(new ProductAttribute
             {
                 Id = Guid.NewGuid(),
                 Attribute = attribute,
@@ -609,7 +563,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="comment">The comment given to the product</param>
         public virtual void AddReview(string name, int rating, string comment)
         {
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentNullException(nameof(name));
             }
@@ -619,7 +573,7 @@ namespace Wilcommerce.Catalog.Models
                 throw new ArgumentException("rating could not be less than zero", nameof(rating));
             }
 
-            _reviews.Add(new ProductReview
+            this.Reviews.Add(new ProductReview
             {
                 Id = Guid.NewGuid(),
                 Name = name,
@@ -640,22 +594,22 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="uploadedOn">The date and time of when the image is uploaded</param>
         public virtual void AddImage(string path, string name, string originalName, bool isMain, DateTime uploadedOn)
         {
-            if (string.IsNullOrEmpty(path))
+            if (string.IsNullOrWhiteSpace(path))
             {
                 throw new ArgumentNullException(nameof(path));
             }
 
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentNullException(nameof(name));
             }
 
-            if (string.IsNullOrEmpty(originalName))
+            if (string.IsNullOrWhiteSpace(originalName))
             {
                 throw new ArgumentNullException(nameof(originalName));
             }
 
-            _images.Add(new ProductImage
+            this.Images.Add(new ProductImage
             {
                 Id = Guid.NewGuid(),
                 Path = path,
@@ -672,7 +626,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="reviewId">The id of the review to approve</param>
         public virtual void ApproveReview(Guid reviewId)
         {
-            var review = _reviews.FirstOrDefault(r => r.Id == reviewId);
+            var review = this.Reviews.FirstOrDefault(r => r.Id == reviewId);
             if (review == null)
             {
                 throw new InvalidOperationException("Review not found");
@@ -688,7 +642,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="reviewId">The id of the review</param>
         public virtual void RemoveReviewApproval(Guid reviewId)
         {
-            var review = _reviews.FirstOrDefault(r => r.Id == reviewId);
+            var review = this.Reviews.FirstOrDefault(r => r.Id == reviewId);
             if (review == null)
             {
                 throw new InvalidOperationException("Review not found");
@@ -704,13 +658,13 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="reviewId">The id of the review to delete</param>
         public virtual void DeleteReview(Guid reviewId)
         {
-            var review = _reviews.FirstOrDefault(r => r.Id == reviewId);
+            var review = this.Reviews.FirstOrDefault(r => r.Id == reviewId);
             if (review == null)
             {
                 throw new InvalidOperationException("Review not found");
             }
 
-            if (!_reviews.Remove(review))
+            if (!this.Reviews.Remove(review))
             {
                 throw new InvalidOperationException("Review not removed");
             }
@@ -719,16 +673,21 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Delete the custom attribute
         /// </summary>
-        /// <param name="attributeId">The id of the attribute to delete</param>
-        public virtual void DeleteAttribute(Guid attributeId)
+        /// <param name="attribute">The attribute to delete</param>
+        public virtual void DeleteAttribute(CustomAttribute attribute)
         {
-            var attribute = _attributes.FirstOrDefault(a => a.Id == attributeId);
             if (attribute == null)
+            {
+                throw new ArgumentNullException(nameof(attribute));
+            }
+
+            var productAttribute = this.Attributes.FirstOrDefault(a => a.Attribute == attribute);
+            if (productAttribute == null)
             {
                 throw new InvalidOperationException("Attribute not found");
             }
 
-            if (!_attributes.Remove(attribute))
+            if (!this.Attributes.Remove(productAttribute))
             {
                 throw new InvalidOperationException("Attribute not removed");
             }
@@ -740,13 +699,13 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="imageId">The id of the image to delete</param>
         public virtual void DeleteImage(Guid imageId)
         {
-            var image = _images.FirstOrDefault(i => i.Id == imageId);
+            var image = this.Images.FirstOrDefault(i => i.Id == imageId);
             if (image == null)
             {
                 throw new InvalidOperationException("Image not found");
             }
 
-            if (!_images.Remove(image))
+            if (!this.Images.Remove(image))
             {
                 throw new InvalidOperationException("Image not removed");
             }
@@ -758,13 +717,13 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="tierPriceId">The id of the tier price to delete</param>
         public virtual void DeleteTierPrice(Guid tierPriceId)
         {
-            var tierPrice = _tierPrices.FirstOrDefault(t => t.Id == tierPriceId);
+            var tierPrice = this.TierPrices.FirstOrDefault(t => t.Id == tierPriceId);
             if (tierPrice == null)
             {
                 throw new InvalidOperationException("Tier price not found");
             }
 
-            if (!_tierPrices.Remove(tierPrice))
+            if (!this.TierPrices.Remove(tierPrice))
             {
                 throw new InvalidOperationException("Tier price not deleted");
             }
@@ -776,13 +735,13 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="variantId">The id of the variant to remove</param>
         public virtual void RemoveVariant(Guid variantId)
         {
-            var variant = _variants.FirstOrDefault(v => v.Id == variantId);
+            var variant = this.Variants.FirstOrDefault(v => v.Id == variantId);
             if (variant == null)
             {
                 throw new InvalidOperationException("Variant not found");
             }
 
-            if (!_variants.Remove(variant))
+            if (!this.Variants.Remove(variant))
             {
                 throw new InvalidOperationException("Variant not removed");
             }
@@ -811,7 +770,7 @@ namespace Wilcommerce.Catalog.Models
                 throw new InvalidOperationException("Tier price disabled");
             }
 
-            var tierPrice = _tierPrices.FirstOrDefault(t => t.Id == tierPriceId);
+            var tierPrice = this.TierPrices.FirstOrDefault(t => t.Id == tierPriceId);
             if (tierPrice == null)
             {
                 throw new InvalidOperationException("Tier price not found");
@@ -833,6 +792,92 @@ namespace Wilcommerce.Catalog.Models
             }
         }
 
+        /// <summary>
+        /// Change the variant information
+        /// </summary>
+        /// <param name="variantId">The product variant id</param>
+        /// <param name="name">The variant name</param>
+        /// <param name="ean">The variant EAN code</param>
+        /// <param name="sku">The variant SKU code</param>
+        /// <param name="price">The variant price</param>
+        public virtual void ChangeVariant(Guid variantId, string name, string ean, string sku, Currency price)
+        {
+            if (variantId == Guid.Empty)
+            {
+                throw new ArgumentException("value cannot be empty", nameof(variantId));
+            }
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            if (string.IsNullOrWhiteSpace(ean))
+            {
+                throw new ArgumentNullException(nameof(ean));
+            }
+
+            if (string.IsNullOrWhiteSpace(sku))
+            {
+                throw new ArgumentNullException(nameof(sku));
+            }
+
+            if (price == null)
+            {
+                throw new ArgumentNullException(nameof(price));
+            }
+
+            if (price.Amount < 0)
+            {
+                throw new ArgumentException("Price amount cannot be less than zero", nameof(price));
+            }
+
+            var variant = this.Variants.FirstOrDefault(v => v.Id == variantId);
+            if (variant == null)
+            {
+                throw new InvalidOperationException("Variant not found");
+            }
+
+            if (variant.Name != name)
+            {
+                variant.Name = name;
+            }
+            if (variant.EanCode != ean)
+            {
+                variant.EanCode = ean;
+            }
+            if (variant.Sku != sku)
+            {
+                variant.Sku = sku;
+            }
+            if (variant.Price != price)
+            {
+                variant.Price = price;
+            }
+        }
+
+        /// <summary>
+        /// Remove a category
+        /// </summary>
+        /// <param name="category">The category to remove</param>
+        public virtual void RemoveCategory(Category category)
+        {
+            if (category == null)
+            {
+                throw new ArgumentNullException(nameof(category));
+            }
+
+            var categoryToRemove = this.ProductCategories.FirstOrDefault(c => c.CategoryId == category.Id);
+            if (categoryToRemove == null)
+            {
+                throw new InvalidOperationException("Category not found");
+            }
+
+            if (!this.ProductCategories.Remove(categoryToRemove))
+            {
+                throw new InvalidOperationException("Category not removed");
+            }
+        }
         #endregion
 
         #region Factory Methods
@@ -846,22 +891,22 @@ namespace Wilcommerce.Catalog.Models
         /// <returns>The created product</returns>
         public static Product Create(string ean, string sku, string name, string url)
         {
-            if (string.IsNullOrEmpty(ean))
+            if (string.IsNullOrWhiteSpace(ean))
             {
                 throw new ArgumentNullException(nameof(ean));
             }
 
-            if (string.IsNullOrEmpty(sku))
+            if (string.IsNullOrWhiteSpace(sku))
             {
                 throw new ArgumentNullException(nameof(sku));
             }
 
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentNullException(nameof(name));
             }
 
-            if (string.IsNullOrEmpty(url))
+            if (string.IsNullOrWhiteSpace(url))
             {
                 throw new ArgumentNullException(nameof(url));
             }
@@ -879,7 +924,6 @@ namespace Wilcommerce.Catalog.Models
 
             return product;
         }
-
         #endregion
     }
 }

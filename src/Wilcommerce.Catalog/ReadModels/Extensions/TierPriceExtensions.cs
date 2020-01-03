@@ -2,7 +2,7 @@
 using System.Linq;
 using Wilcommerce.Catalog.Models;
 
-namespace Wilcommerce.Catalog.ReadModels.Extensions
+namespace Wilcommerce.Catalog.ReadModels
 {
     /// <summary>
     /// Defines the extension methods for the tier price read model
@@ -17,8 +17,18 @@ namespace Wilcommerce.Catalog.ReadModels.Extensions
         /// <returns>A list of tier prices</returns>
         public static IQueryable<TierPrice> ByProduct(this IQueryable<TierPrice> tierPrices, Guid productId)
         {
+            if (tierPrices == null)
+            {
+                throw new ArgumentNullException(nameof(tierPrices));
+            }
+
+            if (productId == Guid.Empty)
+            {
+                throw new ArgumentException("value cannot be empty", nameof(productId));
+            }
+
             return from t in tierPrices
-                   where t.Product.Id == productId
+                   where t.Product != null && t.Product.Id == productId
                    select t;
         }
     }

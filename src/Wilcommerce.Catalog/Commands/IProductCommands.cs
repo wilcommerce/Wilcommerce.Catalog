@@ -199,6 +199,34 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="seo">The SEO information</param>
         /// <returns></returns>
         Task SetProductSeo(Guid productId, SeoData seo);
+
+        /// <summary>
+        /// Change the product's variant information
+        /// </summary>
+        /// <param name="productId">The product id</param>
+        /// <param name="variantId">The variant id</param>
+        /// <param name="name">The variant name</param>
+        /// <param name="ean">The variant EAN code</param>
+        /// <param name="sku">The variant SKU code</param>
+        /// <param name="price">The variant price</param>
+        /// <returns></returns>
+        Task ChangeProductVariant(Guid productId, Guid variantId, string name, string ean, string sku, Currency price);
+
+        /// <summary>
+        /// Change the product main category
+        /// </summary>
+        /// <param name="productId">The product id</param>
+        /// <param name="categoryId">The new category id</param>
+        /// <returns></returns>
+        Task ChangeProductMainCategory(Guid productId, Guid categoryId);
+
+        /// <summary>
+        /// Remove the category from the product categories
+        /// </summary>
+        /// <param name="productId">The product id</param>
+        /// <param name="categoryId">The category id</param>
+        /// <returns></returns>
+        Task RemoveProductCategory(Guid productId, Guid categoryId);
         #endregion
     }
 }

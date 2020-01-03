@@ -29,7 +29,7 @@ namespace Wilcommerce.Catalog.Events.Category
         /// <returns>The converted string</returns>
         public override string ToString()
         {
-            return $"[{FiredOn.ToString()}] Category {CategoryId} restored";
+            return $"Category {CategoryId} restored";
         }
     }
 }

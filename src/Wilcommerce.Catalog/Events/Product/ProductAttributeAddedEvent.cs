@@ -43,7 +43,7 @@ namespace Wilcommerce.Catalog.Events.Product
         /// <returns>The converted string</returns>
         public override string ToString()
         {
-            return $"[{FiredOn.ToString()}] Attribute {AttributeId} added to product {ProductId} with value {Value.ToString()}";
+            return $"Attribute {AttributeId} added to product {ProductId} with value {Value.ToString()}";
         }
     }
 }

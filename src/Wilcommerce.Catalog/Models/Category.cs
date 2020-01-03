@@ -16,26 +16,14 @@ namespace Wilcommerce.Catalog.Models
         /// </summary>
         public Guid Id { get; protected set; }
 
-        #region Protected fields
-        /// <summary>
-        /// The list of children categories
-        /// </summary>
-        protected ICollection<Category> _children;
-
-        /// <summary>
-        /// The products association
-        /// </summary>
-        protected ICollection<ProductCategory> _products;
-        #endregion
-
         #region Constructor
         /// <summary>
         /// Construct the category
         /// </summary>
         protected Category()
         {
-            _children = new HashSet<Category>();
-            _products = new HashSet<ProductCategory>();
+            this.Children = new HashSet<Category>();
+            this.Products = new HashSet<ProductCategory>();
             Seo = new SeoData();
         }
         #endregion
@@ -89,12 +77,12 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Get the list of children categories
         /// </summary>
-        public IEnumerable<Category> Children => _children;
+        public virtual ICollection<Category> Children { get; protected set; }
 
         /// <summary>
         /// Get the list of products associated to the category
         /// </summary>
-        public IEnumerable<ProductCategory> Products => _products;
+        public virtual ICollection<ProductCategory> Products { get; protected set; }
 
         /// <summary>
         /// Get or set the SEO information
@@ -114,17 +102,7 @@ namespace Wilcommerce.Catalog.Models
         /// </summary>
         public virtual void SetAsVisible()
         {
-            SetAsVisible(DateTime.Now);
-        }
-
-        /// <summary>
-        /// Set the category as visible
-        /// </summary>
-        /// <param name="from">The date and time from which the category is visible</param>
-        public virtual void SetAsVisible(DateTime from)
-        {
-            IsVisible = true;
-            VisibleFrom = from;
+            SetAsVisible(DateTime.Now, null);
         }
 
         /// <summary>
@@ -132,14 +110,15 @@ namespace Wilcommerce.Catalog.Models
         /// </summary>
         /// <param name="from">The date and time from which the category is visible</param>
         /// <param name="to">The date and time till which the category is visible</param>
-        public virtual void SetAsVisible(DateTime from, DateTime to)
+        public virtual void SetAsVisible(DateTime? from, DateTime? to)
         {
             if (from >= to)
             {
                 throw new ArgumentException("the from date should be previous to the end date");
             }
 
-            SetAsVisible(from);
+            IsVisible = true;
+            VisibleFrom = from ?? DateTime.Now;
             VisibleTo = to;
         }
 
@@ -168,12 +147,12 @@ namespace Wilcommerce.Catalog.Models
                 throw new ArgumentNullException(nameof(child));
             }
 
-            if (_children.Contains(child))
+            if (this.Children.Contains(child))
             {
                 throw new ArgumentException("The category contains the children yet");
             }
 
-            _children.Add(child);
+            this.Children.Add(child);
         }
 
         /// <summary>
@@ -182,7 +161,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="name">The category name</param>
         public virtual void ChangeName(string name)
         {
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentNullException(nameof(name));
             }
@@ -196,7 +175,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="code">The category code</param>
         public virtual void ChangeCode(string code)
         {
-            if (string.IsNullOrEmpty(code))
+            if (string.IsNullOrWhiteSpace(code))
             {
                 throw new ArgumentNullException(nameof(code));
             }
@@ -210,11 +189,6 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="description">The category description</param>
         public virtual void ChangeDescription(string description)
         {
-            if (string.IsNullOrEmpty(description))
-            {
-                throw new ArgumentNullException(nameof(description));
-            }
-
             Description = description;
         }
 
@@ -224,7 +198,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="url">The category url</param>
         public virtual void ChangeUrl(string url)
         {
-            if (string.IsNullOrEmpty(url))
+            if (string.IsNullOrWhiteSpace(url))
             {
                 throw new ArgumentNullException(nameof(url));
             }
@@ -270,24 +244,35 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Remove the child category
         /// </summary>
-        /// <param name="childId">The id of the category to remove</param>
-        public virtual void RemoveChild(Guid childId)
+        /// <param name="child">The category to remove</param>
+        public virtual void RemoveChild(Category child)
         {
-            var child = _children.FirstOrDefault(c => c.Id == childId);
-            if (!_children.Remove(child))
+            var childToRemove = this.Children.FirstOrDefault(c => c.Id == child.Id);
+            if (!this.Children.Remove(childToRemove))
             {
-                throw new InvalidOperationException("Cannot remove child");
+                throw new InvalidOperationException($"Cannot remove child {child.Id}");
             }
         }
 
         /// <summary>
         /// Remove the parent category
         /// </summary>
-        public virtual void RemoveParent()
+        /// <param name="parent">The parent category to remove</param>
+        public virtual void RemoveParent(Category parent)
         {
+            if (parent == null)
+            {
+                throw new ArgumentNullException(nameof(parent));
+            }
+
             if (Parent == null)
             {
                 throw new InvalidOperationException("Parent already empty");
+            }
+
+            if (Parent.Id != parent.Id)
+            {
+                throw new ArgumentException("Invalid parent", nameof(parent));
             }
 
             Parent = null;
@@ -314,17 +299,17 @@ namespace Wilcommerce.Catalog.Models
         /// <returns>The category created</returns>
         public static Category Create(string code, string name, string url)
         {
-            if (string.IsNullOrEmpty(code))
+            if (string.IsNullOrWhiteSpace(code))
             {
                 throw new ArgumentNullException(nameof(code));
             }
 
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentNullException(nameof(name));
             }
 
-            if (string.IsNullOrEmpty(url))
+            if (string.IsNullOrWhiteSpace(url))
             {
                 throw new ArgumentNullException(nameof(url));
             }

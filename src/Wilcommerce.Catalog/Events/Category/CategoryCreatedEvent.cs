@@ -43,7 +43,7 @@ namespace Wilcommerce.Catalog.Events.Category
         /// <returns>The converted string</returns>
         public override string ToString()
         {
-            return $"[{FiredOn.ToString()}] Category {Name} - {Code} [{CategoryId}] created successfully";
+            return $"Category {Name} - {Code} [{CategoryId}] created successfully";
         }
     }
 }

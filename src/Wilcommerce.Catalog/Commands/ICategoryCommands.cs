@@ -79,8 +79,9 @@ namespace Wilcommerce.Catalog.Commands
         /// Remove the parent from the specified category
         /// </summary>
         /// <param name="categoryId">The category id</param>
+        /// <param name="parentId">The category parent id</param>
         /// <returns></returns>
-        Task RemoveParentForCategory(Guid categoryId);
+        Task RemoveParentForCategory(Guid categoryId, Guid parentId);
 
         /// <summary>
         /// Set the seo information for the specified category

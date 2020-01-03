@@ -36,7 +36,7 @@ namespace Wilcommerce.Catalog.Events.Product
         /// <returns>The converted string</returns>
         public override string ToString()
         {
-            return $"[{FiredOn.ToString()}] Attribute {AttributeId} removed from product {ProductId}";
+            return $"Attribute {AttributeId} removed from product {ProductId}";
         }
     }
 }

@@ -29,7 +29,7 @@ namespace Wilcommerce.Catalog.Events.CustomAttribute
         /// <returns>The converted string</returns>
         public override string ToString()
         {
-            return $"[{FiredOn.ToString()}] Attribute {AttributeId} deleted";
+            return $"Attribute {AttributeId} deleted";
         }
     }
 }

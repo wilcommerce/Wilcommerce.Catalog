@@ -71,5 +71,14 @@ namespace Wilcommerce.Catalog.Events.Category
             VisibleFrom = visibleFrom;
             VisibleTo = visibleTo;
         }
+
+        /// <summary>
+        /// Convert the event to string
+        /// </summary>
+        /// <returns>The converted string</returns>
+        public override string ToString()
+        {
+            return $"Category {CategoryId} updated. Code: {Code}, Name: {Name}, Url: {Url}, Description: {Description}";
+        }
     }
 }

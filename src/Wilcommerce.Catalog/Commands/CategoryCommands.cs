@@ -57,17 +57,13 @@ namespace Wilcommerce.Catalog.Commands
 
                 if (isVisible)
                 {
-                    if (visibleFrom == null)
+                    if (!visibleFrom.HasValue && !visibleTo.HasValue)
                     {
                         category.SetAsVisible();
                     }
-                    else if (visibleTo == null)
-                    {
-                        category.SetAsVisible((DateTime)visibleFrom);
-                    }
                     else
                     {
-                        category.SetAsVisible((DateTime)visibleFrom, (DateTime)visibleTo);
+                        category.SetAsVisible(visibleFrom, visibleTo);
                     }
                 }
 
@@ -101,6 +97,11 @@ namespace Wilcommerce.Catalog.Commands
         {
             try
             {
+                if (categoryId == Guid.Empty)
+                {
+                    throw new ArgumentException("value cannot be empty", nameof(categoryId));
+                }
+
                 var category = await Repository.GetByKeyAsync<Category>(categoryId);
                 if (category.Code != code)
                 {
@@ -126,17 +127,13 @@ namespace Wilcommerce.Catalog.Commands
                 {
                     if (isVisible)
                     {
-                        if (visibleFrom == null)
+                        if (!visibleFrom.HasValue && !visibleTo.HasValue)
                         {
                             category.SetAsVisible();
                         }
-                        else if (visibleTo == null)
-                        {
-                            category.SetAsVisible((DateTime)visibleFrom);
-                        }
                         else
                         {
-                            category.SetAsVisible((DateTime)visibleFrom, (DateTime)visibleTo);
+                            category.SetAsVisible(visibleFrom, visibleTo);
                         }
                     }
                     else
@@ -166,6 +163,16 @@ namespace Wilcommerce.Catalog.Commands
         {
             try
             {
+                if (categoryId == Guid.Empty)
+                {
+                    throw new ArgumentException("value cannot be empty", nameof(categoryId));
+                }
+
+                if (childId == Guid.Empty)
+                {
+                    throw new ArgumentException("value cannot be empty", nameof(childId));
+                }
+
                 var category = await Repository.GetByKeyAsync<Category>(categoryId);
                 var child = await Repository.GetByKeyAsync<Category>(childId);
 
@@ -191,6 +198,16 @@ namespace Wilcommerce.Catalog.Commands
         {
             try
             {
+                if (categoryId == Guid.Empty)
+                {
+                    throw new ArgumentException("value cannot be empty", nameof(categoryId));
+                }
+
+                if (parentId == Guid.Empty)
+                {
+                    throw new ArgumentException("value cannot be empty", nameof(parentId));
+                }
+
                 var category = await Repository.GetByKeyAsync<Category>(categoryId);
                 var parent = await Repository.GetByKeyAsync<Category>(parentId);
                 category.SetParentCategory(parent);
@@ -215,6 +232,11 @@ namespace Wilcommerce.Catalog.Commands
         {
             try
             {
+                if (categoryId == Guid.Empty)
+                {
+                    throw new ArgumentException("value cannot be empty", nameof(categoryId));
+                }
+
                 var category = await Repository.GetByKeyAsync<Category>(categoryId);
                 category.Delete();
 
@@ -238,6 +260,11 @@ namespace Wilcommerce.Catalog.Commands
         {
             try
             {
+                if (categoryId == Guid.Empty)
+                {
+                    throw new ArgumentException("value cannot be empty", nameof(categoryId));
+                }
+
                 var category = await Repository.GetByKeyAsync<Category>(categoryId);
                 category.Restore();
 
@@ -262,8 +289,21 @@ namespace Wilcommerce.Catalog.Commands
         {
             try
             {
+                if (categoryId == Guid.Empty)
+                {
+                    throw new ArgumentException("value cannot be empty", nameof(categoryId));
+                }
+
+                if (childId == Guid.Empty)
+                {
+                    throw new ArgumentException("value cannot be empty", nameof(childId));
+                }
+
+
                 var category = await Repository.GetByKeyAsync<Category>(categoryId);
-                category.RemoveChild(childId);
+                var child = await Repository.GetByKeyAsync<Category>(childId);
+
+                category.RemoveChild(child);
 
                 await Repository.SaveChangesAsync();
 
@@ -277,23 +317,29 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="ICategoryCommands.RemoveParentForCategory(Guid)"/>
+        /// Implementation of <see cref="ICategoryCommands.RemoveParentForCategory(Guid, Guid)"/>
         /// </summary>
         /// <param name="categoryId">The category id</param>
+        /// <param name="parentId">The category parent id</param>
         /// <returns></returns>
-        public virtual async Task RemoveParentForCategory(Guid categoryId)
+        public virtual async Task RemoveParentForCategory(Guid categoryId, Guid parentId)
         {
             try
             {
-                var category = await Repository.GetByKeyAsync<Category>(categoryId);
-                var parentId = category.Parent?.Id;
-                
-                if (parentId != null)
+                if (categoryId == Guid.Empty)
                 {
-                    category.RemoveParent();
+                    throw new ArgumentException("value cannot be empty", nameof(categoryId));
+                }
+
+                var category = await Repository.GetByKeyAsync<Category>(categoryId);
+                
+                if (parentId != Guid.Empty)
+                {
+                    var parent = await Repository.GetByKeyAsync<Category>(parentId);
+                    category.RemoveParent(parent);
                     await Repository.SaveChangesAsync();
 
-                    var @event = new CategoryChildRemovedEvent((Guid)parentId, categoryId);
+                    var @event = new CategoryChildRemovedEvent(parentId, categoryId);
                     EventBus.RaiseEvent(@event);
                 }
             }
@@ -313,6 +359,11 @@ namespace Wilcommerce.Catalog.Commands
         {
             try
             {
+                if (categoryId == Guid.Empty)
+                {
+                    throw new ArgumentException("value cannot be empty", nameof(categoryId));
+                }
+
                 var category = await Repository.GetByKeyAsync<Category>(categoryId);
                 category.SetSeoData(seo);
 

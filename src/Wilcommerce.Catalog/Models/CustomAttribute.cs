@@ -76,7 +76,7 @@ namespace Wilcommerce.Catalog.Models
                 throw new ArgumentNullException(nameof(value));
             }
 
-            var valueList = string.IsNullOrEmpty(_Values) ? (new List<object>()) : _Values.Split(",".ToCharArray()).ToList<object>();
+            var valueList = string.IsNullOrWhiteSpace(_Values) ? (new List<object>()) : _Values.Split(",".ToCharArray()).ToList<object>();
             if (valueList.Contains(value))
             {
                 throw new ArgumentException("The value list contains the value", nameof(value));
@@ -122,7 +122,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="name">The new name</param>
         public virtual void ChangeName(string name)
         {
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentNullException(nameof(name));
             }
@@ -136,11 +136,6 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="description">The description</param>
         public virtual void ChangeDescription(string description)
         {
-            if (string.IsNullOrEmpty(description))
-            {
-                throw new ArgumentNullException(nameof(description));
-            }
-
             Description = description;
         }
 
@@ -150,7 +145,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="unitOfMeasure">The unit of measure</param>
         public virtual void SetUnitOfMeasure(string unitOfMeasure)
         {
-            if (string.IsNullOrEmpty(unitOfMeasure))
+            if (string.IsNullOrWhiteSpace(unitOfMeasure))
             {
                 throw new ArgumentNullException(nameof(unitOfMeasure));
             }
@@ -164,7 +159,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="dataType">The data type</param>
         public virtual void ChangeDataType(string dataType)
         {
-            if (string.IsNullOrEmpty(dataType))
+            if (string.IsNullOrWhiteSpace(dataType))
             {
                 throw new ArgumentNullException(nameof(dataType));
             }
@@ -209,12 +204,12 @@ namespace Wilcommerce.Catalog.Models
         /// <returns>The created attribute</returns>
         public static CustomAttribute Create(string name, string type)
         {
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentNullException(nameof(name));
             }
 
-            if (string.IsNullOrEmpty(type))
+            if (string.IsNullOrWhiteSpace(type))
             {
                 throw new ArgumentNullException(nameof(type));
             }

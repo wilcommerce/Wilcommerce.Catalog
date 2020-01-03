@@ -24,7 +24,10 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
         IHandleEvent<ProductReviewApprovedEvent>,
         IHandleEvent<ProductReviewRemovedEvent>,
         IHandleEvent<ProductImageAddedEvent>,
-        IHandleEvent<ProductImageRemovedEvent>
+        IHandleEvent<ProductImageRemovedEvent>,
+        IHandleEvent<ProductVariantChangedEvent>,
+        IHandleEvent<ProductMainCategoryChangedEvent>,
+        IHandleEvent<ProductCategoryRemovedEvent>
     {
         /// <summary>
         /// Get the event store
@@ -317,6 +320,54 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
         /// </summary>
         /// <param name="event"></param>
         public void Handle(ProductImageRemovedEvent @event)
+        {
+            try
+            {
+                EventStore.Save(@event);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
+        public void Handle(ProductVariantChangedEvent @event)
+        {
+            try
+            {
+                EventStore.Save(@event);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
+        public void Handle(ProductMainCategoryChangedEvent @event)
+        {
+            try
+            {
+                EventStore.Save(@event);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
+        /// </summary>
+        /// <param name="event"></param>
+        public void Handle(ProductCategoryRemovedEvent @event)
         {
             try
             {

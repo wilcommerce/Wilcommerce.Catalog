@@ -12,6 +12,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData("")]
         [InlineData(null)]
+        [InlineData(" ")]
         public void ProductFactory_Should_Throw_ArgumentNullException_If_Ean_IsEmpty(string value)
         {
             var ex = Assert.Throws<ArgumentNullException>(() => Product.Create(
@@ -27,6 +28,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData("")]
         [InlineData(null)]
+        [InlineData(" ")]
         public void ProductFactory_Should_Throw_ArgumentNullException_If_Sku_IsEmpty(string value)
         {
             var ex = Assert.Throws<ArgumentNullException>(() => Product.Create(
@@ -42,6 +44,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData("")]
         [InlineData(null)]
+        [InlineData(" ")]
         public void ProductFactory_Should_Throw_ArgumentNullException_If_Name_IsEmpty(string value)
         {
             var ex = Assert.Throws<ArgumentNullException>(() => Product.Create(
@@ -57,6 +60,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData("")]
         [InlineData(null)]
+        [InlineData(" ")]
         public void ProductFactory_Should_Throw_ArgumentNullException_If_Url_IsEmpty(string value)
         {
             var ex = Assert.Throws<ArgumentNullException>(() => Product.Create(
@@ -116,6 +120,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData(null)]
         [InlineData("")]
+        [InlineData(" ")]
         public void ChangeEanCode_Should_Throw_ArgumentNullException_If_EanCode_IsEmpty(string value)
         {
             var product = Product.Create(
@@ -132,6 +137,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData(null)]
         [InlineData("")]
+        [InlineData(" ")]
         public void ChangeSku_Should_Throw_ArgumentNullException_If_Sku_IsEmpty(string value)
         {
             var product = Product.Create(
@@ -148,6 +154,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData(null)]
         [InlineData("")]
+        [InlineData(" ")]
         public void ChangeName_Should_Throw_ArgumentNullException_If_Name_IsEmpty(string value)
         {
             var product = Product.Create(
@@ -164,7 +171,8 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData(null)]
         [InlineData("")]
-        public void ChangeDescription_Should_Throw_ArgumentNullException_If_Description_IsEmpty(string value)
+        [InlineData(" ")]
+        public void ChangeDescription_Should_Clear_If_Description_IsEmpty(string value)
         {
             var product = Product.Create(
                 "ean",
@@ -173,13 +181,15 @@ namespace Wilcommerce.Catalog.Test.Models
                 "my-product"
                 );
 
-            var ex = Assert.Throws<ArgumentNullException>(() => product.ChangeDescription(value));
-            Assert.Equal("description", ex.ParamName);
+            product.ChangeDescription(value);
+
+            Assert.True(string.IsNullOrWhiteSpace(product.Description));
         }
 
         [Theory]
         [InlineData(null)]
         [InlineData("")]
+        [InlineData(" ")]
         public void ChangeUrl_Should_Throw_ArgumentNullException_If_Url_IsEmpty(string value)
         {
             var product = Product.Create(
@@ -377,6 +387,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData("")]
         [InlineData(null)]
+        [InlineData(" ")]
         public void Product_AddVariant_Should_Throw_ArgumentNullException_If_Name_IsEmpty(string value)
         {
             var product = Product.Create(
@@ -395,6 +406,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData("")]
         [InlineData(null)]
+        [InlineData(" ")]
         public void Product_AddVariant_Should_Throw_ArgumentNullException_If_Ean_IsEmpty(string value)
         {
             var product = Product.Create(
@@ -413,6 +425,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData("")]
         [InlineData(null)]
+        [InlineData(" ")]
         public void Product_AddVariant_Should_Throw_ArgumentNullException_If_Sku_IsEmpty(string value)
         {
             var product = Product.Create(
@@ -565,6 +578,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData("")]
         [InlineData(null)]
+        [InlineData(" ")]
         public void Product_AddReview_Should_Throw_ArgumentNullException_If_Name_IsEmpty(string value)
         {
             var product = Product.Create(
@@ -611,6 +625,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData(null)]
         [InlineData("")]
+        [InlineData(" ")]
         public void Product_AddImage_Should_Throw_ArgumentNullException_If_Path_IsEmpty(string value)
         {
             var product = Product.Create(
@@ -627,6 +642,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData(null)]
         [InlineData("")]
+        [InlineData(" ")]
         public void Product_AddImage_Should_Throw_ArgumentNullException_If_Name_IsEmpty(string value)
         {
             var product = Product.Create(
@@ -643,6 +659,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [Theory]
         [InlineData(null)]
         [InlineData("")]
+        [InlineData(" ")]
         public void Product_AddImage_Should_Throw_ArgumentNullException_If_OriginalName_IsEmpty(string value)
         {
             var product = Product.Create(
@@ -779,8 +796,26 @@ namespace Wilcommerce.Catalog.Test.Models
                 "my-product"
                 );
 
-            var ex = Assert.Throws<InvalidOperationException>(() => product.DeleteAttribute(Guid.NewGuid()));
+            var attribute = CustomAttribute.Create("attribute", "string");
+
+            var ex = Assert.Throws<InvalidOperationException>(() => product.DeleteAttribute(attribute));
             Assert.Equal("Attribute not found", ex.Message);
+        }
+
+        [Fact]
+        public void DeleteAttribute_Should_Throw_ArgumentNullException_If_Attribute_Is_Null()
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            CustomAttribute attribute = null;
+
+            var ex = Assert.Throws<ArgumentNullException>(() => product.DeleteAttribute(attribute));
+            Assert.Equal(nameof(attribute), ex.ParamName);
         }
 
         [Fact]
@@ -794,10 +829,10 @@ namespace Wilcommerce.Catalog.Test.Models
                 );
 
             product.AddAttribute(CustomAttribute.Create("attribute", "number"), "value");
-            var attribute = product.Attributes.First();
+            var attribute = product.Attributes.First().Attribute;
 
-            product.DeleteAttribute(attribute.Id);
-            Assert.Equal(0, product.Attributes.Count(a => a.Id == attribute.Id));
+            product.DeleteAttribute(attribute);
+            Assert.Equal(0, product.Attributes.Count(a => a.Attribute == attribute));
         }
 
         [Fact]
@@ -985,6 +1020,233 @@ namespace Wilcommerce.Catalog.Test.Models
             Assert.NotNull(attribute);
 
             Assert.Equal(value, attribute.Value);
+        }
+
+        [Fact]
+        public void ChangeVariant_Should_Throw_ArgumentException_If_VariantId_Is_Empty()
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            Guid variantId = Guid.Empty;
+            string name = "variant";
+            string ean = "variant";
+            string sku = "variant";
+            Currency price = new Currency { Code = "EUR", Amount = 10 };
+
+            var ex = Assert.Throws<ArgumentException>(() => product.ChangeVariant(variantId, name, ean, sku, price));
+            Assert.Equal(nameof(variantId), ex.ParamName);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        public void ChangeVariant_Should_Throw_ArgumentNullException_If_Name_Is_Empty(string value)
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            Guid variantId = Guid.NewGuid();
+            string name = value;
+            string ean = "variant";
+            string sku = "variant";
+            Currency price = new Currency { Code = "EUR", Amount = 10 };
+
+            var ex = Assert.Throws<ArgumentNullException>(() => product.ChangeVariant(variantId, name, ean, sku, price));
+            Assert.Equal(nameof(name), ex.ParamName);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        public void ChangeVariant_Should_Throw_ArgumentNullException_If_Ean_Is_Empty(string value)
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            Guid variantId = Guid.NewGuid();
+            string name = "variant";
+            string ean = value;
+            string sku = "variant";
+            Currency price = new Currency { Code = "EUR", Amount = 10 };
+
+            var ex = Assert.Throws<ArgumentNullException>(() => product.ChangeVariant(variantId, name, ean, sku, price));
+            Assert.Equal(nameof(ean), ex.ParamName);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        public void ChangeVariant_Should_Throw_ArgumentNullException_If_Sku_Is_Empty(string value)
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            Guid variantId = Guid.NewGuid();
+            string name = "variant";
+            string ean = "variant";
+            string sku = value;
+            Currency price = new Currency { Code = "EUR", Amount = 10 };
+
+            var ex = Assert.Throws<ArgumentNullException>(() => product.ChangeVariant(variantId, name, ean, sku, price));
+            Assert.Equal(nameof(sku), ex.ParamName);
+        }
+
+        [Fact]
+        public void ChangeVariant_Should_Throw_ArgumentNullException_If_Price_Is_Null()
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            Guid variantId = Guid.NewGuid();
+            string name = "variant";
+            string ean = "variant";
+            string sku = "variant";
+            Currency price = null;
+
+            var ex = Assert.Throws<ArgumentNullException>(() => product.ChangeVariant(variantId, name, ean, sku, price));
+            Assert.Equal(nameof(price), ex.ParamName);
+        }
+
+        [Fact]
+        public void ChangeVariant_Should_Throw_ArgumentException_If_Price_Amount_Is_Less_Than_Zero()
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            Guid variantId = Guid.NewGuid();
+            string name = "variant";
+            string ean = "variant";
+            string sku = "variant";
+            Currency price = new Currency { Code = "EUR", Amount = -1 };
+
+            var ex = Assert.Throws<ArgumentException>(() => product.ChangeVariant(variantId, name, ean, sku, price));
+            Assert.Equal(nameof(price), ex.ParamName);
+        }
+
+        [Fact]
+        public void ChangeVariant_Should_Throw_InvalidOperationException_If_Variant_Does_Not_Exist()
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            Guid variantId = Guid.NewGuid();
+            string name = "variant";
+            string ean = "variant";
+            string sku = "variant";
+            Currency price = new Currency { Code = "EUR", Amount = 10 };
+
+            var ex = Assert.Throws<InvalidOperationException>(() => product.ChangeVariant(variantId, name, ean, sku, price));
+            Assert.Equal("Variant not found", ex.Message);
+        }
+
+        [Fact]
+        public void ChangeVariant_Should_Change_Variant_Information_With_Specified_Values()
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            product.AddVariant("v", "v", "v", new Currency { Code = "EUR", Amount = 5 });
+
+            Guid variantId = product.Variants.First().Id;
+            string name = "variant";
+            string ean = "variant";
+            string sku = "variant";
+            Currency price = new Currency { Code = "EUR", Amount = 10 };
+
+            product.ChangeVariant(variantId, name, ean, sku, price);
+
+            var variant = product.Variants.FirstOrDefault(v => v.Id == variantId);
+            Assert.NotNull(variant);
+            Assert.Equal(name, variant.Name);
+            Assert.Equal(ean, variant.EanCode);
+            Assert.Equal(sku, variant.Sku);
+            Assert.Equal(price, variant.Price);
+        }
+
+        [Fact]
+        public void RemoveCategory_Should_Throw_ArgumentNullException_If_Category_Is_Null()
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            Category category = null;
+
+            var ex = Assert.Throws<ArgumentNullException>(() => product.RemoveCategory(category));
+            Assert.Equal(nameof(category), ex.ParamName);
+        }
+
+        [Fact]
+        public void RemoveCategory_Should_Throw_InvalidOperationException_If_Category_Does_Not_Exist()
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            Category category = Category.Create("code", "category", "category");
+
+            var ex = Assert.Throws<InvalidOperationException>(() => product.RemoveCategory(category));
+            Assert.Equal("Category not found", ex.Message);
+        }
+
+        [Fact]
+        public void RemoveCategory_Should_Remove_Category_From_Product_Categories()
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            Category category = Category.Create("code", "category", "category");
+
+            product.AddCategory(category);
+            product.RemoveCategory(category);
+
+            Assert.True(product.ProductCategories.All(c => c.CategoryId != category.Id));
         }
     }
 }

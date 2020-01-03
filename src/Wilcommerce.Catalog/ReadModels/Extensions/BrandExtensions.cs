@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Wilcommerce.Catalog.Models;
 
 namespace Wilcommerce.Catalog.ReadModels
@@ -15,6 +16,11 @@ namespace Wilcommerce.Catalog.ReadModels
         /// <returns>A list of brands</returns>
         public static IQueryable<Brand> Active(this IQueryable<Brand> brands)
         {
+            if (brands == null)
+            {
+                throw new ArgumentNullException(nameof(brands));
+            }
+
             return from b in brands
                    where !b.Deleted
                    select b;

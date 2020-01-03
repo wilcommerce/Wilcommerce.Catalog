@@ -50,7 +50,7 @@ namespace Wilcommerce.Catalog.Events.Product
         /// <returns>The converted string</returns>
         public override string ToString()
         {
-            return $"[{FiredOn.ToString()}] {Name} added a review with rating {Rating} and comment {Comment} for product {ProductId}";
+            return $"{Name} added a review with rating {Rating} and comment {Comment} for product {ProductId}";
         }
     }
 }

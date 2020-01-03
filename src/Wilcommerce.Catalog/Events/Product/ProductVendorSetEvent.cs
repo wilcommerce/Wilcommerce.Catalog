@@ -36,7 +36,7 @@ namespace Wilcommerce.Catalog.Events.Product
         /// <returns>The converted string</returns>
         public override string ToString()
         {
-            return $"[{FiredOn.ToString()}] Set vendor {VendorId} to product {ProductId}";
+            return $"Set vendor {VendorId} to product {ProductId}";
         }
     }
 }
