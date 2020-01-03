@@ -792,6 +792,69 @@ namespace Wilcommerce.Catalog.Models
             }
         }
 
+        /// <summary>
+        /// Change the variant information
+        /// </summary>
+        /// <param name="variantId">The product variant id</param>
+        /// <param name="name">The variant name</param>
+        /// <param name="ean">The variant EAN code</param>
+        /// <param name="sku">The variant SKU code</param>
+        /// <param name="price">The variant price</param>
+        public virtual void ChangeVariant(Guid variantId, string name, string ean, string sku, Currency price)
+        {
+            if (variantId == Guid.Empty)
+            {
+                throw new ArgumentException("value cannot be empty", nameof(variantId));
+            }
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            if (string.IsNullOrWhiteSpace(ean))
+            {
+                throw new ArgumentNullException(nameof(ean));
+            }
+
+            if (string.IsNullOrWhiteSpace(sku))
+            {
+                throw new ArgumentNullException(nameof(sku));
+            }
+
+            if (price == null)
+            {
+                throw new ArgumentNullException(nameof(price));
+            }
+
+            if (price.Amount < 0)
+            {
+                throw new ArgumentException("Price amount cannot be less than zero", nameof(price));
+            }
+
+            var variant = this.Variants.FirstOrDefault(v => v.Id == variantId);
+            if (variant == null)
+            {
+                throw new InvalidOperationException("Variant not found");
+            }
+
+            if (variant.Name != name)
+            {
+                variant.Name = name;
+            }
+            if (variant.EanCode != ean)
+            {
+                variant.EanCode = ean;
+            }
+            if (variant.Sku != sku)
+            {
+                variant.Sku = sku;
+            }
+            if (variant.Price != price)
+            {
+                variant.Price = price;
+            }
+        }
         #endregion
 
         #region Factory Methods
@@ -838,7 +901,6 @@ namespace Wilcommerce.Catalog.Models
 
             return product;
         }
-
         #endregion
     }
 }

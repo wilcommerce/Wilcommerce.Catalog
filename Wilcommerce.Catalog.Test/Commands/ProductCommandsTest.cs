@@ -1026,6 +1026,76 @@ namespace Wilcommerce.Catalog.Test.Commands
             Assert.Equal(seo.Title, product.Seo.Title);
             Assert.Equal(seo.Description, product.Seo.Description);
         }
+
+        [Fact]
+        public async Task ChangeProductVariant_Should_Throw_ArgumentException_If_ProductId_Is_Empty()
+        {
+            Repository.IRepository repository = new Mock<Repository.IRepository>().Object;
+            Core.Infrastructure.IEventBus eventBus = new Mock<Core.Infrastructure.IEventBus>().Object;
+
+            Guid productId = Guid.Empty;
+            Guid variantId = Guid.NewGuid();
+            string name = "name";
+            string ean = "ean";
+            string sku = "sku";
+            Currency price = new Currency { Code = "EUR", Amount = 10 };
+
+            var commands = new ProductCommands(repository, eventBus);
+
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.ChangeProductVariant(productId, variantId, name, ean, sku, price));
+            Assert.Equal(nameof(productId), ex.ParamName);
+        }
+
+        [Fact]
+        public async Task ChangeProductVariant_Should_Throw_ArgumentException_If_VariantId_Is_Empty()
+        {
+            Repository.IRepository repository = new Mock<Repository.IRepository>().Object;
+            Core.Infrastructure.IEventBus eventBus = new Mock<Core.Infrastructure.IEventBus>().Object;
+
+            Guid productId = Guid.NewGuid();
+            Guid variantId = Guid.Empty;
+            string name = "name";
+            string ean = "ean";
+            string sku = "sku";
+            Currency price = new Currency { Code = "EUR", Amount = 10 };
+
+            var commands = new ProductCommands(repository, eventBus);
+
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.ChangeProductVariant(productId, variantId, name, ean, sku, price));
+            Assert.Equal(nameof(variantId), ex.ParamName);
+        }
+
+        [Fact]
+        public async Task ChangeProductVariant_Should_Change_The_Product_Variant_With_The_Specified_Values()
+        {
+            var product = Product.Create("ean", "sku", "name", "url");
+            product.AddVariant("v", "v", "v", new Currency { Code = "EUR", Amount = 5 });
+
+            var repositoryMock = new Mock<Repository.IRepository>();
+            repositoryMock.Setup(r => r.GetByKeyAsync<Product>(It.IsAny<Guid>()))
+                .Returns(Task.FromResult(product));
+
+            Repository.IRepository repository = repositoryMock.Object;
+            Core.Infrastructure.IEventBus eventBus = new Mock<Core.Infrastructure.IEventBus>().Object;
+
+            Guid productId = product.Id;
+            Guid variantId = product.Variants.First().Id;
+            string name = "name";
+            string ean = "ean";
+            string sku = "sku";
+            Currency price = new Currency { Code = "EUR", Amount = 10 };
+
+            var commands = new ProductCommands(repository, eventBus);
+            await commands.ChangeProductVariant(productId, variantId, name, ean, sku, price);
+
+            var variant = product.Variants.FirstOrDefault(v => v.Id == variantId);
+            
+            Assert.NotNull(variant);
+            Assert.Equal(name, variant.Name);
+            Assert.Equal(ean, variant.EanCode);
+            Assert.Equal(sku, variant.Sku);
+            Assert.Equal(price, variant.Price);
+        }
         #endregion
     }
 }

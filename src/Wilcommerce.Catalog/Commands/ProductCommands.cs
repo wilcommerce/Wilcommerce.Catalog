@@ -786,6 +786,37 @@ namespace Wilcommerce.Catalog.Commands
                 throw;
             }
         }
+
+        /// <summary>
+        /// Implementation of <see cref="IProductCommands.ChangeProductVariant(Guid, Guid, string, string, string, Currency)"/>
+        /// </summary>
+        /// <param name="productId">The product id</param>
+        /// <param name="variantId">The variant id</param>
+        /// <param name="name">The variant name</param>
+        /// <param name="ean">The variant EAN code</param>
+        /// <param name="sku">The variant SKU code</param>
+        /// <param name="price">The variant price</param>
+        /// <returns></returns>
+        public async Task ChangeProductVariant(Guid productId, Guid variantId, string name, string ean, string sku, Currency price)
+        {
+            if (productId == Guid.Empty)
+            {
+                throw new ArgumentException("value cannot be empty", nameof(productId));
+            }
+
+            if (variantId == Guid.Empty)
+            {
+                throw new ArgumentException("value cannot be empty", nameof(variantId));
+            }
+
+            var product = await Repository.GetByKeyAsync<Product>(productId);
+            product.ChangeVariant(variantId, name, ean, sku, price);
+
+            var @event = new ProductVariantChangedEvent(productId, variantId, name, ean, sku);
+            EventBus.RaiseEvent(@event);
+
+            await Repository.SaveChangesAsync();
+        }
         #endregion
     }
 }

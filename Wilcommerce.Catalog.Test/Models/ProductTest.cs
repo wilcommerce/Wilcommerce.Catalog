@@ -1021,5 +1021,182 @@ namespace Wilcommerce.Catalog.Test.Models
 
             Assert.Equal(value, attribute.Value);
         }
+
+        [Fact]
+        public void ChangeVariant_Should_Throw_ArgumentException_If_VariantId_Is_Empty()
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            Guid variantId = Guid.Empty;
+            string name = "variant";
+            string ean = "variant";
+            string sku = "variant";
+            Currency price = new Currency { Code = "EUR", Amount = 10 };
+
+            var ex = Assert.Throws<ArgumentException>(() => product.ChangeVariant(variantId, name, ean, sku, price));
+            Assert.Equal(nameof(variantId), ex.ParamName);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        public void ChangeVariant_Should_Throw_ArgumentNullException_If_Name_Is_Empty(string value)
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            Guid variantId = Guid.NewGuid();
+            string name = value;
+            string ean = "variant";
+            string sku = "variant";
+            Currency price = new Currency { Code = "EUR", Amount = 10 };
+
+            var ex = Assert.Throws<ArgumentNullException>(() => product.ChangeVariant(variantId, name, ean, sku, price));
+            Assert.Equal(nameof(name), ex.ParamName);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        public void ChangeVariant_Should_Throw_ArgumentNullException_If_Ean_Is_Empty(string value)
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            Guid variantId = Guid.NewGuid();
+            string name = "variant";
+            string ean = value;
+            string sku = "variant";
+            Currency price = new Currency { Code = "EUR", Amount = 10 };
+
+            var ex = Assert.Throws<ArgumentNullException>(() => product.ChangeVariant(variantId, name, ean, sku, price));
+            Assert.Equal(nameof(ean), ex.ParamName);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        public void ChangeVariant_Should_Throw_ArgumentNullException_If_Sku_Is_Empty(string value)
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            Guid variantId = Guid.NewGuid();
+            string name = "variant";
+            string ean = "variant";
+            string sku = value;
+            Currency price = new Currency { Code = "EUR", Amount = 10 };
+
+            var ex = Assert.Throws<ArgumentNullException>(() => product.ChangeVariant(variantId, name, ean, sku, price));
+            Assert.Equal(nameof(sku), ex.ParamName);
+        }
+
+        [Fact]
+        public void ChangeVariant_Should_Throw_ArgumentNullException_If_Price_Is_Null()
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            Guid variantId = Guid.NewGuid();
+            string name = "variant";
+            string ean = "variant";
+            string sku = "variant";
+            Currency price = null;
+
+            var ex = Assert.Throws<ArgumentNullException>(() => product.ChangeVariant(variantId, name, ean, sku, price));
+            Assert.Equal(nameof(price), ex.ParamName);
+        }
+
+        [Fact]
+        public void ChangeVariant_Should_Throw_ArgumentException_If_Price_Amount_Is_Less_Than_Zero()
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            Guid variantId = Guid.NewGuid();
+            string name = "variant";
+            string ean = "variant";
+            string sku = "variant";
+            Currency price = new Currency { Code = "EUR", Amount = -1 };
+
+            var ex = Assert.Throws<ArgumentException>(() => product.ChangeVariant(variantId, name, ean, sku, price));
+            Assert.Equal(nameof(price), ex.ParamName);
+        }
+
+        [Fact]
+        public void ChangeVariant_Should_Throw_InvalidOperationException_If_Variant_Does_Not_Exist()
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            Guid variantId = Guid.NewGuid();
+            string name = "variant";
+            string ean = "variant";
+            string sku = "variant";
+            Currency price = new Currency { Code = "EUR", Amount = 10 };
+
+            var ex = Assert.Throws<InvalidOperationException>(() => product.ChangeVariant(variantId, name, ean, sku, price));
+            Assert.Equal("Variant not found", ex.Message);
+        }
+
+        [Fact]
+        public void ChangeVariant_Should_Change_Variant_Information_With_Specified_Values()
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            product.AddVariant("v", "v", "v", new Currency { Code = "EUR", Amount = 5 });
+
+            Guid variantId = product.Variants.First().Id;
+            string name = "variant";
+            string ean = "variant";
+            string sku = "variant";
+            Currency price = new Currency { Code = "EUR", Amount = 10 };
+
+            product.ChangeVariant(variantId, name, ean, sku, price);
+
+            var variant = product.Variants.FirstOrDefault(v => v.Id == variantId);
+            Assert.NotNull(variant);
+            Assert.Equal(name, variant.Name);
+            Assert.Equal(ean, variant.EanCode);
+            Assert.Equal(sku, variant.Sku);
+            Assert.Equal(price, variant.Price);
+        }
     }
 }
