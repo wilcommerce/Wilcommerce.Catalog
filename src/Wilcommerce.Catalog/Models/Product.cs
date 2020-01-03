@@ -673,16 +673,21 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Delete the custom attribute
         /// </summary>
-        /// <param name="attributeId">The id of the attribute to delete</param>
-        public virtual void DeleteAttribute(Guid attributeId)
+        /// <param name="attribute">The attribute to delete</param>
+        public virtual void DeleteAttribute(CustomAttribute attribute)
         {
-            var attribute = this.Attributes.FirstOrDefault(a => a.Id == attributeId);
             if (attribute == null)
+            {
+                throw new ArgumentNullException(nameof(attribute));
+            }
+
+            var productAttribute = this.Attributes.FirstOrDefault(a => a.Attribute == attribute);
+            if (productAttribute == null)
             {
                 throw new InvalidOperationException("Attribute not found");
             }
 
-            if (!this.Attributes.Remove(attribute))
+            if (!this.Attributes.Remove(productAttribute))
             {
                 throw new InvalidOperationException("Attribute not removed");
             }

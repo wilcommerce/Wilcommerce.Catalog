@@ -84,6 +84,11 @@ namespace Wilcommerce.Catalog.Commands
         {
             try
             {
+                if (brandId == Guid.Empty)
+                {
+                    throw new ArgumentException("value cannot be empty", nameof(brandId));
+                }
+
                 var brand = await Repository.GetByKeyAsync<Brand>(brandId);
                 if (brand.Name != name)
                 {
@@ -126,6 +131,11 @@ namespace Wilcommerce.Catalog.Commands
         {
             try
             {
+                if (brandId == Guid.Empty)
+                {
+                    throw new ArgumentException("value cannot be empty", nameof(brandId));
+                }
+
                 var brand = await Repository.GetByKeyAsync<Brand>(brandId);
                 brand.SetSeoData(seo);
 
@@ -146,6 +156,11 @@ namespace Wilcommerce.Catalog.Commands
         {
             try
             {
+                if (brandId == Guid.Empty)
+                {
+                    throw new ArgumentException("value cannot be empty", nameof(brandId));
+                }
+
                 var brand = await Repository.GetByKeyAsync<Brand>(brandId);
                 brand.Delete();
 
@@ -169,6 +184,11 @@ namespace Wilcommerce.Catalog.Commands
         {
             try
             {
+                if (brandId == Guid.Empty)
+                {
+                    throw new ArgumentException("value cannot be empty", nameof(brandId));
+                }
+
                 var brand = await Repository.GetByKeyAsync<Brand>(brandId);
                 brand.Restore();
 

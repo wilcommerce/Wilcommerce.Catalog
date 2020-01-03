@@ -796,8 +796,26 @@ namespace Wilcommerce.Catalog.Test.Models
                 "my-product"
                 );
 
-            var ex = Assert.Throws<InvalidOperationException>(() => product.DeleteAttribute(Guid.NewGuid()));
+            var attribute = CustomAttribute.Create("attribute", "string");
+
+            var ex = Assert.Throws<InvalidOperationException>(() => product.DeleteAttribute(attribute));
             Assert.Equal("Attribute not found", ex.Message);
+        }
+
+        [Fact]
+        public void DeleteAttribute_Should_Throw_ArgumentNullException_If_Attribute_Is_Null()
+        {
+            var product = Product.Create(
+                "ean",
+                "sku",
+                "product",
+                "my-product"
+                );
+
+            CustomAttribute attribute = null;
+
+            var ex = Assert.Throws<ArgumentNullException>(() => product.DeleteAttribute(attribute));
+            Assert.Equal(nameof(attribute), ex.ParamName);
         }
 
         [Fact]
@@ -811,10 +829,10 @@ namespace Wilcommerce.Catalog.Test.Models
                 );
 
             product.AddAttribute(CustomAttribute.Create("attribute", "number"), "value");
-            var attribute = product.Attributes.First();
+            var attribute = product.Attributes.First().Attribute;
 
-            product.DeleteAttribute(attribute.Id);
-            Assert.Equal(0, product.Attributes.Count(a => a.Id == attribute.Id));
+            product.DeleteAttribute(attribute);
+            Assert.Equal(0, product.Attributes.Count(a => a.Attribute == attribute));
         }
 
         [Fact]

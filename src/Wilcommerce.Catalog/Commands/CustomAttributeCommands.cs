@@ -30,8 +30,8 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="eventBus">The event bus</param>
         public CustomAttributeCommands(Repository.IRepository repository, IEventBus eventBus)
         {
-            Repository = repository;
-            EventBus = eventBus;
+            Repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            EventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
         }
 
         #region CustomAttribute Commands
@@ -49,12 +49,12 @@ namespace Wilcommerce.Catalog.Commands
             try
             {
                 var attribute = CustomAttribute.Create(name, type);
-                if (!string.IsNullOrEmpty(description))
+                if (!string.IsNullOrWhiteSpace(description))
                 {
                     attribute.ChangeDescription(description);
                 }
 
-                if (!string.IsNullOrEmpty(unitOfMeasure))
+                if (!string.IsNullOrWhiteSpace(unitOfMeasure))
                 {
                     attribute.SetUnitOfMeasure(unitOfMeasure);
                 }
@@ -92,6 +92,11 @@ namespace Wilcommerce.Catalog.Commands
         {
             try
             {
+                if (attributeId == Guid.Empty)
+                {
+                    throw new ArgumentException("value cannot be empty", nameof(attributeId));
+                }
+
                 var attribute = await Repository.GetByKeyAsync<CustomAttribute>(attributeId);
                 if (attribute.Name != name)
                 {
@@ -135,6 +140,11 @@ namespace Wilcommerce.Catalog.Commands
         {
             try
             {
+                if (attributeId == Guid.Empty)
+                {
+                    throw new ArgumentException("value cannot be empty", nameof(attributeId));
+                }
+
                 var attribute = await Repository.GetByKeyAsync<CustomAttribute>(attributeId);
                 attribute.Delete();
 
@@ -158,6 +168,11 @@ namespace Wilcommerce.Catalog.Commands
         {
             try
             {
+                if (attributeId == Guid.Empty)
+                {
+                    throw new ArgumentException("value cannot be empty", nameof(attributeId));
+                }
+
                 var attribute = await Repository.GetByKeyAsync<CustomAttribute>(attributeId);
                 attribute.Restore();
 
@@ -176,8 +191,10 @@ namespace Wilcommerce.Catalog.Commands
         #region Private methods
         private void UpdateCustomAttributeValues(CustomAttribute attribute, IEnumerable<object> values)
         {
-            var valuesToAdd = values.Where(v => !attribute.Values.Contains(v));
-            var valuesToRemove = attribute.Values.Where(v => !values.Contains(v));
+            var attributeValues = attribute.Values ?? new object[0];
+
+            var valuesToAdd = values.Where(v => !attributeValues.Contains(v)).ToArray();
+            var valuesToRemove = attributeValues.Where(v => !values.Contains(v)).ToArray();
 
             if (valuesToRemove.Any())
             {

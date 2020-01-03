@@ -76,7 +76,7 @@ namespace Wilcommerce.Catalog.Models
                 throw new ArgumentNullException(nameof(value));
             }
 
-            var valueList = string.IsNullOrEmpty(_Values) ? (new List<object>()) : _Values.Split(",".ToCharArray()).ToList<object>();
+            var valueList = string.IsNullOrWhiteSpace(_Values) ? (new List<object>()) : _Values.Split(",".ToCharArray()).ToList<object>();
             if (valueList.Contains(value))
             {
                 throw new ArgumentException("The value list contains the value", nameof(value));
