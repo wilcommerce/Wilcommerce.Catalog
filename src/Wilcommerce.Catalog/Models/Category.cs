@@ -87,7 +87,7 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Get or set the SEO information
         /// </summary>
-        public SeoData Seo { get; protected set; }
+        public virtual SeoData Seo { get; protected set; }
 
         /// <summary>
         /// Get the creation date
