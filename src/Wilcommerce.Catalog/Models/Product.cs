@@ -62,7 +62,7 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Get or set the product's price
         /// </summary>
-        public Currency Price { get; protected set; }
+        public virtual Currency Price { get; protected set; }
 
         /// <summary>
         /// Get or set the number of units in stock
