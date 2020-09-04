@@ -154,7 +154,7 @@ namespace Wilcommerce.Catalog.Commands
                     product.SetUnitInStock(unitInStock);
                 }
 
-                if (product.IsOnSale != isOnSale)
+                if (product.IsOnSale != isOnSale || product.OnSaleFrom != onSaleFrom || product.OnSaleTo != onSaleTo)
                 {
                     if (isOnSale)
                     {
