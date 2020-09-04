@@ -37,7 +37,7 @@
 
   <ItemGroup>
     <PackageReference Include="System.Linq.Queryable" Version="4.3.0" />
-    <PackageReference Include="Wilcommerce.Core.Common" Version="1.0.0" />
+    <PackageReference Include="Wilcommerce.Core.Common" Version="1.0.1" />
     <PackageReference Include="Wilcommerce.Core.Infrastructure" Version="1.0.0" />
   </ItemGroup>
 

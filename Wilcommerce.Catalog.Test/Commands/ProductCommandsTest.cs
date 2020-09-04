@@ -1183,6 +1183,38 @@ namespace Wilcommerce.Catalog.Test.Commands
             await commands.RemoveProductCategory(productId, categoryId);
             Assert.True(product.ProductCategories.All(c => c.CategoryId != category.Id));
         }
+
+        [Fact]
+        public async Task UpdateProductInfo_Should_Change_Sales_Dates_If_IsOnSale_Did_Not_Change_But_Dates_Are_Different()
+        {
+            var product = Product.Create("ean01", "sku01", "product", "product");
+            product.SetOnSale();
+
+            var repositoryMock = new Mock<Repository.IRepository>();
+            repositoryMock.Setup(r => r.GetByKeyAsync<Product>(It.IsAny<Guid>()))
+                .Returns(Task.FromResult(product));
+
+            Repository.IRepository repository = repositoryMock.Object;
+            Core.Infrastructure.IEventBus eventBus = new Mock<Core.Infrastructure.IEventBus>().Object;
+
+            Guid productId = product.Id;
+            string ean = "ean";
+            string sku = "sku";
+            string name = "name";
+            string url = "url";
+            Currency price = new Currency { Code = "EUR", Amount = 10 };
+            string description = "description";
+            int unitInStock = 10;
+            bool isOnSale = true;
+            DateTime? onSaleFrom = DateTime.Today.AddDays(1);
+            DateTime? onSaleTo = DateTime.Today.AddYears(1);
+
+            var commands = new ProductCommands(repository, eventBus);
+            await commands.UpdateProductInfo(productId, ean, sku, name, url, price, description, unitInStock, isOnSale, onSaleFrom, onSaleTo);
+
+            Assert.Equal(product.OnSaleFrom, onSaleFrom);
+            Assert.Equal(product.OnSaleTo, onSaleTo);
+        }
         #endregion
     }
 }
