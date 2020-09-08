@@ -181,7 +181,9 @@ namespace Wilcommerce.Catalog.Test.ReadModels
             var visibleCategories = CategoryExtensions.Visible(categories);
 
             var now = DateTime.Now;
-            Assert.True(visibleCategories.All(c => c.IsVisible && c.VisibleFrom <= now && c.VisibleTo >= now));
+
+            Assert.Equal(2, visibleCategories.Count());
+            Assert.True(visibleCategories.All(c => c.IsVisible && c.VisibleFrom <= now && (!c.VisibleTo.HasValue || c.VisibleTo >= now)));
         }
         #endregion
     }
