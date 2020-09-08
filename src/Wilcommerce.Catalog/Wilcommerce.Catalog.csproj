@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>1.0.1</VersionPrefix>
+    <VersionPrefix>1.0.2</VersionPrefix>
     <Authors>Alberto Mori</Authors>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Wilcommerce.Catalog</AssemblyName>
@@ -14,10 +14,11 @@
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Description>Wilcommerce Catalog components</Description>
     <Title>Wilcommerce.Catalog</Title>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReleaseNotes>Fix some issues (see issues #31 and #32 on https://github.com/wilcommerce/Wilcommerce.Catalog/issues). Upgrade NuGet packages</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
