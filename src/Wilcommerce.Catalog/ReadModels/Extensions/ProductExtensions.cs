@@ -119,7 +119,7 @@ namespace Wilcommerce.Catalog.ReadModels
             var today = DateTime.Now;
 
             return from p in products
-                   where p.IsOnSale && (p.OnSaleFrom <= today && p.OnSaleTo >= today)
+                   where p.IsOnSale && (p.OnSaleFrom <= today && (!p.OnSaleTo.HasValue || p.OnSaleTo >= today))
                    select p;
         }
 

@@ -100,7 +100,7 @@ namespace Wilcommerce.Catalog.ReadModels
             var today = DateTime.Now;
 
             return from c in categories
-                   where c.IsVisible && (c.VisibleFrom <= today && c.VisibleTo >= today)
+                   where c.IsVisible && (c.VisibleFrom <= today && (!c.VisibleTo.HasValue || c.VisibleTo >= today))
                    select c;
         }
     }

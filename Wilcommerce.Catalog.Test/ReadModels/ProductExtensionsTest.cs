@@ -156,7 +156,9 @@ namespace Wilcommerce.Catalog.Test.ReadModels
             var today = DateTime.Now;
 
             var productsOnSale = ProductExtensions.OnSale(products).ToArray();
-            Assert.True(productsOnSale.All(p => p.IsOnSale && p.OnSaleFrom <= today && p.OnSaleTo >= today));
+
+            Assert.Equal(2, productsOnSale.Count());
+            Assert.True(productsOnSale.All(p => p.IsOnSale && p.OnSaleFrom <= today && (!p.OnSaleTo.HasValue || p.OnSaleTo >= today)));
         }
         #endregion
 
@@ -190,7 +192,7 @@ namespace Wilcommerce.Catalog.Test.ReadModels
             var today = DateTime.Now;
 
             var productsAvailable = ProductExtensions.Available(products).ToArray();
-            Assert.True(productsAvailable.All(p => p.IsOnSale && p.OnSaleFrom <= today && p.OnSaleTo >= today && p.UnitInStock > 0));
+            Assert.True(productsAvailable.All(p => p.IsOnSale && p.OnSaleFrom <= today && (!p.OnSaleTo.HasValue || p.OnSaleTo >= today) && p.UnitInStock > 0));
         }
         #endregion
 
