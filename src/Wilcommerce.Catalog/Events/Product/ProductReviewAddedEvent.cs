@@ -35,8 +35,9 @@ namespace Wilcommerce.Catalog.Events.Product
         /// <param name="name">The reviewer name</param>
         /// <param name="rating">The review rating</param>
         /// <param name="comment">The review comment</param>
-        public ProductReviewAddedEvent(Guid productId, string name, int rating, string comment)
-            : base(productId, typeof(Models.Product))
+        /// <param name="userId">The user's id</param>
+        public ProductReviewAddedEvent(Guid productId, string name, int rating, string comment, string userId)
+            : base(productId, typeof(Models.Product), userId)
         {
             ProductId = productId;
             Name = name;

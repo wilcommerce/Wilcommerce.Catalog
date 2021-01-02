@@ -14,8 +14,9 @@ namespace Wilcommerce.Catalog.Test.Events.Product
             int fromQuantity = 1;
             int toQuantity = 5;
             Currency price = new Currency { Amount = 10, Code = "EUR" };
+            string userId = Guid.NewGuid().ToString();
 
-            var @event = new ProductTierPriceAddedEvent(productId, fromQuantity, toQuantity, price);
+            var @event = new ProductTierPriceAddedEvent(productId, fromQuantity, toQuantity, price, userId);
 
             Assert.Equal(productId, @event.ProductId);
             Assert.Equal(fromQuantity, @event.FromQuantity);
@@ -24,6 +25,7 @@ namespace Wilcommerce.Catalog.Test.Events.Product
 
             Assert.Equal(productId, @event.AggregateId);
             Assert.Equal(typeof(Catalog.Models.Product), @event.AggregateType);
+            Assert.Equal(userId, @event.UserId);
         }
     }
 }

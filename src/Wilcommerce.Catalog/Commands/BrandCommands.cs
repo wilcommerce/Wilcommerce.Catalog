@@ -35,14 +35,15 @@ namespace Wilcommerce.Catalog.Commands
 
         #region Brand Commands
         /// <summary>
-        /// Implementation of <see cref="IBrandCommands.CreateNewBrand(string, string, string, Image)"/>
+        /// Implementation of <see cref="IBrandCommands.CreateNewBrand(string, string, string, Image, string)"/>
         /// </summary>
         /// <param name="name">The brand's name</param>
         /// <param name="url">The brand's unique url</param>
         /// <param name="description">The brand's description</param>
         /// <param name="logo">The brand's logo</param>
+        /// <param name="userId">The user's id</param>
         /// <returns>The brand id</returns>
-        public virtual async Task<Guid> CreateNewBrand(string name, string url, string description, Image logo)
+        public virtual async Task<Guid> CreateNewBrand(string name, string url, string description, Image logo, string userId)
         {
             try
             {
@@ -52,7 +53,7 @@ namespace Wilcommerce.Catalog.Commands
                     brand.ChangeDescription(description);
                 }
 
-                if (logo != null)
+                if (logo is not null)
                 {
                     brand.SetLogo(logo);
                 }
@@ -60,7 +61,7 @@ namespace Wilcommerce.Catalog.Commands
                 Repository.Add(brand);
                 await Repository.SaveChangesAsync();
 
-                var @event = new BrandCreatedEvent(brand.Id, brand.Name);
+                var @event = new BrandCreatedEvent(brand.Id, brand.Name, userId);
                 EventBus.RaiseEvent(@event);
 
                 return brand.Id;
@@ -72,15 +73,16 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="IBrandCommands.UpdateBrandInfo(Guid, string, string, string, Image)"/>
+        /// Implementation of <see cref="IBrandCommands.UpdateBrandInfo(Guid, string, string, string, Image, string)"/>
         /// </summary>
         /// <param name="brandId">The brand's id</param>
         /// <param name="name">The brand's new name</param>
         /// <param name="url">The brand's new url</param>
         /// <param name="description">The brand's new description</param>
         /// <param name="logo">The brand's new logo</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task UpdateBrandInfo(Guid brandId, string name, string url, string description, Image logo)
+        public virtual async Task UpdateBrandInfo(Guid brandId, string name, string url, string description, Image logo, string userId)
         {
             try
             {
@@ -112,7 +114,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new BrandInfoUpdatedEvent(brandId, name, url, description, logo);
+                var @event = new BrandInfoUpdatedEvent(brandId, name, url, description, logo, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch 
@@ -122,12 +124,13 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="IBrandCommands.SetBrandSeoData(Guid, SeoData)"/>
+        /// Implementation of <see cref="IBrandCommands.SetBrandSeoData(Guid, SeoData, string)"/>
         /// </summary>
         /// <param name="brandId">The brand's id</param>
         /// <param name="seo">The seo data</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task SetBrandSeoData(Guid brandId, SeoData seo)
+        public virtual async Task SetBrandSeoData(Guid brandId, SeoData seo, string userId)
         {
             try
             {
@@ -148,11 +151,12 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="IBrandCommands.DeleteBrand(Guid)"/>
+        /// Implementation of <see cref="IBrandCommands.DeleteBrand(Guid, string)"/>
         /// </summary>
         /// <param name="brandId">The brand's id</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task DeleteBrand(Guid brandId)
+        public virtual async Task DeleteBrand(Guid brandId, string userId)
         {
             try
             {
@@ -166,7 +170,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new BrandDeletedEvent(brandId);
+                var @event = new BrandDeletedEvent(brandId, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch
@@ -176,11 +180,12 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="IBrandCommands.RestoreBrand(Guid)"/>
+        /// Implementation of <see cref="IBrandCommands.RestoreBrand(Guid, string)"/>
         /// </summary>
         /// <param name="brandId">The brand's id</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task RestoreBrand(Guid brandId)
+        public virtual async Task RestoreBrand(Guid brandId, string userId)
         {
             try
             {
@@ -194,7 +199,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new BrandRestoredEvent(brandId);
+                var @event = new BrandRestoredEvent(brandId, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch

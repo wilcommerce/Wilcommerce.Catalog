@@ -3,7 +3,7 @@
   <PropertyGroup>
     <VersionPrefix>1.0.2</VersionPrefix>
     <Authors>Alberto Mori</Authors>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>Wilcommerce.Catalog</AssemblyName>
     <PackageId>Wilcommerce.Catalog</PackageId>
     <PackageTags>wilcommerce;ecommerce;opensource;.netcore;.net;catalog</PackageTags>
@@ -18,7 +18,7 @@
     <Description>Wilcommerce Catalog components</Description>
     <Title>Wilcommerce.Catalog</Title>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReleaseNotes>Fix some issues (see issues #31 and #32 on https://github.com/wilcommerce/Wilcommerce.Catalog/issues). Upgrade NuGet packages</PackageReleaseNotes>
+    <PackageReleaseNotes>Moved to .NET 5</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,17 +29,17 @@
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard2.0\Wilcommerce.Catalog.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\net5.0\Wilcommerce.Catalog.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard2.0\Wilcommerce.Catalog.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\net5.0\Wilcommerce.Catalog.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Linq.Queryable" Version="4.3.0" />
-    <PackageReference Include="Wilcommerce.Core.Common" Version="1.0.1" />
-    <PackageReference Include="Wilcommerce.Core.Infrastructure" Version="1.0.0" />
+    <PackageReference Include="Wilcommerce.Core.Common" Version="2.0.0" />
+    <PackageReference Include="Wilcommerce.Core.Infrastructure" Version="2.0.0" />
   </ItemGroup>
 
 </Project>

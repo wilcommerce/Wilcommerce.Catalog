@@ -12,6 +12,8 @@ namespace Wilcommerce.Catalog.Test.Commands
 {
     public class CategoryCommandsTest
     {
+        private readonly string userId = Guid.NewGuid().ToString();
+
         #region Ctor tests
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_If_Repository_Is_Null()
@@ -55,7 +57,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             DateTime? visibleTo = DateTime.Today.AddYears(1);
 
             var commands = new CategoryCommands(repository, eventBus);
-            var categoryId = await commands.CreateNewCategory(code, name, url, description, isVisible, visibleFrom, visibleTo);
+            var categoryId = await commands.CreateNewCategory(code, name, url, description, isVisible, visibleFrom, visibleTo, userId);
 
             var createdCategory = fakeCategoryList.FirstOrDefault(c => c.Id == categoryId);
 
@@ -85,7 +87,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             DateTime? visibleTo = DateTime.Today.AddYears(1);
 
             var commands = new CategoryCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.UpdateCategoryInfo(categoryId, code, name, url, description, isVisible, visibleFrom, visibleTo));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.UpdateCategoryInfo(categoryId, code, name, url, description, isVisible, visibleFrom, visibleTo, userId));
 
             Assert.Equal(nameof(categoryId), ex.ParamName);
         }
@@ -112,7 +114,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             DateTime? visibleTo = DateTime.Today.AddYears(1);
 
             var commands = new CategoryCommands(repository, eventBus);
-            await commands.UpdateCategoryInfo(categoryId, code, name, url, description, isVisible, visibleFrom, visibleTo);
+            await commands.UpdateCategoryInfo(categoryId, code, name, url, description, isVisible, visibleFrom, visibleTo, userId);
 
             Assert.Equal(code, category.Code);
             Assert.Equal(name, category.Name);
@@ -133,7 +135,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid childId = Guid.NewGuid();
 
             var commands = new CategoryCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.AddCategoryChild(categoryId, childId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.AddCategoryChild(categoryId, childId, userId));
 
             Assert.Equal(nameof(categoryId), ex.ParamName);
         }
@@ -148,7 +150,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid childId = Guid.Empty;
 
             var commands = new CategoryCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.AddCategoryChild(categoryId, childId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.AddCategoryChild(categoryId, childId, userId));
 
             Assert.Equal(nameof(childId), ex.ParamName);
         }
@@ -173,7 +175,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid childId = child.Id;
 
             var commands = new CategoryCommands(repository, eventBus);
-            await commands.AddCategoryChild(categoryId, childId);
+            await commands.AddCategoryChild(categoryId, childId, userId);
 
             Assert.True(category.Children.Contains(child));
         }
@@ -188,7 +190,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid parentId = Guid.NewGuid();
 
             var commands = new CategoryCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.SetParentForCategory(categoryId, parentId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.SetParentForCategory(categoryId, parentId, userId));
 
             Assert.Equal(nameof(categoryId), ex.ParamName);
         }
@@ -203,7 +205,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid parentId = Guid.Empty;
 
             var commands = new CategoryCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.SetParentForCategory(categoryId, parentId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.SetParentForCategory(categoryId, parentId, userId));
 
             Assert.Equal(nameof(parentId), ex.ParamName);
         }
@@ -228,7 +230,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid parentId = parent.Id;
 
             var commands = new CategoryCommands(repository, eventBus);
-            await commands.SetParentForCategory(categoryId, parentId);
+            await commands.SetParentForCategory(categoryId, parentId, userId);
 
             Assert.Equal(parent, category.Parent);
         }
@@ -242,7 +244,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid categoryId = Guid.Empty;
 
             var commands = new CategoryCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.DeleteCategory(categoryId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.DeleteCategory(categoryId, userId));
 
             Assert.Equal(nameof(categoryId), ex.ParamName);
         }
@@ -262,7 +264,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid categoryId = category.Id;
 
             var commands = new CategoryCommands(repository, eventBus);
-            await commands.DeleteCategory(categoryId);
+            await commands.DeleteCategory(categoryId, userId);
 
             Assert.True(category.Deleted);
         }
@@ -276,7 +278,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid categoryId = Guid.Empty;
 
             var commands = new CategoryCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RestoreCategory(categoryId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RestoreCategory(categoryId, userId));
 
             Assert.Equal(nameof(categoryId), ex.ParamName);
         }
@@ -297,7 +299,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid categoryId = category.Id;
 
             var commands = new CategoryCommands(repository, eventBus);
-            await commands.RestoreCategory(categoryId);
+            await commands.RestoreCategory(categoryId, userId);
 
             Assert.False(category.Deleted);
         }
@@ -312,7 +314,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid childId = Guid.NewGuid();
 
             var commands = new CategoryCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveChildForCategory(categoryId, childId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveChildForCategory(categoryId, childId, userId));
 
             Assert.Equal(nameof(categoryId), ex.ParamName);
         }
@@ -327,7 +329,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid childId = Guid.Empty;
 
             var commands = new CategoryCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveChildForCategory(categoryId, childId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveChildForCategory(categoryId, childId, userId));
 
             Assert.Equal(nameof(childId), ex.ParamName);
         }
@@ -354,7 +356,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid childId = child.Id;
 
             var commands = new CategoryCommands(repository, eventBus);
-            await commands.RemoveChildForCategory(categoryId, childId);
+            await commands.RemoveChildForCategory(categoryId, childId, userId);
 
             Assert.False(category.Children.Contains(child));
         }
@@ -369,7 +371,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid parentId = Guid.NewGuid();
 
             var commands = new CategoryCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveParentForCategory(categoryId, parentId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveParentForCategory(categoryId, parentId, userId));
 
             Assert.Equal(nameof(categoryId), ex.ParamName);
         }
@@ -396,7 +398,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid parentId = parent.Id;
 
             var commands = new CategoryCommands(repository, eventBus);
-            await commands.RemoveParentForCategory(categoryId, parentId);
+            await commands.RemoveParentForCategory(categoryId, parentId, userId);
 
             Assert.Null(category.Parent);
         }
@@ -411,7 +413,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             SeoData seo = new SeoData { Title = "title", Description = "description" };
 
             var commands = new CategoryCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.SetCategorySeoData(categoryId, seo));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.SetCategorySeoData(categoryId, seo, userId));
 
             Assert.Equal(nameof(categoryId), ex.ParamName);
         }
@@ -432,7 +434,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             SeoData seo = new SeoData { Title = "title", Description = "description" };
 
             var commands = new CategoryCommands(repository, eventBus);
-            await commands.SetCategorySeoData(categoryId, seo);
+            await commands.SetCategorySeoData(categoryId, seo, userId);
 
             Assert.Equal(seo.Title, category.Seo.Title);
             Assert.Equal(seo.Description, category.Seo.Description);

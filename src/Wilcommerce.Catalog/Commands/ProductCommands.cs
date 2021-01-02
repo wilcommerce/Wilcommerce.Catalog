@@ -35,7 +35,7 @@ namespace Wilcommerce.Catalog.Commands
 
         #region Product Commands
         /// <summary>
-        /// Implementation of <see cref="IProductCommands.CreateNewProduct(string, string, string, string, Currency, string, int, bool, DateTime?, DateTime?)"/>
+        /// Implementation of <see cref="IProductCommands.CreateNewProduct(string, string, string, string, Currency, string, int, bool, DateTime?, DateTime?, string)"/>
         /// </summary>
         /// <param name="ean">The EAN code</param>
         /// <param name="sku">The SKU code</param>
@@ -47,8 +47,9 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="isOnSale">Whether the product is on sale</param>
         /// <param name="onSaleFrom">The date and time of when the product starts to be on sale</param>
         /// <param name="onSaleTo">The date and time till when the product is on sale</param>
+        /// <param name="userId">The user's id</param>
         /// <returns>The product id</returns>
-        public virtual async Task<Guid> CreateNewProduct(string ean, string sku, string name, string url, Currency price, string description, int unitInStock, bool isOnSale, DateTime? onSaleFrom, DateTime? onSaleTo)
+        public virtual async Task<Guid> CreateNewProduct(string ean, string sku, string name, string url, Currency price, string description, int unitInStock, bool isOnSale, DateTime? onSaleFrom, DateTime? onSaleTo, string userId)
         {
             try
             {
@@ -83,7 +84,7 @@ namespace Wilcommerce.Catalog.Commands
                 Repository.Add(product);
                 await Repository.SaveChangesAsync();
 
-                var @event = new ProductCreatedEvent(product.Id, product.EanCode, product.Sku, product.Name);
+                var @event = new ProductCreatedEvent(product.Id, product.EanCode, product.Sku, product.Name, userId);
                 EventBus.RaiseEvent(@event);
 
                 return product.Id;
@@ -95,7 +96,7 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="IProductCommands.UpdateProductInfo(Guid, string, string, string, string, Currency, string, int, bool, DateTime?, DateTime?)"/>
+        /// Implementation of <see cref="IProductCommands.UpdateProductInfo(Guid, string, string, string, string, Currency, string, int, bool, DateTime?, DateTime?, string)"/>
         /// </summary>
         /// <param name="productId">The product id</param>
         /// <param name="ean">The EAN code</param>
@@ -108,8 +109,9 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="isOnSale">Whether the product is on sale</param>
         /// <param name="onSaleFrom">The date and time of when the product starts to be on sale</param>
         /// <param name="onSaleTo">The date and time till when the product is on sale</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task UpdateProductInfo(Guid productId, string ean, string sku, string name, string url, Currency price, string description, int unitInStock, bool isOnSale, DateTime? onSaleFrom, DateTime? onSaleTo)
+        public virtual async Task UpdateProductInfo(Guid productId, string ean, string sku, string name, string url, Currency price, string description, int unitInStock, bool isOnSale, DateTime? onSaleFrom, DateTime? onSaleTo, string userId)
         {
             try
             {
@@ -175,7 +177,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new ProductInfoUpdateEvent(productId, ean, sku, name, url, price, description, unitInStock, isOnSale, onSaleFrom, onSaleTo);
+                var @event = new ProductInfoUpdateEvent(productId, ean, sku, name, url, price, description, unitInStock, isOnSale, onSaleFrom, onSaleTo, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch 
@@ -185,11 +187,12 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="IProductCommands.DeleteProduct(Guid)"/>
+        /// Implementation of <see cref="IProductCommands.DeleteProduct(Guid, string)"/>
         /// </summary>
         /// <param name="productId">The product id</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task DeleteProduct(Guid productId)
+        public virtual async Task DeleteProduct(Guid productId, string userId)
         {
             try
             {
@@ -203,7 +206,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new ProductDeletedEvent(productId);
+                var @event = new ProductDeletedEvent(productId, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch
@@ -213,11 +216,12 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="IProductCommands.RestoreProduct(Guid)"/>
+        /// Implementation of <see cref="IProductCommands.RestoreProduct(Guid, string)"/>
         /// </summary>
         /// <param name="productId">The product id</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task RestoreProduct(Guid productId)
+        public virtual async Task RestoreProduct(Guid productId, string userId)
         {
             try
             {
@@ -231,7 +235,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new ProductRestoredEvent(productId);
+                var @event = new ProductRestoredEvent(productId, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch
@@ -241,12 +245,13 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="IProductCommands.SetProductVendor(Guid, Guid)"/>
+        /// Implementation of <see cref="IProductCommands.SetProductVendor(Guid, Guid, string)"/>
         /// </summary>
         /// <param name="productId">The product id</param>
         /// <param name="brandId">The vendor id</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task SetProductVendor(Guid productId, Guid brandId)
+        public virtual async Task SetProductVendor(Guid productId, Guid brandId, string userId)
         {
             try
             {
@@ -267,7 +272,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new ProductVendorSetEvent(productId, brandId);
+                var @event = new ProductVendorSetEvent(productId, brandId, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch
@@ -277,12 +282,13 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="IProductCommands.AddCategoryToProduct(Guid, Guid)"/>
+        /// Implementation of <see cref="IProductCommands.AddCategoryToProduct(Guid, Guid, string)"/>
         /// </summary>
         /// <param name="productId">The product id</param>
         /// <param name="categoryId">The category id</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task AddCategoryToProduct(Guid productId, Guid categoryId)
+        public virtual async Task AddCategoryToProduct(Guid productId, Guid categoryId, string userId)
         {
             try
             {
@@ -303,7 +309,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new ProductCategoryAddedEvent(productId, categoryId, false);
+                var @event = new ProductCategoryAddedEvent(productId, categoryId, false, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch
@@ -313,12 +319,13 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="IProductCommands.AddMainCategoryToProduct(Guid, Guid)"/>
+        /// Implementation of <see cref="IProductCommands.AddMainCategoryToProduct(Guid, Guid, string)"/>
         /// </summary>
         /// <param name="productId">The product id</param>
         /// <param name="categoryId">The category id</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task AddMainCategoryToProduct(Guid productId, Guid categoryId)
+        public virtual async Task AddMainCategoryToProduct(Guid productId, Guid categoryId, string userId)
         {
             try
             {
@@ -339,7 +346,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new ProductCategoryAddedEvent(productId, categoryId, true);
+                var @event = new ProductCategoryAddedEvent(productId, categoryId, true, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch
@@ -349,15 +356,16 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="IProductCommands.AddProductVariant(Guid, string, string, string, Currency)"/>
+        /// Implementation of <see cref="IProductCommands.AddProductVariant(Guid, string, string, string, Currency, string)"/>
         /// </summary>
         /// <param name="productId">The product id</param>
         /// <param name="name">The variant name</param>
         /// <param name="ean">The variant EAN code</param>
         /// <param name="sku">The variant SKU code</param>
         /// <param name="price">The variant price</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task AddProductVariant(Guid productId, string name, string ean, string sku, Currency price)
+        public virtual async Task AddProductVariant(Guid productId, string name, string ean, string sku, Currency price, string userId)
         {
             try
             {
@@ -371,7 +379,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new ProductVariantAddedEvent(productId, name, ean, sku);
+                var @event = new ProductVariantAddedEvent(productId, name, ean, sku, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch
@@ -381,12 +389,13 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="IProductCommands.RemoveProductVariant(Guid, Guid)"/>
+        /// Implementation of <see cref="IProductCommands.RemoveProductVariant(Guid, Guid, string)"/>
         /// </summary>
         /// <param name="productId">The product id</param>
         /// <param name="variantId">The variant id</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task RemoveProductVariant(Guid productId, Guid variantId)
+        public virtual async Task RemoveProductVariant(Guid productId, Guid variantId, string userId)
         {
             try
             {
@@ -405,7 +414,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new ProductVariantRemovedEvent(productId, variantId);
+                var @event = new ProductVariantRemovedEvent(productId, variantId, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch
@@ -415,13 +424,14 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="IProductCommands.AddAttributeToProduct(Guid, Guid, object)"/>
+        /// Implementation of <see cref="IProductCommands.AddAttributeToProduct(Guid, Guid, object, string)"/>
         /// </summary>
         /// <param name="productId">The product id</param>
         /// <param name="attributeId">The attribute id</param>
         /// <param name="value">The attribute value</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task AddAttributeToProduct(Guid productId, Guid attributeId, object value)
+        public virtual async Task AddAttributeToProduct(Guid productId, Guid attributeId, object value, string userId)
         {
             try
             {
@@ -442,7 +452,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new ProductAttributeAddedEvent(productId, attributeId, value);
+                var @event = new ProductAttributeAddedEvent(productId, attributeId, value, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch
@@ -452,12 +462,13 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="IProductCommands.RemoveProductAttribute(Guid, Guid)"/>
+        /// Implementation of <see cref="IProductCommands.RemoveProductAttribute(Guid, Guid, string)"/>
         /// </summary>
         /// <param name="productId">The product id</param>
         /// <param name="attributeId">The attribute id</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task RemoveProductAttribute(Guid productId, Guid attributeId)
+        public virtual async Task RemoveProductAttribute(Guid productId, Guid attributeId, string userId)
         {
             try
             {
@@ -478,7 +489,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new ProductAttributeRemovedEvent(productId, attributeId);
+                var @event = new ProductAttributeRemovedEvent(productId, attributeId, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch
@@ -488,14 +499,15 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="IProductCommands.AddProductTierPrice(Guid, int, int, Currency)"/>
+        /// Implementation of <see cref="IProductCommands.AddProductTierPrice(Guid, int, int, Currency, string)"/>
         /// </summary>
         /// <param name="productId">The product id</param>
         /// <param name="fromQuantity">The start quantity</param>
         /// <param name="toQuantity">The end quantity</param>
         /// <param name="price">The price value</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task AddProductTierPrice(Guid productId, int fromQuantity, int toQuantity, Currency price)
+        public virtual async Task AddProductTierPrice(Guid productId, int fromQuantity, int toQuantity, Currency price, string userId)
         {
             try
             {
@@ -514,7 +526,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new ProductTierPriceAddedEvent(productId, fromQuantity, toQuantity, price);
+                var @event = new ProductTierPriceAddedEvent(productId, fromQuantity, toQuantity, price, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch
@@ -524,15 +536,16 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="IProductCommands.ChangeProductTierPrice(Guid, Guid, int, int, Currency)"/>
+        /// Implementation of <see cref="IProductCommands.ChangeProductTierPrice(Guid, Guid, int, int, Currency, string)"/>
         /// </summary>
         /// <param name="productId">The product id</param>
         /// <param name="tierPriceId">The tier price id</param>
         /// <param name="fromQuantity">The new starting quantity</param>
         /// <param name="toQuantity">The new ending quantity</param>
         /// <param name="price">The new price</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task ChangeProductTierPrice(Guid productId, Guid tierPriceId, int fromQuantity, int toQuantity, Currency price)
+        public virtual async Task ChangeProductTierPrice(Guid productId, Guid tierPriceId, int fromQuantity, int toQuantity, Currency price, string userId)
         {
             try
             {
@@ -551,7 +564,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new ProductTierPriceChangedEvent(productId, tierPriceId, fromQuantity, toQuantity, price);
+                var @event = new ProductTierPriceChangedEvent(productId, tierPriceId, fromQuantity, toQuantity, price, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch
@@ -561,12 +574,13 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="IProductCommands.RemoveTierPriceFromProduct(Guid, Guid)"/>
+        /// Implementation of <see cref="IProductCommands.RemoveTierPriceFromProduct(Guid, Guid, string)"/>
         /// </summary>
         /// <param name="productId">The product id</param>
         /// <param name="tierPriceId">The tier price id</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task RemoveTierPriceFromProduct(Guid productId, Guid tierPriceId)
+        public virtual async Task RemoveTierPriceFromProduct(Guid productId, Guid tierPriceId, string userId)
         {
             try
             {
@@ -585,7 +599,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new ProductTierPriceRemovedEvent(productId, tierPriceId);
+                var @event = new ProductTierPriceRemovedEvent(productId, tierPriceId, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch
@@ -595,14 +609,15 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="IProductCommands.AddProductReview(Guid, string, int, string)"/>
+        /// Implementation of <see cref="IProductCommands.AddProductReview(Guid, string, int, string, string)"/>
         /// </summary>
         /// <param name="productId">The product id</param>
         /// <param name="name">The name of the user who leave the review</param>
         /// <param name="rating">The rate given</param>
         /// <param name="comment">The comment given</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task AddProductReview(Guid productId, string name, int rating, string comment)
+        public virtual async Task AddProductReview(Guid productId, string name, int rating, string comment, string userId)
         {
             try
             {
@@ -616,7 +631,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new ProductReviewAddedEvent(productId, name, rating, comment);
+                var @event = new ProductReviewAddedEvent(productId, name, rating, comment, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch
@@ -626,12 +641,13 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="IProductCommands.ApproveProductReview(Guid, Guid)"/>
+        /// Implementation of <see cref="IProductCommands.ApproveProductReview(Guid, Guid, string)"/>
         /// </summary>
         /// <param name="productId">The product id</param>
         /// <param name="reviewId">The review id</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task ApproveProductReview(Guid productId, Guid reviewId)
+        public virtual async Task ApproveProductReview(Guid productId, Guid reviewId, string userId)
         {
             try
             {
@@ -650,7 +666,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new ProductReviewApprovedEvent(productId, reviewId);
+                var @event = new ProductReviewApprovedEvent(productId, reviewId, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch
@@ -660,12 +676,13 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="IProductCommands.RemoveProductReview(Guid, Guid)"/>
+        /// Implementation of <see cref="IProductCommands.RemoveProductReview(Guid, Guid, string)"/>
         /// </summary>
         /// <param name="productId">The product id</param>
         /// <param name="reviewId">The review id</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task RemoveProductReview(Guid productId, Guid reviewId)
+        public virtual async Task RemoveProductReview(Guid productId, Guid reviewId, string userId)
         {
             try
             {
@@ -685,7 +702,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new ProductReviewRemovedEvent(productId, reviewId);
+                var @event = new ProductReviewRemovedEvent(productId, reviewId, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch
@@ -695,7 +712,7 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="IProductCommands.AddProductImage(Guid, string, string, string, bool, DateTime)"/>
+        /// Implementation of <see cref="IProductCommands.AddProductImage(Guid, string, string, string, bool, DateTime, string)"/>
         /// </summary>
         /// <param name="productId">The product id</param>
         /// <param name="path">The file path</param>
@@ -703,8 +720,9 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="originalName">The file original name</param>
         /// <param name="isMain">Whether is the main image for the product</param>
         /// <param name="uploadedOn">The date and time of when the image is uploaded</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task AddProductImage(Guid productId, string path, string name, string originalName, bool isMain, DateTime uploadedOn)
+        public virtual async Task AddProductImage(Guid productId, string path, string name, string originalName, bool isMain, DateTime uploadedOn, string userId)
         {
             try
             {
@@ -718,7 +736,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new ProductImageAddedEvent(productId, name, originalName);
+                var @event = new ProductImageAddedEvent(productId, name, originalName, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch
@@ -728,12 +746,13 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="IProductCommands.RemoveProductImage(Guid, Guid)"/>
+        /// Implementation of <see cref="IProductCommands.RemoveProductImage(Guid, Guid, string)"/>
         /// </summary>
         /// <param name="productId">The product id</param>
         /// <param name="imageId">The image id</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task RemoveProductImage(Guid productId, Guid imageId)
+        public virtual async Task RemoveProductImage(Guid productId, Guid imageId, string userId)
         {
             try
             {
@@ -752,7 +771,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new ProductImageRemovedEvent(productId, imageId);
+                var @event = new ProductImageRemovedEvent(productId, imageId, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch
@@ -762,12 +781,13 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="IProductCommands.SetProductSeo(Guid, SeoData)"/>
+        /// Implementation of <see cref="IProductCommands.SetProductSeo(Guid, SeoData, string)"/>
         /// </summary>
         /// <param name="productId">The product id</param>
         /// <param name="seo">The SEO information</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task SetProductSeo(Guid productId, SeoData seo)
+        public virtual async Task SetProductSeo(Guid productId, SeoData seo, string userId)
         {
             try
             {
@@ -788,7 +808,7 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="IProductCommands.ChangeProductVariant(Guid, Guid, string, string, string, Currency)"/>
+        /// Implementation of <see cref="IProductCommands.ChangeProductVariant(Guid, Guid, string, string, string, Currency, string)"/>
         /// </summary>
         /// <param name="productId">The product id</param>
         /// <param name="variantId">The variant id</param>
@@ -796,8 +816,9 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="ean">The variant EAN code</param>
         /// <param name="sku">The variant SKU code</param>
         /// <param name="price">The variant price</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public async Task ChangeProductVariant(Guid productId, Guid variantId, string name, string ean, string sku, Currency price)
+        public async Task ChangeProductVariant(Guid productId, Guid variantId, string name, string ean, string sku, Currency price, string userId)
         {
             if (productId == Guid.Empty)
             {
@@ -812,19 +833,20 @@ namespace Wilcommerce.Catalog.Commands
             var product = await Repository.GetByKeyAsync<Product>(productId);
             product.ChangeVariant(variantId, name, ean, sku, price);
 
-            var @event = new ProductVariantChangedEvent(productId, variantId, name, ean, sku);
+            var @event = new ProductVariantChangedEvent(productId, variantId, name, ean, sku, userId);
             EventBus.RaiseEvent(@event);
 
             await Repository.SaveChangesAsync();
         }
 
         /// <summary>
-        /// Implementation of <see cref="IProductCommands.ChangeProductMainCategory(Guid, Guid)"/>
+        /// Implementation of <see cref="IProductCommands.ChangeProductMainCategory(Guid, Guid, string)"/>
         /// </summary>
-        /// <param name="productId"></param>
-        /// <param name="categoryId"></param>
+        /// <param name="productId">The product id</param>
+        /// <param name="categoryId">The category id</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public async Task ChangeProductMainCategory(Guid productId, Guid categoryId)
+        public async Task ChangeProductMainCategory(Guid productId, Guid categoryId, string userId)
         {
             try
             {
@@ -849,7 +871,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 product.AddMainCategory(category);
 
-                var @event = new ProductMainCategoryChangedEvent(productId, categoryId);
+                var @event = new ProductMainCategoryChangedEvent(productId, categoryId, userId);
                 EventBus.RaiseEvent(@event);
 
                 await Repository.SaveChangesAsync();
@@ -861,12 +883,13 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="IProductCommands.RemoveProductCategory(Guid, Guid)"/>
+        /// Implementation of <see cref="IProductCommands.RemoveProductCategory(Guid, Guid, string)"/>
         /// </summary>
-        /// <param name="productId"></param>
-        /// <param name="categoryId"></param>
+        /// <param name="productId">The product id</param>
+        /// <param name="categoryId">The category id</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public async Task RemoveProductCategory(Guid productId, Guid categoryId)
+        public async Task RemoveProductCategory(Guid productId, Guid categoryId, string userId)
         {
             try
             {
@@ -885,7 +908,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 product.RemoveCategory(category);
 
-                var @event = new ProductCategoryRemovedEvent(productId, categoryId);
+                var @event = new ProductCategoryRemovedEvent(productId, categoryId, userId);
                 EventBus.RaiseEvent(@event);
 
                 await Repository.SaveChangesAsync();

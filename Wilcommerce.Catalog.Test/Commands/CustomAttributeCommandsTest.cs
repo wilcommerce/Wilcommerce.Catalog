@@ -11,6 +11,8 @@ namespace Wilcommerce.Catalog.Test.Commands
 {
     public class CustomAttributeCommandsTest
     {
+        private readonly string userId = Guid.NewGuid().ToString();
+
         #region Ctor tests
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_If_Repository_Is_Null()
@@ -52,7 +54,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             IEnumerable<object> values = new[] { "XS", "S", "M", "L", "XL" };
 
             var commands = new CustomAttributeCommands(repository, eventBus);
-            var attributeId = await commands.CreateNewCustomAttribute(name, type, description, unitOfMeasure, values);
+            var attributeId = await commands.CreateNewCustomAttribute(name, type, description, unitOfMeasure, values, userId);
 
             var createdAttribute = fakeCustomAttributeList.FirstOrDefault(a => a.Id == attributeId);
 
@@ -78,7 +80,7 @@ namespace Wilcommerce.Catalog.Test.Commands
 
             var commands = new CustomAttributeCommands(repository, eventBus);
 
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.UpdateCustomAttribute(attributeId, name, type, description, unitOfMeasure, values));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.UpdateCustomAttribute(attributeId, name, type, description, unitOfMeasure, values, userId));
             Assert.Equal(nameof(attributeId), ex.ParamName);
         }
 
@@ -101,7 +103,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             IEnumerable<object> values = new[] { "XS", "S", "M", "L", "XL" };
 
             var commands = new CustomAttributeCommands(repository, eventBus);
-            await commands.UpdateCustomAttribute(attributeId, name, type, description, unitOfMeasure, values);
+            await commands.UpdateCustomAttribute(attributeId, name, type, description, unitOfMeasure, values, userId);
 
             Assert.Equal(name, attribute.Name);
             Assert.Equal(type, attribute.DataType);
@@ -120,7 +122,7 @@ namespace Wilcommerce.Catalog.Test.Commands
 
             var commands = new CustomAttributeCommands(repository, eventBus);
 
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.DeleteCustomAttribute(attributeId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.DeleteCustomAttribute(attributeId, userId));
             Assert.Equal(nameof(attributeId), ex.ParamName);
         }
 
@@ -138,7 +140,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid attributeId = attribute.Id;
 
             var commands = new CustomAttributeCommands(repository, eventBus);
-            await commands.DeleteCustomAttribute(attributeId);
+            await commands.DeleteCustomAttribute(attributeId, userId);
 
             Assert.True(attribute.Deleted);
         }
@@ -153,7 +155,7 @@ namespace Wilcommerce.Catalog.Test.Commands
 
             var commands = new CustomAttributeCommands(repository, eventBus);
 
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RestoreCustomAttribute(attributeId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RestoreCustomAttribute(attributeId, userId));
             Assert.Equal(nameof(attributeId), ex.ParamName);
         }
 
@@ -173,7 +175,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid attributeId = attribute.Id;
 
             var commands = new CustomAttributeCommands(repository, eventBus);
-            await commands.RestoreCustomAttribute(attributeId);
+            await commands.RestoreCustomAttribute(attributeId, userId);
 
             Assert.False(attribute.Deleted);
         }

@@ -17,8 +17,9 @@ namespace Wilcommerce.Catalog.Events.Brand
         /// Construct the event
         /// </summary>
         /// <param name="brandId">The brand id</param>
-        public BrandRestoredEvent(Guid brandId)
-            : base(brandId, typeof(Models.Brand))
+        /// <param name="userId">The user's id</param>
+        public BrandRestoredEvent(Guid brandId, string userId)
+            : base(brandId, typeof(Models.Brand), userId)
         {
             BrandId = brandId;
         }

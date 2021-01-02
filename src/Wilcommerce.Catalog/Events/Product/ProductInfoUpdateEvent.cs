@@ -78,8 +78,9 @@ namespace Wilcommerce.Catalog.Events.Product
         /// <param name="isOnSale">Whether the product is on sale</param>
         /// <param name="onSaleFrom">The date and time from when the product is on sale</param>
         /// <param name="onSaleTo">The date and time till when the product is on sale</param>
-        public ProductInfoUpdateEvent(Guid productId, string eanCode, string sku, string name, string url, Currency price, string description, int unitInStock, bool isOnSale, DateTime? onSaleFrom, DateTime? onSaleTo)
-            : base(productId, typeof(Models.Product))
+        /// <param name="userId">The user's id</param>
+        public ProductInfoUpdateEvent(Guid productId, string eanCode, string sku, string name, string url, Currency price, string description, int unitInStock, bool isOnSale, DateTime? onSaleFrom, DateTime? onSaleTo, string userId)
+            : base(productId, typeof(Models.Product), userId)
         {
             ProductId = productId;
             EanCode = eanCode;

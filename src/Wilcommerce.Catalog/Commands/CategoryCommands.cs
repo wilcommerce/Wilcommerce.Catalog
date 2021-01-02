@@ -35,7 +35,7 @@ namespace Wilcommerce.Catalog.Commands
 
         #region Category Commands
         /// <summary>
-        /// Implementation of <see cref="ICategoryCommands.CreateNewCategory(string, string, string, string, bool, DateTime?, DateTime?)"/>
+        /// Implementation of <see cref="ICategoryCommands.CreateNewCategory(string, string, string, string, bool, DateTime?, DateTime?, string)"/>
         /// </summary>
         /// <param name="code">The category code</param>
         /// <param name="name">The category name</param>
@@ -44,8 +44,9 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="isVisible">Whether the category is visible</param>
         /// <param name="visibleFrom">The date and time of when the category starts to be visible</param>
         /// <param name="visibleTo">The date and time till when the category is visible</param>
+        /// <param name="userId">The user's id</param>
         /// <returns>The category id</returns>
-        public virtual async Task<Guid> CreateNewCategory(string code, string name, string url, string description, bool isVisible, DateTime? visibleFrom, DateTime? visibleTo)
+        public virtual async Task<Guid> CreateNewCategory(string code, string name, string url, string description, bool isVisible, DateTime? visibleFrom, DateTime? visibleTo, string userId)
         {
             try
             {
@@ -70,7 +71,7 @@ namespace Wilcommerce.Catalog.Commands
                 Repository.Add(category);
                 await Repository.SaveChangesAsync();
 
-                var @event = new CategoryCreatedEvent(category.Id, name, code);
+                var @event = new CategoryCreatedEvent(category.Id, name, code, userId);
                 EventBus.RaiseEvent(@event);
 
                 return category.Id;
@@ -82,7 +83,7 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="ICategoryCommands.UpdateCategoryInfo(Guid, string, string, string, string, bool, DateTime?, DateTime?)"/>
+        /// Implementation of <see cref="ICategoryCommands.UpdateCategoryInfo(Guid, string, string, string, string, bool, DateTime?, DateTime?, string)"/>
         /// </summary>
         /// <param name="categoryId">The category id</param>
         /// <param name="code">The category code</param>
@@ -92,8 +93,9 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="isVisible">Whether the category is visible</param>
         /// <param name="visibleFrom">The date and time from when the category is visible</param>
         /// <param name="visibleTo">The date and time till when the category is visible</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task UpdateCategoryInfo(Guid categoryId, string code, string name, string url, string description, bool isVisible, DateTime? visibleFrom, DateTime? visibleTo)
+        public virtual async Task UpdateCategoryInfo(Guid categoryId, string code, string name, string url, string description, bool isVisible, DateTime? visibleFrom, DateTime? visibleTo, string userId)
         {
             try
             {
@@ -144,7 +146,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new CategoryInfoUpdatedEvent(categoryId, code, name, url, description, isVisible, visibleFrom, visibleTo);
+                var @event = new CategoryInfoUpdatedEvent(categoryId, code, name, url, description, isVisible, visibleFrom, visibleTo, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch
@@ -154,12 +156,13 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="ICategoryCommands.AddCategoryChild(Guid, Guid)"/>
+        /// Implementation of <see cref="ICategoryCommands.AddCategoryChild(Guid, Guid, string)"/>
         /// </summary>
         /// <param name="categoryId">The category id</param>
         /// <param name="childId">The child id</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task AddCategoryChild(Guid categoryId, Guid childId)
+        public virtual async Task AddCategoryChild(Guid categoryId, Guid childId, string userId)
         {
             try
             {
@@ -179,7 +182,7 @@ namespace Wilcommerce.Catalog.Commands
                 category.AddChild(child);
                 await Repository.SaveChangesAsync();
 
-                var @event = new CategoryChildAddedEvent(categoryId, childId);
+                var @event = new CategoryChildAddedEvent(categoryId, childId, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch
@@ -189,12 +192,13 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="ICategoryCommands.SetParentForCategory(Guid, Guid)"/>
+        /// Implementation of <see cref="ICategoryCommands.SetParentForCategory(Guid, Guid, string)"/>
         /// </summary>
         /// <param name="categoryId">The category id</param>
         /// <param name="parentId">The parent category id</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task SetParentForCategory(Guid categoryId, Guid parentId)
+        public virtual async Task SetParentForCategory(Guid categoryId, Guid parentId, string userId)
         {
             try
             {
@@ -214,7 +218,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new CategoryChildAddedEvent(parentId, categoryId);
+                var @event = new CategoryChildAddedEvent(parentId, categoryId, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch
@@ -224,11 +228,12 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="ICategoryCommands.DeleteCategory(Guid)"/>
+        /// Implementation of <see cref="ICategoryCommands.DeleteCategory(Guid, string)"/>
         /// </summary>
         /// <param name="categoryId">The category id</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task DeleteCategory(Guid categoryId)
+        public virtual async Task DeleteCategory(Guid categoryId, string userId)
         {
             try
             {
@@ -242,7 +247,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new CategoryDeletedEvent(categoryId);
+                var @event = new CategoryDeletedEvent(categoryId, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch
@@ -252,11 +257,12 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="ICategoryCommands.RestoreCategory(Guid)"/>
+        /// Implementation of <see cref="ICategoryCommands.RestoreCategory(Guid, string)"/>
         /// </summary>
         /// <param name="categoryId">The category id</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task RestoreCategory(Guid categoryId)
+        public virtual async Task RestoreCategory(Guid categoryId, string userId)
         {
             try
             {
@@ -270,7 +276,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new CategoryRestoredEvent(categoryId);
+                var @event = new CategoryRestoredEvent(categoryId, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch
@@ -280,12 +286,13 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="ICategoryCommands.RemoveChildForCategory(Guid, Guid)"/>
+        /// Implementation of <see cref="ICategoryCommands.RemoveChildForCategory(Guid, Guid, string)"/>
         /// </summary>
         /// <param name="categoryId">The category id</param>
         /// <param name="childId">The child to remove</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task RemoveChildForCategory(Guid categoryId, Guid childId)
+        public virtual async Task RemoveChildForCategory(Guid categoryId, Guid childId, string userId)
         {
             try
             {
@@ -307,7 +314,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new CategoryChildRemovedEvent(categoryId, childId);
+                var @event = new CategoryChildRemovedEvent(categoryId, childId, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch
@@ -317,12 +324,13 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="ICategoryCommands.RemoveParentForCategory(Guid, Guid)"/>
+        /// Implementation of <see cref="ICategoryCommands.RemoveParentForCategory(Guid, Guid, string)"/>
         /// </summary>
         /// <param name="categoryId">The category id</param>
         /// <param name="parentId">The category parent id</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task RemoveParentForCategory(Guid categoryId, Guid parentId)
+        public virtual async Task RemoveParentForCategory(Guid categoryId, Guid parentId, string userId)
         {
             try
             {
@@ -339,7 +347,7 @@ namespace Wilcommerce.Catalog.Commands
                     category.RemoveParent(parent);
                     await Repository.SaveChangesAsync();
 
-                    var @event = new CategoryChildRemovedEvent(parentId, categoryId);
+                    var @event = new CategoryChildRemovedEvent(parentId, categoryId, userId);
                     EventBus.RaiseEvent(@event);
                 }
             }
@@ -350,12 +358,13 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="ICategoryCommands.SetCategorySeoData(Guid, SeoData)"/>
+        /// Implementation of <see cref="ICategoryCommands.SetCategorySeoData(Guid, SeoData, string)"/>
         /// </summary>
         /// <param name="categoryId">The category id</param>
         /// <param name="seo">The seo information</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task SetCategorySeoData(Guid categoryId, SeoData seo)
+        public virtual async Task SetCategorySeoData(Guid categoryId, SeoData seo, string userId)
         {
             try
             {

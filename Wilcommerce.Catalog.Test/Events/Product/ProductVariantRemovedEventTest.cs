@@ -11,14 +11,16 @@ namespace Wilcommerce.Catalog.Test.Events.Product
         {
             Guid productId = Guid.NewGuid();
             Guid variantId = Guid.NewGuid();
+            string userId = Guid.NewGuid().ToString();
 
-            var @event = new ProductVariantRemovedEvent(productId, variantId);
+            var @event = new ProductVariantRemovedEvent(productId, variantId, userId);
 
             Assert.Equal(productId, @event.ProductId);
             Assert.Equal(variantId, @event.VariantId);
 
             Assert.Equal(productId, @event.AggregateId);
             Assert.Equal(typeof(Catalog.Models.Product), @event.AggregateType);
+            Assert.Equal(userId, @event.UserId);
         }
     }
 }

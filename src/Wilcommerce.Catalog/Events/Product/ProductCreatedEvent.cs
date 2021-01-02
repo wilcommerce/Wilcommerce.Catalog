@@ -35,8 +35,9 @@ namespace Wilcommerce.Catalog.Events.Product
         /// <param name="ean">The EAN code</param>
         /// <param name="sku">The SKU code</param>
         /// <param name="name">The product's name</param>
-        public ProductCreatedEvent(Guid productId, string ean, string sku, string name)
-            : base(productId, typeof(Models.Product))
+        /// <param name="userId">The user's id</param>
+        public ProductCreatedEvent(Guid productId, string ean, string sku, string name, string userId)
+            : base(productId, typeof(Models.Product), userId)
         {
             ProductId = productId;
             EanCode = ean;

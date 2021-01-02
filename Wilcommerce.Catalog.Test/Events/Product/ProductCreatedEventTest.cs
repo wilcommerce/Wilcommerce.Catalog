@@ -13,8 +13,9 @@ namespace Wilcommerce.Catalog.Test.Events.Product
             string ean = "ean";
             string sku = "sku";
             string name = "name";
+            string userId = Guid.NewGuid().ToString();
 
-            var @event = new ProductCreatedEvent(productId, ean, sku, name);
+            var @event = new ProductCreatedEvent(productId, ean, sku, name, userId);
 
             Assert.Equal(productId, @event.ProductId);
             Assert.Equal(ean, @event.EanCode);
@@ -23,6 +24,7 @@ namespace Wilcommerce.Catalog.Test.Events.Product
 
             Assert.Equal(productId, @event.AggregateId);
             Assert.Equal(typeof(Catalog.Models.Product), @event.AggregateType);
+            Assert.Equal(userId, @event.UserId);
         }
     }
 }

@@ -29,8 +29,9 @@ namespace Wilcommerce.Catalog.Events.CustomAttribute
         /// <param name="attributeId">The attribute id</param>
         /// <param name="name">The attribute name</param>
         /// <param name="type">The attribute type</param>
-        public CustomAttributeCreatedEvent(Guid attributeId, string name, string type)
-            : base(attributeId, typeof(Models.CustomAttribute))
+        /// <param name="userId">The user's id</param>
+        public CustomAttributeCreatedEvent(Guid attributeId, string name, string type, string userId)
+            : base(attributeId, typeof(Models.CustomAttribute), userId)
         {
             AttributeId = attributeId;
             Name = name;

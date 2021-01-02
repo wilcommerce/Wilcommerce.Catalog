@@ -23,8 +23,9 @@ namespace Wilcommerce.Catalog.Events.Category
         /// </summary>
         /// <param name="categoryId">The category id</param>
         /// <param name="childId">The child id</param>
-        public CategoryChildRemovedEvent(Guid categoryId, Guid childId)
-            : base(categoryId, typeof(Models.Category))
+        /// <param name="userId">The user's id</param>
+        public CategoryChildRemovedEvent(Guid categoryId, Guid childId, string userId)
+            : base(categoryId, typeof(Models.Category), userId)
         {
             CategoryId = categoryId;
             ChildId = childId;

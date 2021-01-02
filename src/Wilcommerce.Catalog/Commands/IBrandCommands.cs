@@ -17,8 +17,9 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="url">The brand's unique url</param>
         /// <param name="description">The brand's description</param>
         /// <param name="logo">The brand's logo</param>
+        /// <param name="userId">The user's id</param>
         /// <returns>The brand id</returns>
-        Task<Guid> CreateNewBrand(string name, string url, string description, Image logo);
+        Task<Guid> CreateNewBrand(string name, string url, string description, Image logo, string userId);
 
         /// <summary>
         /// Updates the brand's info
@@ -28,30 +29,34 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="url">The brand's new url</param>
         /// <param name="description">The brand's new description</param>
         /// <param name="logo">The brand's new logo</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        Task UpdateBrandInfo(Guid brandId, string name, string url, string description, Image logo);
+        Task UpdateBrandInfo(Guid brandId, string name, string url, string description, Image logo, string userId);
 
         /// <summary>
         /// Set the brand seo data
         /// </summary>
         /// <param name="brandId">The brand's id</param>
         /// <param name="seo">The seo data</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        Task SetBrandSeoData(Guid brandId, SeoData seo);
+        Task SetBrandSeoData(Guid brandId, SeoData seo, string userId);
 
         /// <summary>
         /// Delete the brand
         /// </summary>
         /// <param name="brandId">The brand's id</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        Task DeleteBrand(Guid brandId);
+        Task DeleteBrand(Guid brandId, string userId);
 
         /// <summary>
         /// Restore the brand
         /// </summary>
         /// <param name="brandId">The brand's id</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        Task RestoreBrand(Guid brandId);
+        Task RestoreBrand(Guid brandId, string userId);
         #endregion
     }
 }

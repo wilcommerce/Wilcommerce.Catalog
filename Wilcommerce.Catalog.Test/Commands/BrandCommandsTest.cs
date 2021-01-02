@@ -12,6 +12,8 @@ namespace Wilcommerce.Catalog.Test.Commands
 {
     public class BrandCommandsTest
     {
+        private readonly string userId = Guid.NewGuid().ToString();
+
         #region Ctor tests
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_If_Repository_Is_Null()
@@ -52,7 +54,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Image logo = new Image { MimeType = "image/jpeg", Data = new byte[0] };
 
             var commands = new BrandCommands(repository, eventBus);
-            var brandId = await commands.CreateNewBrand(name, url, description, logo);
+            var brandId = await commands.CreateNewBrand(name, url, description, logo, userId);
 
             var createdBrand = fakeBrandList.FirstOrDefault(b => b.Id == brandId);
             
@@ -76,7 +78,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Image logo = new Image { MimeType = "image/jpeg", Data = new byte[0] };
 
             var commands = new BrandCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.UpdateBrandInfo(brandId, name, url, description, logo));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.UpdateBrandInfo(brandId, name, url, description, logo, userId));
 
             Assert.Equal(nameof(brandId), ex.ParamName);
         }
@@ -100,7 +102,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Image logo = new Image { MimeType = "image/jpeg", Data = new byte[0] };
 
             var commands = new BrandCommands(repository, eventBus);
-            await commands.UpdateBrandInfo(brandId, name, url, description, logo);
+            await commands.UpdateBrandInfo(brandId, name, url, description, logo, userId);
 
             Assert.Equal(name, brand.Name);
             Assert.Equal(url, brand.Url);
@@ -118,7 +120,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             SeoData seo = new SeoData { Title = "title", Description = "description" };
 
             var commands = new BrandCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.SetBrandSeoData(brandId, seo));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.SetBrandSeoData(brandId, seo, userId));
 
             Assert.Equal(nameof(brandId), ex.ParamName);
         }
@@ -139,7 +141,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             SeoData seo = new SeoData { Title = "title", Description = "description" };
 
             var commands = new BrandCommands(repository, eventBus);
-            await commands.SetBrandSeoData(brandId, seo);
+            await commands.SetBrandSeoData(brandId, seo, userId);
 
             Assert.NotNull(brand.Seo);
             Assert.Equal(seo.Title, brand.Seo.Title);
@@ -155,7 +157,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid brandId = Guid.Empty;
 
             var commands = new BrandCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.DeleteBrand(brandId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.DeleteBrand(brandId, userId));
 
             Assert.Equal(nameof(brandId), ex.ParamName);
         }
@@ -175,7 +177,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid brandId = brand.Id;
 
             var commands = new BrandCommands(repository, eventBus);
-            await commands.DeleteBrand(brandId);
+            await commands.DeleteBrand(brandId, userId);
 
             Assert.True(brand.Deleted);
         }
@@ -189,7 +191,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid brandId = Guid.Empty;
 
             var commands = new BrandCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RestoreBrand(brandId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RestoreBrand(brandId, userId));
 
             Assert.Equal(nameof(brandId), ex.ParamName);
         }
@@ -210,7 +212,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid brandId = brand.Id;
 
             var commands = new BrandCommands(repository, eventBus);
-            await commands.RestoreBrand(brandId);
+            await commands.RestoreBrand(brandId, userId);
 
             Assert.False(brand.Deleted);
         }

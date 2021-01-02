@@ -15,8 +15,9 @@ namespace Wilcommerce.Catalog.Test.Events.Brand
             string url = "brand";
             string description = "description";
             Image logo = new Image { MimeType = "image/jpg", Data = new byte[0] };
+            string userId = Guid.NewGuid().ToString();
 
-            var @event = new BrandInfoUpdatedEvent(brandId, name, url, description, logo);
+            var @event = new BrandInfoUpdatedEvent(brandId, name, url, description, logo, userId);
 
             Assert.Equal(brandId, @event.BrandId);
             Assert.Equal(name, @event.Name);
@@ -26,6 +27,7 @@ namespace Wilcommerce.Catalog.Test.Events.Brand
 
             Assert.Equal(brandId, @event.AggregateId);
             Assert.Equal(typeof(Catalog.Models.Brand), @event.AggregateType);
+            Assert.Equal(userId, @event.UserId);
         }
     }
 }

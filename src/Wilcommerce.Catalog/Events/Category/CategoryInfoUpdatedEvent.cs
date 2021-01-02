@@ -59,8 +59,9 @@ namespace Wilcommerce.Catalog.Events.Category
         /// <param name="isVisible">Whether the category is visible</param>
         /// <param name="visibleFrom">The date and time from when the category is visible</param>
         /// <param name="visibleTo">The date and time till when the category is visible</param>
-        public CategoryInfoUpdatedEvent(Guid categoryId, string code, string name, string url, string description, bool isVisible, DateTime? visibleFrom, DateTime? visibleTo)
-            : base(categoryId, typeof(Models.Category))
+        /// <param name="userId">The user's id</param>
+        public CategoryInfoUpdatedEvent(Guid categoryId, string code, string name, string url, string description, bool isVisible, DateTime? visibleFrom, DateTime? visibleTo, string userId)
+            : base(categoryId, typeof(Models.Category), userId)
         {
             CategoryId = categoryId;
             Code = code;

@@ -12,8 +12,9 @@ namespace Wilcommerce.Catalog.Test.Events.Product
             Guid productId = Guid.NewGuid();
             Guid attributeId = Guid.NewGuid();
             object value = "123";
+            string userId = Guid.NewGuid().ToString();
 
-            var @event = new ProductAttributeAddedEvent(productId, attributeId, value);
+            var @event = new ProductAttributeAddedEvent(productId, attributeId, value, userId);
 
             Assert.Equal(productId, @event.ProductId);
             Assert.Equal(attributeId, @event.AttributeId);
@@ -21,6 +22,7 @@ namespace Wilcommerce.Catalog.Test.Events.Product
 
             Assert.Equal(productId, @event.AggregateId);
             Assert.Equal(typeof(Catalog.Models.Product), @event.AggregateType);
+            Assert.Equal(userId, @event.UserId);
         }
     }
 }

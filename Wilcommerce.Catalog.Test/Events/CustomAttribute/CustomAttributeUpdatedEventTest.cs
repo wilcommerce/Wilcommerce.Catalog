@@ -16,8 +16,9 @@ namespace Wilcommerce.Catalog.Test.Events.CustomAttribute
             string description = "description";
             string unitOfMeasure = "unit";
             IEnumerable<object> values = new[] { "v1", "v2" };
+            string userId = Guid.NewGuid().ToString();
 
-            var @event = new CustomAttributeUpdatedEvent(attributeId, name, type, description, unitOfMeasure, values);
+            var @event = new CustomAttributeUpdatedEvent(attributeId, name, type, description, unitOfMeasure, values, userId);
 
             Assert.Equal(attributeId, @event.AttributeId);
             Assert.Equal(name, @event.Name);
@@ -28,6 +29,7 @@ namespace Wilcommerce.Catalog.Test.Events.CustomAttribute
 
             Assert.Equal(attributeId, @event.AggregateId);
             Assert.Equal(typeof(Catalog.Models.CustomAttribute), @event.AggregateType);
+            Assert.Equal(userId, @event.UserId);
         }
     }
 }

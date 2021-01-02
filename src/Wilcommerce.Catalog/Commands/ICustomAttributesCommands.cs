@@ -18,8 +18,9 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="description">The custom attribute's description</param>
         /// <param name="unitOfMeasure">The unit of measure of the custom attribute</param>
         /// <param name="values">The available values for the custom attribute</param>
+        /// <param name="userId">The user's id</param>
         /// <returns>The custom attribute id</returns>
-        Task<Guid> CreateNewCustomAttribute(string name, string type, string description, string unitOfMeasure, IEnumerable<object> values);
+        Task<Guid> CreateNewCustomAttribute(string name, string type, string description, string unitOfMeasure, IEnumerable<object> values, string userId);
 
         /// <summary>
         /// Update the custom attribute's info
@@ -30,22 +31,25 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="description">The custom attribute description</param>
         /// <param name="unitOfMeasure">The custom attribute unit of measure</param>
         /// <param name="values">The custom attribute available values</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        Task UpdateCustomAttribute(Guid attributeId, string name, string type, string description, string unitOfMeasure, IEnumerable<object> values);
+        Task UpdateCustomAttribute(Guid attributeId, string name, string type, string description, string unitOfMeasure, IEnumerable<object> values, string userId);
 
         /// <summary>
         /// Delete the custom attribute
         /// </summary>
         /// <param name="attributeId">The custom attribute id</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        Task DeleteCustomAttribute(Guid attributeId);
+        Task DeleteCustomAttribute(Guid attributeId, string userId);
 
         /// <summary>
         /// Restore the custom attribute
         /// </summary>
         /// <param name="attributeId">The custom attribute id</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        Task RestoreCustomAttribute(Guid attributeId);
+        Task RestoreCustomAttribute(Guid attributeId, string userId);
         #endregion
     }
 }

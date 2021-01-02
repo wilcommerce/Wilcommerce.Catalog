@@ -23,8 +23,9 @@ namespace Wilcommerce.Catalog.Events.Product
         /// </summary>
         /// <param name="productId">The product id</param>
         /// <param name="attributeId">The attribute id</param>
-        public ProductAttributeRemovedEvent(Guid productId, Guid attributeId)
-            : base(productId, typeof(Models.Product))
+        /// <param name="userId">The user's id</param>
+        public ProductAttributeRemovedEvent(Guid productId, Guid attributeId, string userId)
+            : base(productId, typeof(Models.Product), userId)
         {
             ProductId = productId;
             AttributeId = attributeId;

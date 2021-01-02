@@ -41,8 +41,9 @@ namespace Wilcommerce.Catalog.Events.Product
         /// <param name="name">The variant name</param>
         /// <param name="ean">The variant EAN code</param>
         /// <param name="sku">The variant SKU</param>
-        public ProductVariantChangedEvent(Guid productId, Guid variantId, string name, string ean, string sku)
-            : base(productId, typeof(Models.Product))
+        /// <param name="userId">The user's id</param>
+        public ProductVariantChangedEvent(Guid productId, Guid variantId, string name, string ean, string sku, string userId)
+            : base(productId, typeof(Models.Product), userId)
         {
             ProductId = productId;
             VariantId = variantId;

@@ -17,8 +17,9 @@ namespace Wilcommerce.Catalog.Test.Events.Category
             bool isVisible = true;
             DateTime? visibleFrom = DateTime.Today;
             DateTime? visibleTo = DateTime.Today.AddDays(2);
+            string userId = Guid.NewGuid().ToString();
 
-            var @event = new CategoryInfoUpdatedEvent(categoryId, code, name, url, description, isVisible, visibleFrom, visibleTo);
+            var @event = new CategoryInfoUpdatedEvent(categoryId, code, name, url, description, isVisible, visibleFrom, visibleTo, userId);
 
             Assert.Equal(categoryId, @event.CategoryId);
             Assert.Equal(code, @event.Code);
@@ -31,6 +32,7 @@ namespace Wilcommerce.Catalog.Test.Events.Category
 
             Assert.Equal(categoryId, @event.AggregateId);
             Assert.Equal(typeof(Catalog.Models.Category), @event.AggregateType);
+            Assert.Equal(userId, @event.UserId);
         }
     }
 }

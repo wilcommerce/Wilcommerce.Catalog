@@ -13,8 +13,9 @@ namespace Wilcommerce.Catalog.Test.Events.Product
             string name = "variant";
             string ean = "ean";
             string sku = "sku";
+            string userId = Guid.NewGuid().ToString();
 
-            var @event = new ProductVariantAddedEvent(productId, name, ean, sku);
+            var @event = new ProductVariantAddedEvent(productId, name, ean, sku, userId);
 
             Assert.Equal(productId, @event.ProductId);
             Assert.Equal(name, @event.VariantName);
@@ -23,6 +24,7 @@ namespace Wilcommerce.Catalog.Test.Events.Product
 
             Assert.Equal(productId, @event.AggregateId);
             Assert.Equal(typeof(Catalog.Models.Product), @event.AggregateType);
+            Assert.Equal(userId, @event.UserId);
         }
     }
 }

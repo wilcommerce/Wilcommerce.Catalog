@@ -23,8 +23,9 @@ namespace Wilcommerce.Catalog.Events.Product
         /// </summary>
         /// <param name="productId">The product id</param>
         /// <param name="tierPriceId">The tier price id</param>
-        public ProductTierPriceRemovedEvent(Guid productId, Guid tierPriceId)
-            : base(productId, typeof(Models.Product))
+        /// <param name="userId">The user's id</param>
+        public ProductTierPriceRemovedEvent(Guid productId, Guid tierPriceId, string userId)
+            : base(productId, typeof(Models.Product), userId)
         {
             ProductId = productId;
             TierPriceId = tierPriceId;

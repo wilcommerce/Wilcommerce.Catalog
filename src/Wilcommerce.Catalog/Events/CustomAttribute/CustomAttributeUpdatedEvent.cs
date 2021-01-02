@@ -48,8 +48,9 @@ namespace Wilcommerce.Catalog.Events.CustomAttribute
         /// <param name="description">The attribute description</param>
         /// <param name="unitOfMeasure">The attribute unit of measure</param>
         /// <param name="values">The attribute values</param>
-        public CustomAttributeUpdatedEvent(Guid attributeId, string name, string type, string description, string unitOfMeasure, IEnumerable<object> values)
-            : base(attributeId, typeof(Models.CustomAttribute))
+        /// <param name="userId">The user's id</param>
+        public CustomAttributeUpdatedEvent(Guid attributeId, string name, string type, string description, string unitOfMeasure, IEnumerable<object> values, string userId)
+            : base(attributeId, typeof(Models.CustomAttribute), userId)
         {
             AttributeId = attributeId;
             Name = name;

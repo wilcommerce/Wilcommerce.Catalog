@@ -12,6 +12,8 @@ namespace Wilcommerce.Catalog.Test.Commands
 {
     public class ProductCommandsTest
     {
+        private readonly string userId = Guid.NewGuid().ToString();
+
         #region Ctor tests
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_If_Repository_Is_Null()
@@ -58,7 +60,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             DateTime? onSaleTo = DateTime.Today.AddYears(1);
 
             var commands = new ProductCommands(repository, eventBus);
-            var productId = await commands.CreateNewProduct(ean, sku, name, url, price, description, unitInStock, isOnSale, onSaleFrom, onSaleTo);
+            var productId = await commands.CreateNewProduct(ean, sku, name, url, price, description, unitInStock, isOnSale, onSaleFrom, onSaleTo, userId);
 
             var createdProduct = fakeProductList.FirstOrDefault(p => p.Id == productId);
 
@@ -94,7 +96,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             DateTime? onSaleTo = DateTime.Today.AddYears(1);
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.UpdateProductInfo(productId, ean, sku, name, url, price, description, unitInStock, isOnSale, onSaleFrom, onSaleTo));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.UpdateProductInfo(productId, ean, sku, name, url, price, description, unitInStock, isOnSale, onSaleFrom, onSaleTo, userId));
 
             Assert.Equal(nameof(productId), ex.ParamName);
         }
@@ -124,7 +126,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             DateTime? onSaleTo = DateTime.Today.AddYears(1);
 
             var commands = new ProductCommands(repository, eventBus);
-            await commands.UpdateProductInfo(productId, ean, sku, name, url, price, description, unitInStock, isOnSale, onSaleFrom, onSaleTo);
+            await commands.UpdateProductInfo(productId, ean, sku, name, url, price, description, unitInStock, isOnSale, onSaleFrom, onSaleTo, userId);
 
             Assert.Equal(ean, product.EanCode);
             Assert.Equal(sku, product.Sku);
@@ -147,7 +149,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid productId = Guid.Empty;
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.DeleteProduct(productId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.DeleteProduct(productId, userId));
 
             Assert.Equal(nameof(productId), ex.ParamName);
         }
@@ -167,7 +169,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid productId = product.Id;
             
             var commands = new ProductCommands(repository, eventBus);
-            await commands.DeleteProduct(productId);
+            await commands.DeleteProduct(productId, userId);
 
             Assert.True(product.Deleted);
         }
@@ -181,7 +183,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid productId = Guid.Empty;
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RestoreProduct(productId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RestoreProduct(productId, userId));
 
             Assert.Equal(nameof(productId), ex.ParamName);
         }
@@ -202,7 +204,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid productId = product.Id;
 
             var commands = new ProductCommands(repository, eventBus);
-            await commands.RestoreProduct(productId);
+            await commands.RestoreProduct(productId, userId);
 
             Assert.False(product.Deleted);
         }
@@ -217,7 +219,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid brandId = Guid.NewGuid();
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.SetProductVendor(productId, brandId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.SetProductVendor(productId, brandId, userId));
 
             Assert.Equal(nameof(productId), ex.ParamName);
         }
@@ -232,7 +234,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid brandId = Guid.Empty;
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.SetProductVendor(productId, brandId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.SetProductVendor(productId, brandId, userId));
 
             Assert.Equal(nameof(brandId), ex.ParamName);
         }
@@ -257,7 +259,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid brandId = brand.Id;
 
             var commands = new ProductCommands(repository, eventBus);
-            await commands.SetProductVendor(productId, brandId);
+            await commands.SetProductVendor(productId, brandId, userId);
 
             Assert.Equal(brand, product.Vendor);
         }
@@ -272,7 +274,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid categoryId = Guid.NewGuid();
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.AddCategoryToProduct(productId, categoryId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.AddCategoryToProduct(productId, categoryId, userId));
 
             Assert.Equal(nameof(productId), ex.ParamName);
         }
@@ -287,7 +289,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid categoryId = Guid.Empty;
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.AddCategoryToProduct(productId, categoryId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.AddCategoryToProduct(productId, categoryId, userId));
 
             Assert.Equal(nameof(categoryId), ex.ParamName);
         }
@@ -312,7 +314,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid categoryId = category.Id;
 
             var commands = new ProductCommands(repository, eventBus);
-            await commands.AddCategoryToProduct(productId, categoryId);
+            await commands.AddCategoryToProduct(productId, categoryId, userId);
 
             Assert.Collection(product.ProductCategories.Select(c => c.CategoryId).ToArray(), (c) => Assert.Equal(categoryId, c));
         }
@@ -327,7 +329,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid categoryId = Guid.NewGuid();
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.AddMainCategoryToProduct(productId, categoryId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.AddMainCategoryToProduct(productId, categoryId, userId));
 
             Assert.Equal(nameof(productId), ex.ParamName);
         }
@@ -342,7 +344,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid categoryId = Guid.Empty;
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.AddMainCategoryToProduct(productId, categoryId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.AddMainCategoryToProduct(productId, categoryId, userId));
 
             Assert.Equal(nameof(categoryId), ex.ParamName);
         }
@@ -367,7 +369,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid categoryId = category.Id;
 
             var commands = new ProductCommands(repository, eventBus);
-            await commands.AddMainCategoryToProduct(productId, categoryId);
+            await commands.AddMainCategoryToProduct(productId, categoryId, userId);
 
             Assert.Collection(product.ProductCategories.Where(c => c.IsMain).Select(c => c.CategoryId).ToArray(), (c) => Assert.Equal(categoryId, c));
         }
@@ -385,7 +387,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Currency price = new Currency { Code = "EUR", Amount = 100 };
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.AddProductVariant(productId, name, ean, sku, price));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.AddProductVariant(productId, name, ean, sku, price, userId));
 
             Assert.Equal(nameof(productId), ex.ParamName);
         }
@@ -409,7 +411,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Currency price = new Currency { Code = "EUR", Amount = 100 };
 
             var commands = new ProductCommands(repository, eventBus);
-            await commands.AddProductVariant(productId, name, ean, sku, price);
+            await commands.AddProductVariant(productId, name, ean, sku, price, userId);
 
             var variantAdded = product.Variants.SingleOrDefault(v => v.Name == name && v.EanCode == ean && v.Sku == sku);
             Assert.NotNull(variantAdded);
@@ -425,7 +427,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid variantId = Guid.NewGuid();
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveProductVariant(productId, variantId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveProductVariant(productId, variantId, userId));
 
             Assert.Equal(nameof(productId), ex.ParamName);
         }
@@ -440,7 +442,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid variantId = Guid.Empty;
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveProductVariant(productId, variantId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveProductVariant(productId, variantId, userId));
 
             Assert.Equal(nameof(variantId), ex.ParamName);
         }
@@ -462,7 +464,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid variantId = product.Variants.First().Id;
 
             var commands = new ProductCommands(repository, eventBus);
-            await commands.RemoveProductVariant(productId, variantId);
+            await commands.RemoveProductVariant(productId, variantId, userId);
 
             Assert.True(product.Variants.All(v => v.Id != variantId));
         }
@@ -478,7 +480,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             object value = 123;
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.AddAttributeToProduct(productId, attributeId, value));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.AddAttributeToProduct(productId, attributeId, value, userId));
 
             Assert.Equal(nameof(productId), ex.ParamName);
         }
@@ -494,7 +496,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             object value = 123;
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.AddAttributeToProduct(productId, attributeId, value));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.AddAttributeToProduct(productId, attributeId, value, userId));
 
             Assert.Equal(nameof(attributeId), ex.ParamName);
         }
@@ -520,7 +522,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             object value = 123;
 
             var commands = new ProductCommands(repository, eventBus);
-            await commands.AddAttributeToProduct(productId, attributeId, value);
+            await commands.AddAttributeToProduct(productId, attributeId, value, userId);
 
             Assert.Collection(product.Attributes.Select(a => a.Attribute).ToArray(), a => Assert.Equal(attribute, a));
         }
@@ -535,7 +537,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid attributeId = Guid.NewGuid();
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveProductAttribute(productId, attributeId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveProductAttribute(productId, attributeId, userId));
 
             Assert.Equal(nameof(productId), ex.ParamName);
         }
@@ -550,7 +552,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid attributeId = Guid.Empty;
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveProductAttribute(productId, attributeId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveProductAttribute(productId, attributeId, userId));
 
             Assert.Equal(nameof(attributeId), ex.ParamName);
         }
@@ -577,7 +579,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid attributeId = attribute.Id;
 
             var commands = new ProductCommands(repository, eventBus);
-            await commands.RemoveProductAttribute(productId, attributeId);
+            await commands.RemoveProductAttribute(productId, attributeId, userId);
 
             Assert.True(product.Attributes.All(a => a.Attribute != attribute));
         }
@@ -594,7 +596,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Currency price = new Currency { Code = "EUR", Amount = 10 };
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.AddProductTierPrice(productId, fromQuantity, toQuantity, price));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.AddProductTierPrice(productId, fromQuantity, toQuantity, price, userId));
 
             Assert.Equal(nameof(productId), ex.ParamName);
         }
@@ -617,7 +619,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Currency price = new Currency { Code = "EUR", Amount = 10 };
 
             var commands = new ProductCommands(repository, eventBus);
-            await commands.AddProductTierPrice(productId, fromQuantity, toQuantity, price);
+            await commands.AddProductTierPrice(productId, fromQuantity, toQuantity, price, userId);
 
             var tierPrice = product.TierPrices.FirstOrDefault(t => t.FromQuantity == fromQuantity && t.ToQuantity == toQuantity && t.Price == price);
 
@@ -638,7 +640,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Currency price = new Currency { Code = "EUR", Amount = 10 };
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.ChangeProductTierPrice(productId, tierPriceId, fromQuantity, toQuantity, price));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.ChangeProductTierPrice(productId, tierPriceId, fromQuantity, toQuantity, price, userId));
 
             Assert.Equal(nameof(productId), ex.ParamName);
         }
@@ -656,7 +658,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Currency price = new Currency { Code = "EUR", Amount = 10 };
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.ChangeProductTierPrice(productId, tierPriceId, fromQuantity, toQuantity, price));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.ChangeProductTierPrice(productId, tierPriceId, fromQuantity, toQuantity, price, userId));
 
             Assert.Equal(nameof(tierPriceId), ex.ParamName);
         }
@@ -682,7 +684,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Currency price = new Currency { Code = "EUR", Amount = 10 };
 
             var commands = new ProductCommands(repository, eventBus);
-            await commands.ChangeProductTierPrice(productId, tierPriceId, fromQuantity, toQuantity, price);
+            await commands.ChangeProductTierPrice(productId, tierPriceId, fromQuantity, toQuantity, price, userId);
 
             var tierPrice = product.TierPrices.FirstOrDefault(t => t.Id == tierPriceId);
             
@@ -702,7 +704,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid tierPriceId = Guid.NewGuid();
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveTierPriceFromProduct(productId, tierPriceId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveTierPriceFromProduct(productId, tierPriceId, userId));
 
             Assert.Equal(nameof(productId), ex.ParamName);
         }
@@ -717,7 +719,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid tierPriceId = Guid.Empty;
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveTierPriceFromProduct(productId, tierPriceId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveTierPriceFromProduct(productId, tierPriceId, userId));
 
             Assert.Equal(nameof(tierPriceId), ex.ParamName);
         }
@@ -740,7 +742,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid tierPriceId = product.TierPrices.First().Id;
 
             var commands = new ProductCommands(repository, eventBus);
-            await commands.RemoveTierPriceFromProduct(productId, tierPriceId);
+            await commands.RemoveTierPriceFromProduct(productId, tierPriceId, userId);
 
             Assert.True(product.TierPrices.All(t => t.Id != tierPriceId));
         }
@@ -757,7 +759,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             string comment = "comment";
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.AddProductReview(productId, name, rating, comment));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.AddProductReview(productId, name, rating, comment, userId));
 
             Assert.Equal(nameof(productId), ex.ParamName);
         }
@@ -780,7 +782,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             string comment = "comment";
 
             var commands = new ProductCommands(repository, eventBus);
-            await commands.AddProductReview(productId, name, rating, comment);
+            await commands.AddProductReview(productId, name, rating, comment, userId);
 
             var review = product.Reviews.FirstOrDefault(r => r.Name == name && r.Rating == rating && r.Comment == comment);
             Assert.NotNull(review);
@@ -796,7 +798,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid reviewId = Guid.NewGuid();
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.ApproveProductReview(productId, reviewId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.ApproveProductReview(productId, reviewId, userId));
 
             Assert.Equal(nameof(productId), ex.ParamName);
         }
@@ -811,7 +813,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid reviewId = Guid.Empty;
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.ApproveProductReview(productId, reviewId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.ApproveProductReview(productId, reviewId, userId));
 
             Assert.Equal(nameof(reviewId), ex.ParamName);
         }
@@ -833,7 +835,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid reviewId = product.Reviews.First().Id;
 
             var commands = new ProductCommands(repository, eventBus);
-            await commands.ApproveProductReview(productId, reviewId);
+            await commands.ApproveProductReview(productId, reviewId, userId);
 
             var review = product.Reviews.FirstOrDefault(r => r.Id == reviewId);
             Assert.NotNull(review);
@@ -851,7 +853,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid reviewId = Guid.NewGuid();
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveProductReview(productId, reviewId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveProductReview(productId, reviewId, userId));
 
             Assert.Equal(nameof(productId), ex.ParamName);
         }
@@ -866,7 +868,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid reviewId = Guid.Empty;
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveProductReview(productId, reviewId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveProductReview(productId, reviewId, userId));
 
             Assert.Equal(nameof(reviewId), ex.ParamName);
         }
@@ -888,7 +890,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid reviewId = product.Reviews.First().Id;
 
             var commands = new ProductCommands(repository, eventBus);
-            await commands.RemoveProductReview(productId, reviewId);
+            await commands.RemoveProductReview(productId, reviewId, userId);
 
             Assert.True(product.Reviews.All(r => r.Id != reviewId));
         }
@@ -907,7 +909,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             DateTime uploadedOn = DateTime.Today;
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.AddProductImage(productId, path, name, originalName, isMain, uploadedOn));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.AddProductImage(productId, path, name, originalName, isMain, uploadedOn, userId));
 
             Assert.Equal(nameof(productId), ex.ParamName);
         }
@@ -932,7 +934,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             DateTime uploadedOn = DateTime.Today;
 
             var commands = new ProductCommands(repository, eventBus);
-            await commands.AddProductImage(productId, path, name, originalName, isMain, uploadedOn);
+            await commands.AddProductImage(productId, path, name, originalName, isMain, uploadedOn, userId);
 
             var image = product.Images.FirstOrDefault(i => i.Path == path && i.Name == name && i.OriginalName == originalName && i.IsMain == isMain && i.UploadedOn == uploadedOn);
             Assert.NotNull(image);
@@ -948,7 +950,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid imageId = Guid.NewGuid();
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveProductImage(productId, imageId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveProductImage(productId, imageId, userId));
 
             Assert.Equal(nameof(productId), ex.ParamName);
         }
@@ -963,7 +965,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid imageId = Guid.Empty;
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveProductImage(productId, imageId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveProductImage(productId, imageId, userId));
 
             Assert.Equal(nameof(imageId), ex.ParamName);
         }
@@ -985,7 +987,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid imageId = product.Images.First().Id;
 
             var commands = new ProductCommands(repository, eventBus);
-            await commands.RemoveProductImage(productId, imageId);
+            await commands.RemoveProductImage(productId, imageId, userId);
 
             Assert.True(product.Images.All(i => i.Id != imageId));
         }
@@ -1000,7 +1002,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             SeoData seo = new SeoData { };
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.SetProductSeo(productId, seo));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.SetProductSeo(productId, seo, userId));
 
             Assert.Equal(nameof(productId), ex.ParamName);
         }
@@ -1021,7 +1023,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             SeoData seo = new SeoData { Title = "title", Description = "description" };
 
             var commands = new ProductCommands(repository, eventBus);
-            await commands.SetProductSeo(productId, seo);
+            await commands.SetProductSeo(productId, seo, userId);
 
             Assert.Equal(seo.Title, product.Seo.Title);
             Assert.Equal(seo.Description, product.Seo.Description);
@@ -1042,7 +1044,7 @@ namespace Wilcommerce.Catalog.Test.Commands
 
             var commands = new ProductCommands(repository, eventBus);
 
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.ChangeProductVariant(productId, variantId, name, ean, sku, price));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.ChangeProductVariant(productId, variantId, name, ean, sku, price, userId));
             Assert.Equal(nameof(productId), ex.ParamName);
         }
 
@@ -1061,7 +1063,7 @@ namespace Wilcommerce.Catalog.Test.Commands
 
             var commands = new ProductCommands(repository, eventBus);
 
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.ChangeProductVariant(productId, variantId, name, ean, sku, price));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.ChangeProductVariant(productId, variantId, name, ean, sku, price, userId));
             Assert.Equal(nameof(variantId), ex.ParamName);
         }
 
@@ -1086,7 +1088,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             Currency price = new Currency { Code = "EUR", Amount = 10 };
 
             var commands = new ProductCommands(repository, eventBus);
-            await commands.ChangeProductVariant(productId, variantId, name, ean, sku, price);
+            await commands.ChangeProductVariant(productId, variantId, name, ean, sku, price, userId);
 
             var variant = product.Variants.FirstOrDefault(v => v.Id == variantId);
             
@@ -1108,7 +1110,7 @@ namespace Wilcommerce.Catalog.Test.Commands
 
             var commands = new ProductCommands(repository, eventBus);
 
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.ChangeProductMainCategory(productId, categoryId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.ChangeProductMainCategory(productId, categoryId, userId));
             Assert.Equal(nameof(productId), ex.ParamName);
         }
 
@@ -1123,7 +1125,7 @@ namespace Wilcommerce.Catalog.Test.Commands
 
             var commands = new ProductCommands(repository, eventBus);
 
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.ChangeProductMainCategory(productId, categoryId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.ChangeProductMainCategory(productId, categoryId, userId));
             Assert.Equal(nameof(categoryId), ex.ParamName);
         }
 
@@ -1138,7 +1140,7 @@ namespace Wilcommerce.Catalog.Test.Commands
 
             var commands = new ProductCommands(repository, eventBus);
 
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveProductCategory(productId, categoryId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveProductCategory(productId, categoryId, userId));
             Assert.Equal(nameof(productId), ex.ParamName);
         }
 
@@ -1153,7 +1155,7 @@ namespace Wilcommerce.Catalog.Test.Commands
 
             var commands = new ProductCommands(repository, eventBus);
 
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveProductCategory(productId, categoryId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.RemoveProductCategory(productId, categoryId, userId));
             Assert.Equal(nameof(categoryId), ex.ParamName);
         }
 
@@ -1180,7 +1182,7 @@ namespace Wilcommerce.Catalog.Test.Commands
 
             var commands = new ProductCommands(repository, eventBus);
 
-            await commands.RemoveProductCategory(productId, categoryId);
+            await commands.RemoveProductCategory(productId, categoryId, userId);
             Assert.True(product.ProductCategories.All(c => c.CategoryId != category.Id));
         }
 
@@ -1210,7 +1212,7 @@ namespace Wilcommerce.Catalog.Test.Commands
             DateTime? onSaleTo = DateTime.Today.AddYears(1);
 
             var commands = new ProductCommands(repository, eventBus);
-            await commands.UpdateProductInfo(productId, ean, sku, name, url, price, description, unitInStock, isOnSale, onSaleFrom, onSaleTo);
+            await commands.UpdateProductInfo(productId, ean, sku, name, url, price, description, unitInStock, isOnSale, onSaleFrom, onSaleTo, userId);
 
             Assert.Equal(product.OnSaleFrom, onSaleFrom);
             Assert.Equal(product.OnSaleTo, onSaleTo);

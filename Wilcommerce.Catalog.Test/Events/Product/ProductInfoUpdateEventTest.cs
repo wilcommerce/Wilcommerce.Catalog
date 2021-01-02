@@ -21,8 +21,9 @@ namespace Wilcommerce.Catalog.Test.Events.Product
             bool isOnSale = true;
             DateTime? onSaleFrom = DateTime.Today;
             DateTime? onSaleTo = DateTime.Today.AddMonths(1);
+            string userId = Guid.NewGuid().ToString();
 
-            var @event = new ProductInfoUpdateEvent(productId, eanCode, sku, name, url, price, description, unitInStock, isOnSale, onSaleFrom, onSaleTo);
+            var @event = new ProductInfoUpdateEvent(productId, eanCode, sku, name, url, price, description, unitInStock, isOnSale, onSaleFrom, onSaleTo, userId);
 
             Assert.Equal(productId, @event.ProductId);
             Assert.Equal(eanCode, @event.EanCode);
@@ -38,6 +39,7 @@ namespace Wilcommerce.Catalog.Test.Events.Product
 
             Assert.Equal(productId, @event.AggregateId);
             Assert.Equal(typeof(Catalog.Models.Product), @event.AggregateType);
+            Assert.Equal(userId, @event.UserId);
         }
     }
 }

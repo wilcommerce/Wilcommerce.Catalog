@@ -13,8 +13,9 @@ namespace Wilcommerce.Catalog.Test.Events.Product
             string name = "review";
             int rating = 2;
             string comment = "comment";
+            string userId = Guid.NewGuid().ToString();
 
-            var @event = new ProductReviewAddedEvent(productId, name, rating, comment);
+            var @event = new ProductReviewAddedEvent(productId, name, rating, comment, userId);
 
             Assert.Equal(productId, @event.ProductId);
             Assert.Equal(name, @event.Name);
@@ -23,6 +24,7 @@ namespace Wilcommerce.Catalog.Test.Events.Product
 
             Assert.Equal(productId, @event.AggregateId);
             Assert.Equal(typeof(Catalog.Models.Product), @event.AggregateType);
+            Assert.Equal(userId, @event.UserId);
         }
     }
 }

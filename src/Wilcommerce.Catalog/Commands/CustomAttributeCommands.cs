@@ -36,15 +36,16 @@ namespace Wilcommerce.Catalog.Commands
 
         #region CustomAttribute Commands
         /// <summary>
-        /// Implementation of <see cref="ICustomAttributesCommands.CreateNewCustomAttribute(string, string, string, string, IEnumerable{object})"/>
+        /// Implementation of <see cref="ICustomAttributesCommands.CreateNewCustomAttribute(string, string, string, string, IEnumerable{object}, string)"/>
         /// </summary>
         /// <param name="name">The custom attribute's name</param>
         /// <param name="type">The data type of the custom attribute</param>
         /// <param name="description">The custom attribute's description</param>
         /// <param name="unitOfMeasure">The unit of measure of the custom attribute</param>
         /// <param name="values">The available values for the custom attribute</param>
+        /// <param name="userId">The user's id</param>
         /// <returns>The custom attribute id</returns>
-        public async Task<Guid> CreateNewCustomAttribute(string name, string type, string description, string unitOfMeasure, IEnumerable<object> values)
+        public async Task<Guid> CreateNewCustomAttribute(string name, string type, string description, string unitOfMeasure, IEnumerable<object> values, string userId)
         {
             try
             {
@@ -59,7 +60,7 @@ namespace Wilcommerce.Catalog.Commands
                     attribute.SetUnitOfMeasure(unitOfMeasure);
                 }
 
-                if (values != null && values.Count() > 0)
+                if (values is not null && values.Count() > 0)
                 {
                     values.ToList().ForEach(v => attribute.AddValue(v));
                 }
@@ -67,7 +68,7 @@ namespace Wilcommerce.Catalog.Commands
                 Repository.Add(attribute);
                 await Repository.SaveChangesAsync();
 
-                var @event = new CustomAttributeCreatedEvent(attribute.Id, attribute.Name, attribute.DataType);
+                var @event = new CustomAttributeCreatedEvent(attribute.Id, attribute.Name, attribute.DataType, userId);
                 EventBus.RaiseEvent(@event);
 
                 return attribute.Id;
@@ -79,7 +80,7 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="ICustomAttributesCommands.UpdateCustomAttribute(Guid, string, string, string, string, IEnumerable{object})"/>
+        /// Implementation of <see cref="ICustomAttributesCommands.UpdateCustomAttribute(Guid, string, string, string, string, IEnumerable{object}, string)"/>
         /// </summary>
         /// <param name="attributeId">The custom attribute id</param>
         /// <param name="name">The custom attribute name</param>
@@ -87,8 +88,9 @@ namespace Wilcommerce.Catalog.Commands
         /// <param name="description">The custom attribute description</param>
         /// <param name="unitOfMeasure">The custom attribute unit of measure</param>
         /// <param name="values">The custom attribute available values</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public async Task UpdateCustomAttribute(Guid attributeId, string name, string type, string description, string unitOfMeasure, IEnumerable<object> values)
+        public async Task UpdateCustomAttribute(Guid attributeId, string name, string type, string description, string unitOfMeasure, IEnumerable<object> values, string userId)
         {
             try
             {
@@ -122,7 +124,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new CustomAttributeUpdatedEvent(attributeId, name, type, description, unitOfMeasure, values);
+                var @event = new CustomAttributeUpdatedEvent(attributeId, name, type, description, unitOfMeasure, values, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch 
@@ -132,11 +134,12 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="ICustomAttributesCommands.DeleteCustomAttribute(Guid)"/>
+        /// Implementation of <see cref="ICustomAttributesCommands.DeleteCustomAttribute(Guid, string)"/>
         /// </summary>
         /// <param name="attributeId">The custom attribute id</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public async Task DeleteCustomAttribute(Guid attributeId)
+        public async Task DeleteCustomAttribute(Guid attributeId, string userId)
         {
             try
             {
@@ -150,7 +153,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new CustomAttributeDeletedEvent(attributeId);
+                var @event = new CustomAttributeDeletedEvent(attributeId, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch
@@ -160,11 +163,12 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="ICustomAttributesCommands.RestoreCustomAttribute(Guid)"/>
+        /// Implementation of <see cref="ICustomAttributesCommands.RestoreCustomAttribute(Guid, string)"/>
         /// </summary>
         /// <param name="attributeId">The custom attribute id</param>
+        /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public async Task RestoreCustomAttribute(Guid attributeId)
+        public async Task RestoreCustomAttribute(Guid attributeId, string userId)
         {
             try
             {
@@ -178,7 +182,7 @@ namespace Wilcommerce.Catalog.Commands
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new CustomAttributeRestoredEvent(attributeId);
+                var @event = new CustomAttributeRestoredEvent(attributeId, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch

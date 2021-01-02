@@ -23,8 +23,9 @@ namespace Wilcommerce.Catalog.Events.Product
         /// </summary>
         /// <param name="productId">The product id</param>
         /// <param name="vendorId">The vendor id</param>
-        public ProductVendorSetEvent(Guid productId, Guid vendorId)
-            : base(productId, typeof(Models.Product))
+        /// <param name="userId">The user's id</param>
+        public ProductVendorSetEvent(Guid productId, Guid vendorId, string userId)
+            : base(productId, typeof(Models.Product), userId)
         {
             ProductId = productId;
             VendorId = vendorId;

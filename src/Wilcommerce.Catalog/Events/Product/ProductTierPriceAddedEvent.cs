@@ -36,8 +36,9 @@ namespace Wilcommerce.Catalog.Events.Product
         /// <param name="fromQuantity">The start quantity</param>
         /// <param name="toQuantity">The end quantity</param>
         /// <param name="price">The price</param>
-        public ProductTierPriceAddedEvent(Guid productId, int fromQuantity, int toQuantity, Currency price)
-            : base(productId, typeof(Models.Product))
+        /// <param name="userId">The user's id</param>
+        public ProductTierPriceAddedEvent(Guid productId, int fromQuantity, int toQuantity, Currency price, string userId)
+            : base(productId, typeof(Models.Product), userId)
         {
             ProductId = productId;
             FromQuantity = fromQuantity;

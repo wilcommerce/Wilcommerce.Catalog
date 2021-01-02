@@ -12,8 +12,9 @@ namespace Wilcommerce.Catalog.Test.Events.Category
             Guid categoryId = Guid.NewGuid();
             string name = "category";
             string code = "code";
+            string userId = Guid.NewGuid().ToString();
 
-            var @event = new CategoryCreatedEvent(categoryId, name, code);
+            var @event = new CategoryCreatedEvent(categoryId, name, code, userId);
 
             Assert.Equal(categoryId, @event.CategoryId);
             Assert.Equal(name, @event.Name);
@@ -21,6 +22,7 @@ namespace Wilcommerce.Catalog.Test.Events.Category
 
             Assert.Equal(categoryId, @event.AggregateId);
             Assert.Equal(typeof(Catalog.Models.Category), @event.AggregateType);
+            Assert.Equal(userId, @event.UserId);
         }
     }
 }

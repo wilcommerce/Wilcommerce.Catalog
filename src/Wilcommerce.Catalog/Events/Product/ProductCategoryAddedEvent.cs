@@ -29,8 +29,9 @@ namespace Wilcommerce.Catalog.Events.Product
         /// <param name="productId">The product id</param>
         /// <param name="categoryId">The category id</param>
         /// <param name="isMain">Whether the category is a main category</param>
-        public ProductCategoryAddedEvent(Guid productId, Guid categoryId, bool isMain)
-            : base(productId, typeof(Models.Product))
+        /// <param name="userId">The user's id</param>
+        public ProductCategoryAddedEvent(Guid productId, Guid categoryId, bool isMain, string userId)
+            : base(productId, typeof(Models.Product), userId)
         {
             ProductId = productId;
             CategoryId = categoryId;

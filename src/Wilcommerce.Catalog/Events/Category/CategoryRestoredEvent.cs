@@ -17,8 +17,9 @@ namespace Wilcommerce.Catalog.Events.Category
         /// Construct the event
         /// </summary>
         /// <param name="categoryId">The category id</param>
-        public CategoryRestoredEvent(Guid categoryId)
-            : base(categoryId, typeof(Models.Category))
+        /// <param name="userId">The user's id</param>
+        public CategoryRestoredEvent(Guid categoryId, string userId)
+            : base(categoryId, typeof(Models.Category), userId)
         {
             CategoryId = categoryId;
         }
