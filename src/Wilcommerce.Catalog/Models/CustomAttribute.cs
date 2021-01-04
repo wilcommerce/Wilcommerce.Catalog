@@ -71,12 +71,12 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="value">The value to add</param>
         public virtual void AddValue(object value)
         {
-            if (value == null)
+            if (value is null)
             {
                 throw new ArgumentNullException(nameof(value));
             }
 
-            var valueList = string.IsNullOrWhiteSpace(_Values) ? (new List<object>()) : _Values.Split(",".ToCharArray()).ToList<object>();
+            var valueList = string.IsNullOrWhiteSpace(_Values) ? new List<object>() : _Values.Split(",".ToCharArray()).ToList<object>();
             if (valueList.Contains(value))
             {
                 throw new ArgumentException("The value list contains the value", nameof(value));
@@ -92,7 +92,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="value">The value to remove</param>
         public virtual void RemoveValue(object value)
         {
-            if (value == null)
+            if (value is null)
             {
                 throw new ArgumentNullException(nameof(value));
             }
@@ -124,7 +124,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException(nameof(name));
+                throw new ArgumentException("value cannot be empty", nameof(name));
             }
 
             Name = name;
@@ -134,10 +134,7 @@ namespace Wilcommerce.Catalog.Models
         /// Change the attribute description
         /// </summary>
         /// <param name="description">The description</param>
-        public virtual void ChangeDescription(string description)
-        {
-            Description = description;
-        }
+        public virtual void ChangeDescription(string description) => Description = description;
 
         /// <summary>
         /// Set the attribute unit of measure
@@ -147,7 +144,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrWhiteSpace(unitOfMeasure))
             {
-                throw new ArgumentNullException(nameof(unitOfMeasure));
+                throw new ArgumentException("value cannot be empty", nameof(unitOfMeasure));
             }
 
             UnitOfMeasure = unitOfMeasure;
@@ -161,7 +158,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrWhiteSpace(dataType))
             {
-                throw new ArgumentNullException(nameof(dataType));
+                throw new ArgumentException("value cannot be empty", nameof(dataType));
             }
 
             DataType = dataType;
@@ -206,12 +203,12 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException(nameof(name));
+                throw new ArgumentException("value cannot be empty", nameof(name));
             }
 
             if (string.IsNullOrWhiteSpace(type))
             {
-                throw new ArgumentNullException(nameof(type));
+                throw new ArgumentException("value cannot be empty", nameof(type));
             }
 
             var attribute = new CustomAttribute

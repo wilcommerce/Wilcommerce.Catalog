@@ -11,28 +11,28 @@ namespace Wilcommerce.Catalog.Test.Models
         [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
-        public void CustomAttributeFactory_Should_Throw_ArgumentNullException_If_Name_IsEmpty(string value)
+        public void CustomAttributeFactory_Should_Throw_ArgumentException_If_Name_IsEmpty(string name)
         {
-            var ex = Assert.Throws<ArgumentNullException>(() => CustomAttribute.Create(
-                value,
+            var ex = Assert.Throws<ArgumentException>(() => CustomAttribute.Create(
+                name,
                 "string"
                 ));
 
-            Assert.Equal("name", ex.ParamName);
+            Assert.Equal(nameof(name), ex.ParamName);
         }
 
         [Theory]
         [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
-        public void CustomAttributeFactory_Should_Throw_ArgumentNullException_If_Type_IsEmpty(string value)
+        public void CustomAttributeFactory_Should_Throw_ArgumentException_If_Type_IsEmpty(string type)
         {
-            var ex = Assert.Throws<ArgumentNullException>(() => CustomAttribute.Create(
+            var ex = Assert.Throws<ArgumentException>(() => CustomAttribute.Create(
                 "Attribute",
-                value
+                type
                 ));
 
-            Assert.Equal("type", ex.ParamName);
+            Assert.Equal(nameof(type), ex.ParamName);
         }
 
         [Fact]
@@ -43,8 +43,9 @@ namespace Wilcommerce.Catalog.Test.Models
                 "string"
                 );
 
-            var ex = Assert.Throws<ArgumentNullException>(() => attribute.AddValue(null));
-            Assert.Equal("value", ex.ParamName);
+            object value = null;
+            var ex = Assert.Throws<ArgumentNullException>(() => attribute.AddValue(value));
+            Assert.Equal(nameof(value), ex.ParamName);
         }
 
         [Fact]
@@ -59,7 +60,7 @@ namespace Wilcommerce.Catalog.Test.Models
             attribute.AddValue(value);
 
             var ex = Assert.Throws<ArgumentException>(() => attribute.AddValue(value));
-            Assert.Equal("value", ex.ParamName);
+            Assert.Equal(nameof(value), ex.ParamName);
         }
 
         [Fact]
@@ -86,8 +87,9 @@ namespace Wilcommerce.Catalog.Test.Models
                 "string"
                 );
 
-            var ex = Assert.Throws<ArgumentNullException>(() => attribute.RemoveValue(null));
-            Assert.Equal("value", ex.ParamName);
+            object value = null;
+            var ex = Assert.Throws<ArgumentNullException>(() => attribute.RemoveValue(value));
+            Assert.Equal(nameof(value), ex.ParamName);
         }
 
         [Fact]
@@ -116,7 +118,7 @@ namespace Wilcommerce.Catalog.Test.Models
             string value = "My value";
 
             var ex = Assert.Throws<ArgumentException>(() => attribute.RemoveValue(value));
-            Assert.Equal("value", ex.ParamName);
+            Assert.Equal(nameof(value), ex.ParamName);
         }
 
         [Fact]
@@ -141,15 +143,15 @@ namespace Wilcommerce.Catalog.Test.Models
         [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
-        public void ChangeName_Should_Throw_ArgumentNullException_If_Name_IsEmpty(string value)
+        public void ChangeName_Should_Throw_ArgumentException_If_Name_IsEmpty(string name)
         {
             var attribute = CustomAttribute.Create(
                 "Attribute",
                 "string"
                 );
 
-            var ex = Assert.Throws<ArgumentNullException>(() => attribute.ChangeName(value));
-            Assert.Equal("name", ex.ParamName);
+            var ex = Assert.Throws<ArgumentException>(() => attribute.ChangeName(name));
+            Assert.Equal(nameof(name), ex.ParamName);
         }
 
         [Theory]
@@ -172,30 +174,30 @@ namespace Wilcommerce.Catalog.Test.Models
         [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
-        public void SetUnitOfMeasure_Should_Throw_ArgumentNullException_If_UnitOfMeasure_IsEmpty(string value)
+        public void SetUnitOfMeasure_Should_Throw_ArgumentException_If_UnitOfMeasure_IsEmpty(string unitOfMeasure)
         {
             var attribute = CustomAttribute.Create(
                 "Attribute",
                 "string"
                 );
 
-            var ex = Assert.Throws<ArgumentNullException>(() => attribute.SetUnitOfMeasure(value));
-            Assert.Equal("unitOfMeasure", ex.ParamName);
+            var ex = Assert.Throws<ArgumentException>(() => attribute.SetUnitOfMeasure(unitOfMeasure));
+            Assert.Equal(nameof(unitOfMeasure), ex.ParamName);
         }
 
         [Theory]
         [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
-        public void ChangeDataType_Should_Throw_ArgumentNullException_If_DataType_IsEmpty(string value)
+        public void ChangeDataType_Should_Throw_ArgumentException_If_DataType_IsEmpty(string dataType)
         {
             var attribute = CustomAttribute.Create(
                 "Attribute",
                 "string"
                 );
 
-            var ex = Assert.Throws<ArgumentNullException>(() => attribute.ChangeDataType(value));
-            Assert.Equal("dataType", ex.ParamName);
+            var ex = Assert.Throws<ArgumentException>(() => attribute.ChangeDataType(dataType));
+            Assert.Equal(nameof(dataType), ex.ParamName);
         }
 
         [Fact]

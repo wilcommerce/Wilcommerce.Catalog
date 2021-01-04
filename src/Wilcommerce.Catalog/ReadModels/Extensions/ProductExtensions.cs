@@ -173,22 +173,22 @@ namespace Wilcommerce.Catalog.ReadModels
         /// Retrieve all the products filtered by the specified vendor
         /// </summary>
         /// <param name="products"></param>
-        /// <param name="vendorId">The vendor id</param>
+        /// <param name="brandId">The brand id</param>
         /// <returns>A list of products</returns>
-        public static IQueryable<Product> ByVendor(this IQueryable<Product> products, Guid vendorId)
+        public static IQueryable<Product> ByBrand(this IQueryable<Product> products, Guid brandId)
         {
             if (products == null)
             {
                 throw new ArgumentNullException(nameof(products));
             }
 
-            if (vendorId == Guid.Empty)
+            if (brandId == Guid.Empty)
             {
-                throw new ArgumentException("value cannot be empty", nameof(vendorId));
+                throw new ArgumentException("value cannot be empty", nameof(brandId));
             }
 
             return from p in products
-                   where p.Vendor != null && p.Vendor.Id == vendorId
+                   where p.Brand != null && p.Brand.Id == brandId
                    select p;
         }
     }

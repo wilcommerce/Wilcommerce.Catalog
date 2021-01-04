@@ -95,9 +95,9 @@ namespace Wilcommerce.Catalog.Models
         public virtual Product MainProduct { get; protected set; }
 
         /// <summary>
-        /// Get or set the product's vendor
+        /// Get or set the product's brand
         /// </summary>
-        public virtual Brand Vendor { get; protected set; }
+        public virtual Brand Brand { get; protected set; }
 
         /// <summary>
         /// Get the associated category
@@ -238,7 +238,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrWhiteSpace(ean))
             {
-                throw new ArgumentNullException(nameof(ean));
+                throw new ArgumentException("value cannot be empty", nameof(ean));
             }
 
             EanCode = ean;
@@ -252,7 +252,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrWhiteSpace(sku))
             {
-                throw new ArgumentNullException(nameof(sku));
+                throw new ArgumentException("value cannot be empty", nameof(sku));
             }
 
             Sku = sku;
@@ -266,7 +266,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException(nameof(name));
+                throw new ArgumentException("value cannot be empty", nameof(name));
             }
 
             Name = name;
@@ -276,10 +276,7 @@ namespace Wilcommerce.Catalog.Models
         /// Change the product description
         /// </summary>
         /// <param name="description">The product's description</param>
-        public virtual void ChangeDescription(string description)
-        {
-            Description = description;
-        }
+        public virtual void ChangeDescription(string description) => Description = description;
 
         /// <summary>
         /// Change the product url
@@ -289,7 +286,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrWhiteSpace(url))
             {
-                throw new ArgumentNullException(nameof(url));
+                throw new ArgumentException("value cannot be empty", nameof(url));
             }
 
             Url = url;
@@ -301,7 +298,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="price">The new price</param>
         public virtual void SetPrice(Currency price)
         {
-            if (price == null)
+            if (price is null)
             {
                 throw new ArgumentNullException(nameof(price));
             }
@@ -343,19 +340,13 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Set the product vendor
         /// </summary>
-        /// <param name="vendor">The product's vendor</param>
-        public virtual void SetVendor(Brand vendor)
-        {
-            Vendor = vendor ?? throw new ArgumentNullException(nameof(vendor));
-        }
+        /// <param name="brand">The product's vendor</param>
+        public virtual void SetBrand(Brand brand) => Brand = brand ?? throw new ArgumentNullException(nameof(brand));
 
         /// <summary>
         /// Set the product on sale
         /// </summary>
-        public virtual void SetOnSale()
-        {
-            SetOnSale(DateTime.Now, null);
-        }
+        public virtual void SetOnSale() => SetOnSale(DateTime.Now, null);
 
         /// <summary>
         /// Set the product on sale, starting from the specified start date and till the specified end date
@@ -377,10 +368,7 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Remove the product from the sales
         /// </summary>
-        public virtual void RemoveFromSale()
-        {
-            RemoveFromSale(DateTime.Now);
-        }
+        public virtual void RemoveFromSale() => RemoveFromSale(DateTime.Now);
 
         /// <summary>
         /// Remove the product from the sales, starting from the specified date
@@ -396,10 +384,7 @@ namespace Wilcommerce.Catalog.Models
         /// Add a category to the product
         /// </summary>
         /// <param name="category">The category to add</param>
-        public virtual void AddCategory(Category category)
-        {
-            AddCategory(category, false);
-        }
+        public virtual void AddCategory(Category category) => AddCategory(category, false);
 
         /// <summary>
         /// Add a category to the product
@@ -408,7 +393,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="isMain">Whether the category is the main category</param>
         public virtual void AddCategory(Category category, bool isMain)
         {
-            if (category == null)
+            if (category is null)
             {
                 throw new ArgumentNullException(nameof(category));
             }
@@ -434,10 +419,7 @@ namespace Wilcommerce.Catalog.Models
         /// Add the specified category as main category for the product
         /// </summary>
         /// <param name="category">The category to add</param>
-        public virtual void AddMainCategory(Category category)
-        {
-            AddCategory(category, true);
-        }
+        public virtual void AddMainCategory(Category category) => AddCategory(category, true);
 
         /// <summary>
         /// Add a product variant
@@ -450,20 +432,20 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException(nameof(name));
+                throw new ArgumentException("value cannot be empty", nameof(name));
             }
 
             if (string.IsNullOrWhiteSpace(ean))
             {
-                throw new ArgumentNullException(nameof(ean));
+                throw new ArgumentException("value cannot be empty", nameof(ean));
             }
 
             if (string.IsNullOrWhiteSpace(sku))
             {
-                throw new ArgumentNullException(nameof(sku));
+                throw new ArgumentException("value cannot be empty", nameof(sku));
             }
 
-            if (price == null)
+            if (price is null)
             {
                 throw new ArgumentNullException(nameof(price));
             }
@@ -501,7 +483,7 @@ namespace Wilcommerce.Catalog.Models
                 throw new InvalidOperationException("Tier prices not enabled");
             }
 
-            if (price == null)
+            if (price is null)
             {
                 throw new ArgumentNullException(nameof(price));
             }
@@ -527,7 +509,7 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="value">The attribute's value</param>
         public virtual void AddAttribute(CustomAttribute attribute, object value)
         {
-            if (attribute == null)
+            if (attribute is null)
             {
                 throw new ArgumentNullException(nameof(attribute));
             }
@@ -550,10 +532,7 @@ namespace Wilcommerce.Catalog.Models
         /// </summary>
         /// <param name="name">The name of the user who add the review</param>
         /// <param name="rating">The rating given to the product</param>
-        public virtual void AddReview(string name, int rating)
-        {
-            AddReview(name, rating, null);
-        }
+        public virtual void AddReview(string name, int rating) => AddReview(name, rating, null);
 
         /// <summary>
         /// Add a product review
@@ -565,7 +544,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException(nameof(name));
+                throw new ArgumentException("value cannot be empty", nameof(name));
             }
 
             if (rating < 0)
@@ -596,17 +575,17 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrWhiteSpace(path))
             {
-                throw new ArgumentNullException(nameof(path));
+                throw new ArgumentException("value cannot be empty", nameof(path));
             }
 
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException(nameof(name));
+                throw new ArgumentException("value cannot be empty", nameof(name));
             }
 
             if (string.IsNullOrWhiteSpace(originalName))
             {
-                throw new ArgumentNullException(nameof(originalName));
+                throw new ArgumentException("value cannot be empty", nameof(originalName));
             }
 
             this.Images.Add(new ProductImage
@@ -627,7 +606,7 @@ namespace Wilcommerce.Catalog.Models
         public virtual void ApproveReview(Guid reviewId)
         {
             var review = this.Reviews.FirstOrDefault(r => r.Id == reviewId);
-            if (review == null)
+            if (review is null)
             {
                 throw new InvalidOperationException("Review not found");
             }
@@ -643,7 +622,7 @@ namespace Wilcommerce.Catalog.Models
         public virtual void RemoveReviewApproval(Guid reviewId)
         {
             var review = this.Reviews.FirstOrDefault(r => r.Id == reviewId);
-            if (review == null)
+            if (review is null)
             {
                 throw new InvalidOperationException("Review not found");
             }
@@ -659,7 +638,7 @@ namespace Wilcommerce.Catalog.Models
         public virtual void DeleteReview(Guid reviewId)
         {
             var review = this.Reviews.FirstOrDefault(r => r.Id == reviewId);
-            if (review == null)
+            if (review is null)
             {
                 throw new InvalidOperationException("Review not found");
             }
@@ -676,13 +655,13 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="attribute">The attribute to delete</param>
         public virtual void DeleteAttribute(CustomAttribute attribute)
         {
-            if (attribute == null)
+            if (attribute is null)
             {
                 throw new ArgumentNullException(nameof(attribute));
             }
 
             var productAttribute = this.Attributes.FirstOrDefault(a => a.Attribute == attribute);
-            if (productAttribute == null)
+            if (productAttribute is null)
             {
                 throw new InvalidOperationException("Attribute not found");
             }
@@ -700,7 +679,7 @@ namespace Wilcommerce.Catalog.Models
         public virtual void DeleteImage(Guid imageId)
         {
             var image = this.Images.FirstOrDefault(i => i.Id == imageId);
-            if (image == null)
+            if (image is null)
             {
                 throw new InvalidOperationException("Image not found");
             }
@@ -718,7 +697,7 @@ namespace Wilcommerce.Catalog.Models
         public virtual void DeleteTierPrice(Guid tierPriceId)
         {
             var tierPrice = this.TierPrices.FirstOrDefault(t => t.Id == tierPriceId);
-            if (tierPrice == null)
+            if (tierPrice is null)
             {
                 throw new InvalidOperationException("Tier price not found");
             }
@@ -736,7 +715,7 @@ namespace Wilcommerce.Catalog.Models
         public virtual void RemoveVariant(Guid variantId)
         {
             var variant = this.Variants.FirstOrDefault(v => v.Id == variantId);
-            if (variant == null)
+            if (variant is null)
             {
                 throw new InvalidOperationException("Variant not found");
             }
@@ -751,10 +730,7 @@ namespace Wilcommerce.Catalog.Models
         /// Set the SEO information for the product
         /// </summary>
         /// <param name="seo">The SEO information</param>
-        public virtual void SetSeoData(SeoData seo)
-        {
-            Seo = seo ?? throw new ArgumentNullException(nameof(seo));
-        }
+        public virtual void SetSeoData(SeoData seo) => Seo = seo ?? throw new ArgumentNullException(nameof(seo));
 
         /// <summary>
         /// Change the tier price values
@@ -771,7 +747,7 @@ namespace Wilcommerce.Catalog.Models
             }
 
             var tierPrice = this.TierPrices.FirstOrDefault(t => t.Id == tierPriceId);
-            if (tierPrice == null)
+            if (tierPrice is null)
             {
                 throw new InvalidOperationException("Tier price not found");
             }
@@ -809,20 +785,20 @@ namespace Wilcommerce.Catalog.Models
 
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException(nameof(name));
+                throw new ArgumentException("value cannot be empty", nameof(name));
             }
 
             if (string.IsNullOrWhiteSpace(ean))
             {
-                throw new ArgumentNullException(nameof(ean));
+                throw new ArgumentException("value cannot be empty", nameof(ean));
             }
 
             if (string.IsNullOrWhiteSpace(sku))
             {
-                throw new ArgumentNullException(nameof(sku));
+                throw new ArgumentException("value cannot be empty", nameof(sku));
             }
 
-            if (price == null)
+            if (price is null)
             {
                 throw new ArgumentNullException(nameof(price));
             }
@@ -862,13 +838,13 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="category">The category to remove</param>
         public virtual void RemoveCategory(Category category)
         {
-            if (category == null)
+            if (category is null)
             {
                 throw new ArgumentNullException(nameof(category));
             }
 
             var categoryToRemove = this.ProductCategories.FirstOrDefault(c => c.CategoryId == category.Id);
-            if (categoryToRemove == null)
+            if (categoryToRemove is null)
             {
                 throw new InvalidOperationException("Category not found");
             }
@@ -893,22 +869,22 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrWhiteSpace(ean))
             {
-                throw new ArgumentNullException(nameof(ean));
+                throw new ArgumentException("value cannot be empty", nameof(ean));
             }
 
             if (string.IsNullOrWhiteSpace(sku))
             {
-                throw new ArgumentNullException(nameof(sku));
+                throw new ArgumentException("value cannot be empty", nameof(sku));
             }
 
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException(nameof(name));
+                throw new ArgumentException("value cannot be empty", nameof(name));
             }
 
             if (string.IsNullOrWhiteSpace(url))
             {
-                throw new ArgumentNullException(nameof(url));
+                throw new ArgumentException("value cannot be empty", nameof(url));
             }
 
             var product = new Product

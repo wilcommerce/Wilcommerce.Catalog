@@ -4,19 +4,19 @@ using Xunit;
 
 namespace Wilcommerce.Catalog.Test.Events.Product
 {
-    public class ProductVendorSetEventTest
+    public class ProductBrandSetEventTest
     {
         [Fact]
-        public void ProductVendorSetEvent_Ctor_Should_Set_Arguments_Correctly()
+        public void ProductBrandSetEvent_Ctor_Should_Set_Arguments_Correctly()
         {
             Guid productId = Guid.NewGuid();
-            Guid vendorId = Guid.NewGuid();
+            Guid brandId = Guid.NewGuid();
             string userId = Guid.NewGuid().ToString();
 
-            var @event = new ProductVendorSetEvent(productId, vendorId, userId);
+            var @event = new ProductBrandSetEvent(productId, brandId, userId);
 
             Assert.Equal(productId, @event.ProductId);
-            Assert.Equal(vendorId, @event.VendorId);
+            Assert.Equal(brandId, @event.BrandId);
 
             Assert.Equal(productId, @event.AggregateId);
             Assert.Equal(typeof(Catalog.Models.Product), @event.AggregateType);

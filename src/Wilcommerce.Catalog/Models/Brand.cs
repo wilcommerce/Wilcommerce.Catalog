@@ -71,7 +71,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException(nameof(name));
+                throw new ArgumentException("value cannot be empty", nameof(name));
             }
 
             Name = name;
@@ -81,10 +81,7 @@ namespace Wilcommerce.Catalog.Models
         /// Change the brand description
         /// </summary>
         /// <param name="description">The brand description</param>
-        public virtual void ChangeDescription(string description)
-        {
-            Description = description;
-        }
+        public virtual void ChangeDescription(string description) => Description = description;
 
         /// <summary>
         /// Change the brand url
@@ -94,7 +91,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrWhiteSpace(url))
             {
-                throw new ArgumentNullException(nameof(url));
+                throw new ArgumentException("value cannot be empty", nameof(url));
             }
 
             Url = url;
@@ -104,19 +101,13 @@ namespace Wilcommerce.Catalog.Models
         /// Set the brand logo
         /// </summary>
         /// <param name="logo">The logo image</param>
-        public virtual void SetLogo(Image logo)
-        {
-            Logo = logo ?? throw new ArgumentNullException(nameof(logo));
-        }
+        public virtual void SetLogo(Image logo) => Logo = logo ?? throw new ArgumentNullException(nameof(logo));
 
         /// <summary>
         /// Set the brand seo data
         /// </summary>
         /// <param name="seo">The seo data</param>
-        public virtual void SetSeoData(SeoData seo)
-        {
-            Seo = seo ?? throw new ArgumentNullException(nameof(seo));
-        }
+        public virtual void SetSeoData(SeoData seo) => Seo = seo ?? throw new ArgumentNullException(nameof(seo));
 
         /// <summary>
         /// Set the brand as deleted
@@ -156,12 +147,12 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException(nameof(name));
+                throw new ArgumentException("value cannot be empty", nameof(name));
             }
 
             if (string.IsNullOrWhiteSpace(url))
             {
-                throw new ArgumentNullException(nameof(url));
+                throw new ArgumentException("value cannot be empty", nameof(url));
             }
 
             var brand = new Brand

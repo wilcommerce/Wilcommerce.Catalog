@@ -245,13 +245,13 @@ namespace Wilcommerce.Catalog.Commands
         }
 
         /// <summary>
-        /// Implementation of <see cref="IProductCommands.SetProductVendor(Guid, Guid, string)"/>
+        /// Implementation of <see cref="IProductCommands.SetProductBrand(Guid, Guid, string)"/>
         /// </summary>
         /// <param name="productId">The product id</param>
-        /// <param name="brandId">The vendor id</param>
+        /// <param name="brandId">The brand id</param>
         /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public virtual async Task SetProductVendor(Guid productId, Guid brandId, string userId)
+        public virtual async Task SetProductBrand(Guid productId, Guid brandId, string userId)
         {
             try
             {
@@ -268,11 +268,11 @@ namespace Wilcommerce.Catalog.Commands
                 var product = await Repository.GetByKeyAsync<Product>(productId);
                 var brand = await Repository.GetByKeyAsync<Brand>(brandId);
 
-                product.SetVendor(brand);
+                product.SetBrand(brand);
 
                 await Repository.SaveChangesAsync();
 
-                var @event = new ProductVendorSetEvent(productId, brandId, userId);
+                var @event = new ProductBrandSetEvent(productId, brandId, userId);
                 EventBus.RaiseEvent(@event);
             }
             catch

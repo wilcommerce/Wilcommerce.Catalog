@@ -100,10 +100,7 @@ namespace Wilcommerce.Catalog.Models
         /// <summary>
         /// Set the category as visible, starting from the current date and time
         /// </summary>
-        public virtual void SetAsVisible()
-        {
-            SetAsVisible(DateTime.Now, null);
-        }
+        public virtual void SetAsVisible() => SetAsVisible(DateTime.Now, null);
 
         /// <summary>
         /// Set the category as visible
@@ -144,7 +141,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (child == null)
             {
-                throw new ArgumentNullException(nameof(child));
+                throw new ArgumentException("value cannot be empty", nameof(child));
             }
 
             if (this.Children.Contains(child))
@@ -163,7 +160,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException(nameof(name));
+                throw new ArgumentException("value cannot be empty", nameof(name));
             }
 
             Name = name;
@@ -177,7 +174,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrWhiteSpace(code))
             {
-                throw new ArgumentNullException(nameof(code));
+                throw new ArgumentException("value cannot be empty", nameof(code));
             }
 
             Code = code;
@@ -187,10 +184,7 @@ namespace Wilcommerce.Catalog.Models
         /// Change the category description
         /// </summary>
         /// <param name="description">The category description</param>
-        public virtual void ChangeDescription(string description)
-        {
-            Description = description;
-        }
+        public virtual void ChangeDescription(string description) => Description = description;
 
         /// <summary>
         /// Change the category url
@@ -200,7 +194,7 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrWhiteSpace(url))
             {
-                throw new ArgumentNullException(nameof(url));
+                throw new ArgumentException("value cannot be empty", nameof(url));
             }
 
             Url = url;
@@ -210,10 +204,7 @@ namespace Wilcommerce.Catalog.Models
         /// Set the parent category
         /// </summary>
         /// <param name="parent">The parent category</param>
-        public virtual void SetParentCategory(Category parent)
-        {
-            Parent = parent ?? throw new ArgumentNullException(nameof(parent));
-        }
+        public virtual void SetParentCategory(Category parent) => Parent = parent ?? throw new ArgumentNullException(nameof(parent));
 
         /// <summary>
         /// Delete the category
@@ -260,12 +251,12 @@ namespace Wilcommerce.Catalog.Models
         /// <param name="parent">The parent category to remove</param>
         public virtual void RemoveParent(Category parent)
         {
-            if (parent == null)
+            if (parent is null)
             {
                 throw new ArgumentNullException(nameof(parent));
             }
 
-            if (Parent == null)
+            if (Parent is null)
             {
                 throw new InvalidOperationException("Parent already empty");
             }
@@ -282,10 +273,7 @@ namespace Wilcommerce.Catalog.Models
         /// Set the seo information for the category
         /// </summary>
         /// <param name="seo">The seo information</param>
-        public virtual void SetSeoData(SeoData seo)
-        {
-            Seo = seo ?? throw new ArgumentNullException(nameof(seo));
-        }
+        public virtual void SetSeoData(SeoData seo) => Seo = seo ?? throw new ArgumentNullException(nameof(seo));
 
         #endregion
 
@@ -301,17 +289,17 @@ namespace Wilcommerce.Catalog.Models
         {
             if (string.IsNullOrWhiteSpace(code))
             {
-                throw new ArgumentNullException(nameof(code));
+                throw new ArgumentException("value cannot be empty", nameof(code));
             }
 
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException(nameof(name));
+                throw new ArgumentException("value cannot be empty", nameof(name));
             }
 
             if (string.IsNullOrWhiteSpace(url))
             {
-                throw new ArgumentNullException(nameof(url));
+                throw new ArgumentException("value cannot be empty", nameof(url));
             }
 
             var category = new Category

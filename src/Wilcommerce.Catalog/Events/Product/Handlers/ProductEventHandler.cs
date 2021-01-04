@@ -11,7 +11,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
         IHandleEvent<ProductInfoUpdateEvent>,
         IHandleEvent<ProductDeletedEvent>,
         IHandleEvent<ProductRestoredEvent>,
-        IHandleEvent<ProductVendorSetEvent>,
+        IHandleEvent<ProductBrandSetEvent>,
         IHandleEvent<ProductCategoryAddedEvent>,
         IHandleEvent<ProductVariantAddedEvent>,
         IHandleEvent<ProductVariantRemovedEvent>,
@@ -111,7 +111,7 @@ namespace Wilcommerce.Catalog.Events.Product.Handlers
         /// <see cref="IHandleEvent{TEvent}.Handle(TEvent)"/>
         /// </summary>
         /// <param name="event"></param>
-        public void Handle(ProductVendorSetEvent @event)
+        public void Handle(ProductBrandSetEvent @event)
         {
             try
             {

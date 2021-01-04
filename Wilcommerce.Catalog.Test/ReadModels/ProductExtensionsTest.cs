@@ -260,47 +260,47 @@ namespace Wilcommerce.Catalog.Test.ReadModels
         }
         #endregion
 
-        #region ByVendor tests
+        #region ByBrand tests
         [Fact]
-        public void ByVendor_Should_Throw_ArgumentNullException_If_Products_Is_Null()
+        public void ByBrand_Should_Throw_ArgumentNullException_If_Products_Is_Null()
         {
             IQueryable<Product> products = null;
-            Guid vendorId = Guid.NewGuid();
+            Guid brandId = Guid.NewGuid();
 
-            var ex = Assert.Throws<ArgumentNullException>(() => ProductExtensions.ByVendor(products, vendorId));
+            var ex = Assert.Throws<ArgumentNullException>(() => ProductExtensions.ByBrand(products, brandId));
             Assert.Equal(nameof(products), ex.ParamName);
         }
 
         [Fact]
-        public void ByVendor_Should_Throw_ArgumentException_If_VendorId_Is_Empty()
+        public void ByBrand_Should_Throw_ArgumentException_If_VendorId_Is_Empty()
         {
             IQueryable<Product> products = new Product[0].AsQueryable();
-            Guid vendorId = Guid.Empty;
+            Guid brandId = Guid.Empty;
 
-            var ex = Assert.Throws<ArgumentException>(() => ProductExtensions.ByVendor(products, vendorId));
-            Assert.Equal(nameof(vendorId), ex.ParamName);
+            var ex = Assert.Throws<ArgumentException>(() => ProductExtensions.ByBrand(products, brandId));
+            Assert.Equal(nameof(brandId), ex.ParamName);
         }
 
         [Fact]
-        public void ByVendor_Should_Return_Only_Products_With_The_Specified_Vendor()
+        public void ByBrand_Should_Return_Only_Products_With_The_Specified_Vendor()
         {
-            var vendor = Brand.Create("brand", "brand");
+            var brand = Brand.Create("brand", "brand");
 
             var p1 = Product.Create("ean", "sku", "name", "url");
             var p2 = Product.Create("ean", "sku", "name", "url");
             var p3 = Product.Create("ean", "sku", "name", "url");
 
-            p1.SetVendor(vendor);
-            p2.SetVendor(vendor);
+            p1.SetBrand(brand);
+            p2.SetBrand(brand);
 
             IQueryable<Product> products = new Product[]
             {
                 p1, p2, p3
             }.AsQueryable();
-            Guid vendorId = vendor.Id;
+            Guid brandId = brand.Id;
 
-            var productsByVendor = ProductExtensions.ByVendor(products, vendorId).ToArray();
-            Assert.True(productsByVendor.All(p => p.Vendor != null && p.Vendor.Id == vendorId));
+            var productsByVendor = ProductExtensions.ByBrand(products, brandId).ToArray();
+            Assert.True(productsByVendor.All(p => p.Brand != null && p.Brand.Id == brandId));
         }
         #endregion
     }

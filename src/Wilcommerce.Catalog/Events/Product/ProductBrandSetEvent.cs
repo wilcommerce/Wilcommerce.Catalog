@@ -6,7 +6,7 @@ namespace Wilcommerce.Catalog.Events.Product
     /// <summary>
     /// Product vendor set
     /// </summary>
-    public class ProductVendorSetEvent : DomainEvent
+    public class ProductBrandSetEvent : DomainEvent
     {
         /// <summary>
         /// Get the product id
@@ -14,21 +14,21 @@ namespace Wilcommerce.Catalog.Events.Product
         public Guid ProductId { get; private set; }
 
         /// <summary>
-        /// Get the vendor id
+        /// Get the brand id
         /// </summary>
-        public Guid VendorId { get; private set; }
+        public Guid BrandId { get; private set; }
 
         /// <summary>
         /// Construct the event
         /// </summary>
         /// <param name="productId">The product id</param>
-        /// <param name="vendorId">The vendor id</param>
+        /// <param name="brandId">The vendor id</param>
         /// <param name="userId">The user's id</param>
-        public ProductVendorSetEvent(Guid productId, Guid vendorId, string userId)
+        public ProductBrandSetEvent(Guid productId, Guid brandId, string userId)
             : base(productId, typeof(Models.Product), userId)
         {
             ProductId = productId;
-            VendorId = vendorId;
+            BrandId = brandId;
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Wilcommerce.Catalog.Events.Product
         /// <returns>The converted string</returns>
         public override string ToString()
         {
-            return $"Set vendor {VendorId} to product {ProductId}";
+            return $"Set vendor {BrandId} to product {ProductId}";
         }
     }
 }

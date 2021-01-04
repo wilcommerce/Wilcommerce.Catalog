@@ -62,13 +62,13 @@ namespace Wilcommerce.Catalog.Commands
         Task RestoreProduct(Guid productId, string userId);
 
         /// <summary>
-        /// Set the product vendor
+        /// Set the product brand
         /// </summary>
         /// <param name="productId">The product id</param>
-        /// <param name="brandId">The vendor id</param>
+        /// <param name="brandId">The brand id</param>
         /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        Task SetProductVendor(Guid productId, Guid brandId, string userId);
+        Task SetProductBrand(Guid productId, Guid brandId, string userId);
 
         /// <summary>
         /// Add the category to the product

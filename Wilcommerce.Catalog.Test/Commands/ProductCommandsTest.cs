@@ -210,7 +210,7 @@ namespace Wilcommerce.Catalog.Test.Commands
         }
 
         [Fact]
-        public async Task SetProductVendor_Should_Throw_ArgumentException_If_ProductId_Is_Empty()
+        public async Task SetProductBrand_Should_Throw_ArgumentException_If_ProductId_Is_Empty()
         {
             Repository.IRepository repository = new Mock<Repository.IRepository>().Object;
             Core.Infrastructure.IEventBus eventBus = new Mock<Core.Infrastructure.IEventBus>().Object;
@@ -219,13 +219,13 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid brandId = Guid.NewGuid();
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.SetProductVendor(productId, brandId, userId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.SetProductBrand(productId, brandId, userId));
 
             Assert.Equal(nameof(productId), ex.ParamName);
         }
 
         [Fact]
-        public async Task SetProductVendor_Should_Throw_ArgumentException_If_BrandId_Is_Empty()
+        public async Task SetProductBrand_Should_Throw_ArgumentException_If_BrandId_Is_Empty()
         {
             Repository.IRepository repository = new Mock<Repository.IRepository>().Object;
             Core.Infrastructure.IEventBus eventBus = new Mock<Core.Infrastructure.IEventBus>().Object;
@@ -234,13 +234,13 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid brandId = Guid.Empty;
 
             var commands = new ProductCommands(repository, eventBus);
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.SetProductVendor(productId, brandId, userId));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => commands.SetProductBrand(productId, brandId, userId));
 
             Assert.Equal(nameof(brandId), ex.ParamName);
         }
 
         [Fact]
-        public async Task SetProductVendor_Should_Set_Product_Vendor_With_The_Specified_Brand()
+        public async Task SetProductBrand_Should_Set_Product_Vendor_With_The_Specified_Brand()
         {
             var product = Product.Create("ean01", "sku01", "product", "product");
             var brand = Brand.Create("brand", "brand");
@@ -259,9 +259,9 @@ namespace Wilcommerce.Catalog.Test.Commands
             Guid brandId = brand.Id;
 
             var commands = new ProductCommands(repository, eventBus);
-            await commands.SetProductVendor(productId, brandId, userId);
+            await commands.SetProductBrand(productId, brandId, userId);
 
-            Assert.Equal(brand, product.Vendor);
+            Assert.Equal(brand, product.Brand);
         }
 
         [Fact]

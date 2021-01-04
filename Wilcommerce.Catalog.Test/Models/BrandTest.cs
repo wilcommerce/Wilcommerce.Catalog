@@ -10,40 +10,40 @@ namespace Wilcommerce.Catalog.Test.Models
         [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
-        public void BrandFactory_Should_Throw_ArgumentNullException_If_Name_IsEmpty(string value)
+        public void BrandFactory_Should_Throw_ArgumentException_If_Name_IsEmpty(string name)
         {
-            var ex = Assert.Throws<ArgumentNullException>(() => Brand.Create(
-                value,
+            var ex = Assert.Throws<ArgumentException>(() => Brand.Create(
+                name,
                 "my-brand"
                 ));
 
-            Assert.Equal("name", ex.ParamName);
+            Assert.Equal(nameof(name), ex.ParamName);
         }
 
         [Theory]
         [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
-        public void BrandFactory_Should_Throw_ArgumentNullException_If_Url_IsEmpty(string value)
+        public void BrandFactory_Should_Throw_ArgumentException_If_Url_IsEmpty(string url)
         {
-            var ex = Assert.Throws<ArgumentNullException>(() => Brand.Create(
+            var ex = Assert.Throws<ArgumentException>(() => Brand.Create(
                 "My Brand",
-                value
+                url
                 ));
 
-            Assert.Equal("url", ex.ParamName);
+            Assert.Equal(nameof(url), ex.ParamName);
         }
 
         [Theory]
         [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
-        public void ChangeName_Should_Throw_ArgumentNullException_If_Name_IsEmpty(string value)
+        public void ChangeName_Should_Throw_ArgumentException_If_Name_IsEmpty(string name)
         {
             var brand = Brand.Create("brand", "brand");
 
-            var ex = Assert.Throws<ArgumentNullException>(() => brand.ChangeName(value));
-            Assert.Equal("name", ex.ParamName);
+            var ex = Assert.Throws<ArgumentException>(() => brand.ChangeName(name));
+            Assert.Equal(nameof(name), ex.ParamName);
         }
 
         [Theory]
@@ -62,12 +62,12 @@ namespace Wilcommerce.Catalog.Test.Models
         [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
-        public void ChangeUrl_Should_Throw_ArgumentNullException_If_Url_IsEmpty(string value)
+        public void ChangeUrl_Should_Throw_ArgumentException_If_Url_IsEmpty(string url)
         {
             var brand = Brand.Create("brand", "brand");
 
-            var ex = Assert.Throws<ArgumentNullException>(() => brand.ChangeUrl(value));
-            Assert.Equal("url", ex.ParamName);
+            var ex = Assert.Throws<ArgumentException>(() => brand.ChangeUrl(url));
+            Assert.Equal(nameof(url), ex.ParamName);
         }
 
         [Fact]

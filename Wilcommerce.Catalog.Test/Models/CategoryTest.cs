@@ -11,45 +11,45 @@ namespace Wilcommerce.Catalog.Test.Models
         [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
-        public void CategoryFactory_Should_Throw_ArgumentNullException_If_Code_IsEmpty(string value)
+        public void CategoryFactory_Should_Throw_ArgumentException_If_Code_IsEmpty(string code)
         {
-            var ex = Assert.Throws<ArgumentNullException>(() => Category.Create(
-                value,
+            var ex = Assert.Throws<ArgumentException>(() => Category.Create(
+                code,
                 "Test Category",
                 "test-category"
                 ));
 
-            Assert.Equal("code", ex.ParamName);
+            Assert.Equal(nameof(code), ex.ParamName);
         }
 
         [Theory]
         [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
-        public void CategoryFactory_Should_Throw_ArgumentNullException_If_Name_IsEmpty(string value)
+        public void CategoryFactory_Should_Throw_ArgumentException_If_Name_IsEmpty(string name)
         {
-            var ex = Assert.Throws<ArgumentNullException>(() => Category.Create(
+            var ex = Assert.Throws<ArgumentException>(() => Category.Create(
                 "TEST1",
-                value,
+                name,
                 "test-category"
                 ));
 
-            Assert.Equal("name", ex.ParamName);
+            Assert.Equal(nameof(name), ex.ParamName);
         }
 
         [Theory]
         [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
-        public void CategoryFactory_Should_Throw_ArgumentNullException_If_Url_IsEmpty(string value)
+        public void CategoryFactory_Should_Throw_ArgumentException_If_Url_IsEmpty(string url)
         {
-            var ex = Assert.Throws<ArgumentNullException>(() => Category.Create(
+            var ex = Assert.Throws<ArgumentException>(() => Category.Create(
                 "TEST1",
                 "Test Category",
-                value
+                url
                 ));
 
-            Assert.Equal("url", ex.ParamName);
+            Assert.Equal(nameof(url), ex.ParamName);
         }
 
         [Fact]
@@ -95,9 +95,10 @@ namespace Wilcommerce.Catalog.Test.Models
                 "test-category"
                 );
 
-            var ex = Assert.Throws<ArgumentNullException>(() => category.AddChild(null));
+            Category child = null;
+            var ex = Assert.Throws<ArgumentException>(() => category.AddChild(child));
 
-            Assert.Equal("child", ex.ParamName);
+            Assert.Equal(nameof(child), ex.ParamName);
         }
 
         [Fact]
@@ -147,7 +148,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
-        public void ChangeName_Should_Throw_ArgumentNullException_If_Name_IsEmpty(string value)
+        public void ChangeName_Should_Throw_ArgumentException_If_Name_IsEmpty(string name)
         {
             var category = Category.Create(
                 "TEST1",
@@ -155,15 +156,15 @@ namespace Wilcommerce.Catalog.Test.Models
                 "test-category"
                 );
 
-            var ex = Assert.Throws<ArgumentNullException>(() => category.ChangeName(value));
-            Assert.Equal("name", ex.ParamName);
+            var ex = Assert.Throws<ArgumentException>(() => category.ChangeName(name));
+            Assert.Equal(nameof(name), ex.ParamName);
         }
 
         [Theory]
         [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
-        public void ChangeCode_Should_Throw_ArgumentNullException_If_Code_IsEmpty(string value)
+        public void ChangeCode_Should_Throw_ArgumentException_If_Code_IsEmpty(string code)
         {
             var category = Category.Create(
                 "TEST1",
@@ -171,8 +172,8 @@ namespace Wilcommerce.Catalog.Test.Models
                 "test-category"
                 );
 
-            var ex = Assert.Throws<ArgumentNullException>(() => category.ChangeCode(value));
-            Assert.Equal("code", ex.ParamName);
+            var ex = Assert.Throws<ArgumentException>(() => category.ChangeCode(code));
+            Assert.Equal(nameof(code), ex.ParamName);
         }
 
         [Theory]
@@ -196,7 +197,7 @@ namespace Wilcommerce.Catalog.Test.Models
         [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
-        public void ChangeUrl_Should_Throw_ArgumentNullException_If_Url_IsEmpty(string value)
+        public void ChangeUrl_Should_Throw_ArgumentNullException_If_Url_IsEmpty(string url)
         {
             var category = Category.Create(
                 "TEST1",
@@ -204,8 +205,8 @@ namespace Wilcommerce.Catalog.Test.Models
                 "test-category"
                 );
 
-            var ex = Assert.Throws<ArgumentNullException>(() => category.ChangeUrl(value));
-            Assert.Equal("url", ex.ParamName);
+            var ex = Assert.Throws<ArgumentException>(() => category.ChangeUrl(url));
+            Assert.Equal(nameof(url), ex.ParamName);
         }
 
         [Fact]
@@ -217,8 +218,9 @@ namespace Wilcommerce.Catalog.Test.Models
                 "test-category"
                 );
 
-            var ex = Assert.Throws<ArgumentNullException>(() => category.SetParentCategory(null));
-            Assert.Equal("parent", ex.ParamName);
+            Category parent = null;
+            var ex = Assert.Throws<ArgumentNullException>(() => category.SetParentCategory(parent));
+            Assert.Equal(nameof(parent), ex.ParamName);
         }
 
         [Fact]
